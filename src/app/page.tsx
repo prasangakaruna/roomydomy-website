@@ -1,0 +1,3720 @@
+"use client"
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import TabComponent from './components/TabComponent';
+
+// Type for dome data
+interface Dome {
+  img: string;
+  title: string;
+  size: string;
+  people: string;
+  price: string;
+  description: string;
+  features: string;
+}
+
+// Dome Details Page Component (formerly modal)
+function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen }: { open: boolean; onClose: () => void; dome: Dome | null; setIs3DModalOpen: (open: boolean) => void }) {
+  const [tab, setTab] = useState('overview');
+  const [layoutTab, setLayoutTab] = useState('luxury');
+  if (!open || !dome) return null;
+
+  // Example construction specs (replace with real data as needed)
+  const constructionSpecs = [
+    { label: 'Foundation', value: 'Reinforced concrete slab with vapor barrier' },
+    { label: 'Structure', value: 'Engineered steel frame with dome shell' },
+    { label: 'Insulation', value: 'Spray foam R-30 walls, R-50 roof' },
+    { label: 'Roofing', value: 'Standing seam metal roof with 50-year warranty' },
+    { label: 'Windows', value: 'Triple-pane low-E glass with argon fill' },
+    { label: 'Timeline', value: '16-22 weeks' },
+  ];
+
+  const keyFeatures = [
+    '2 bedrooms on bottom level',
+    '2 bedrooms on top level',
+    'Spacious kitchen',
+    'Large living room',
+    '2 bathrooms (one per level)',
+  ];
+
+  // Layouts data
+  const layouts = [
+    {
+      key: 'luxury',
+      name: 'Luxury Family',
+      subtitle: 'Premium family living with all amenities',
+      img: '/plan/plan-1.jpg',
+      size: '2000 sq ft',
+      people: '6-8 people',
+      roomConfig: [
+        { icon: '🏡', label: 'Ground: 2 Bedrooms + Living' },
+        { icon: '🏡', label: 'Upper: 2 Bedrooms + Loft' },
+      ],
+      features: [
+        'Four full bedrooms',
+        'Multiple living areas',
+        'Large kitchen with island',
+        'Home office/study',
+        'Entertainment loft',
+      ],
+    },
+    {
+      key: 'executive',
+      name: 'Executive Retreat',
+      subtitle: 'Luxury retreat with private suites',
+      img: '/plan/plan-2.jpg', // Replace with your 3D plan image
+      size: '2000 sq ft',
+      people: '4-6 people',
+      roomConfig: [
+        { icon: '🏡', label: 'Ground: 1 Suite + Living' },
+        { icon: '🏡', label: 'Upper: 2 Suites + Lounge' },
+      ],
+      features: [
+        'Three private suites',
+        'Open concept living',
+        'Chef\'s kitchen',
+        'Private lounge',
+        'Spa bathroom',
+      ],
+    },
+  ];
+  const selectedLayout = layouts.find(l => l.key === layoutTab) || layouts[0];
+
+  const basePrice = dome ? Number(dome.price.replace(/[^\d.]/g, '')) : 0;
+
+    return (
+      <div className="fixed inset-0 z-[9999] bg-white flex flex-col overflow-y-auto overflow-x-hidden animate-fade-in">
+        {/* Header with Back Button */}
+        <div className="sticky top-0 z-[100] bg-white border-b border-gray-200 shadow-sm">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-4">
+            <div className="flex items-center gap-4">
+              {/* Back Button */}
+              <button 
+                onClick={onClose} 
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gradient-to-r hover:from-emerald-500 hover:to-teal-500 hover:text-white transition-all duration-200 focus:outline-none font-medium" 
+                aria-label="Go back"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                <span className="hidden sm:inline">Back</span>
+              </button>
+              {/* Page Title */}
+              <h2 className="text-2xl lg:text-3xl font-extrabold text-gray-900 bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">{dome.title}</h2>
+            </div>
+          </div>
+          </div>
+        {/* Main Content Container */}
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-8">
+        {/* Main Row: Image + Description/Features */}
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Image with price tag */}
+          <div className="flex-1 min-w-[280px] relative">
+            <div className="relative overflow-hidden rounded-xl shadow-lg group">
+              <Image src={dome.img} alt={dome.title} className="w-full h-80 lg:h-96 object-cover transition-transform duration-500 group-hover:scale-105" width={600} height={400} />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+              <div className="absolute left-4 bottom-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-semibold rounded-lg px-4 py-2 shadow-lg shadow-emerald-500/40">Starting from {dome.price}</div>
+            </div>
+            </div>
+          {/* Description and Key Features */}
+          <div className="flex-1 flex flex-col gap-4">
+            <div className="text-gray-700 text-base mb-2 leading-relaxed">{dome.description}</div>
+            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-6 shadow-sm">
+              <div className="font-bold text-xl text-gray-900 mb-3 flex items-center gap-2">
+                <span className="w-1 h-6 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-full"></span>
+                Key Features
+              </div>
+              <ul className="space-y-2">
+                {keyFeatures.map((f, i) => (
+                  <li key={i} className="flex items-start gap-2 text-base text-gray-800">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs mt-0.5">✓</span> 
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            </div>
+        </div>
+        {/* Tab Bar (functional) */}
+        <div className="flex gap-2 overflow-x-auto min-h-10 mt-8 mb-6 border-b border-gray-200 bg-gradient-to-b from-gray-50 to-white flex-nowrap">
+          <button
+            className={`min-w-max px-5 py-2.5 font-semibold rounded-lg transition-all duration-200 ${tab === 'overview' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'} focus:outline-none`}
+            onClick={() => setTab('overview')}
+          >Overview</button>
+          <button
+            className={`min-w-max px-5 py-2.5 font-semibold rounded-lg transition-all duration-200 ${tab === 'layouts' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'} focus:outline-none`}
+            onClick={() => setTab('layouts')}
+          >Layouts</button>
+          <button
+            className={`min-w-max px-5 py-2.5 font-semibold rounded-lg transition-all duration-200 ${tab === 'furniture' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'} focus:outline-none`}
+            onClick={() => setTab('furniture')}
+          >Furniture</button>
+          <button
+            className={`min-w-max px-5 py-2.5 font-semibold rounded-lg transition-all duration-200 ${tab === 'customize' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'} focus:outline-none`}
+            onClick={() => setTab('customize')}
+          >Customize</button>
+          <button
+            className={`min-w-max px-5 py-2.5 font-semibold rounded-lg transition-all duration-200 ${tab === '3dview' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'} focus:outline-none`}
+            onClick={() => setTab('3dview')}
+          >3D View</button>
+          <button
+            className={`min-w-max px-5 py-2.5 font-semibold rounded-lg transition-all duration-200 ${tab === 'materials' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'} focus:outline-none`}
+            onClick={() => setTab('materials')}
+          >Materials</button>
+          <button
+            className={`min-w-max px-5 py-2.5 font-semibold rounded-lg transition-all duration-200 ${tab === 'pricing' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'} focus:outline-none`}
+            onClick={() => setTab('pricing')}
+          >$ Pricing</button>
+        </div>
+        {/* Tab Content */}
+        {tab === 'overview' && (
+          <div className="flex flex-col md:flex-row gap-8 p-6 md:p-8 bg-gray-50 rounded-xl">
+            {/* Left: Sustainable Design */}
+            <div className="flex-1">
+              <div className="text-2xl font-extrabold text-gray-900 mb-4">Sustainable Design</div>
+              <div className="text-gray-700 text-base leading-relaxed">Our Grand Dome represents the pinnacle of sustainable living, combining innovative dome architecture with cutting-edge eco-friendly technologies. Every aspect is designed to minimize environmental impact while maximizing comfort and efficiency.</div>
+            </div>
+            {/* Right: Construction Specifications */}
+            <div className="flex-1">
+              <div className="text-2xl font-extrabold text-gray-900 mb-4">Construction Specifications</div>
+              <dl className="divide-y divide-gray-200">
+                {constructionSpecs.map((spec, i) => (
+                  <div key={i} className="flex py-2 text-base">
+                    <dt className="font-semibold text-gray-700 w-40 flex-shrink-0">{spec.label}</dt>
+                    <dd className="text-gray-600 flex-1">{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        )}
+        {tab === 'layouts' && (
+          <div className="py-8"> 
+            {/* Layout tab selector */}
+            <div className="flex w-full max-w-xl mx-auto mb-6 rounded-xl overflow-hidden border border-emerald-200 bg-gray-50 p-1 gap-1">
+              {layouts.map(l => (
+                <button
+                  key={l.key}
+                  className={`flex-1 px-4 py-2.5 font-semibold text-base rounded-lg transition-all duration-200 focus:outline-none ${layoutTab === l.key ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'bg-transparent text-gray-600 hover:bg-emerald-50'}`}
+                  onClick={() => setLayoutTab(l.key)}
+                >
+                  {l.name}
+                </button>
+              ))}
+            </div>
+            {/* Layout card */}
+            <div className="flex flex-col md:flex-row gap-6 bg-white rounded-xl border border-gray-200 shadow p-6">
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <Image src={selectedLayout.img} alt={selectedLayout.name} className="rounded-lg w-full object-cover mb-4" width={400} height={300} />
+                <div className="flex gap-2 w-full justify-between">
+                  <span className="bg-gray-100 text-gray-700 text-xs font-semibold rounded px-3 py-1">↔ {selectedLayout.size}</span>
+                  <span className="bg-emerald-100 text-emerald-600 text-xs font-semibold rounded px-3 py-1 flex items-center gap-1"><svg width="16" height="16" fill="none"><circle cx="8" cy="8" r="7" stroke="#10b981" strokeWidth="2"/></svg> {selectedLayout.people}</span>
+                </div>
+              </div>
+              <div className="flex-1 flex flex-col gap-2 justify-center">
+                <div className="text-xl font-bold text-gray-900 mb-1">{selectedLayout.name}</div>
+                <div className="text-gray-600 mb-2">{selectedLayout.subtitle}</div>
+                <div className="font-semibold text-gray-900 mb-1">Room Configuration:</div>
+                <ul className="mb-2">
+                  {selectedLayout.roomConfig.map((rc, i) => (
+                    <li key={i} className="flex items-center gap-2 text-gray-700 text-sm mb-1"><span className="text-teal-500">{rc.icon}</span> {rc.label}</li>
+                  ))}
+                </ul>
+                <div className="font-semibold text-gray-900 mb-1">Key Features:</div>
+                <ul className="mb-4">
+                  {selectedLayout.features.map((f, i) => (
+                    <li key={i} className="flex items-center gap-2 text-emerald-600 text-sm"><span className="text-emerald-400">•</span> {f}</li>
+                  ))}
+                </ul>
+                <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-6 py-3 rounded-lg shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5 transition-all duration-200 w-full mt-auto">Select This Layout</button>
+              </div>
+            </div>
+          </div>
+        )}
+        {tab === 'furniture' && (
+          <div className="py-10">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Furniture & Interior Design</h2>
+            <p className="text-gray-600 mb-8">Complete your dome with our curated furniture collections. Each piece is designed for comfort, sustainability, and harmony with your eco-friendly living space.</p>
+            
+            {/* Furniture Categories */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {/* Living Room */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-emerald-100 text-emerald-600 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Living Room</h3>
+                    <p className="text-sm text-gray-500">Comfortable seating & entertainment</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Sofa Set</span>
+                    <span className="text-teal-600 font-semibold">$2,500</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Coffee Table</span>
+                    <span className="text-teal-600 font-semibold">$800</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">TV Stand</span>
+                    <span className="text-teal-600 font-semibold">$600</span>
+                  </div>
+                </div>
+                <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow-md shadow-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5 mt-4 transition-all duration-200">Select Package</button>
+              </div>
+
+              {/* Kitchen & Dining */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-blue-100 text-blue-700 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <path d="M3 7h18v10H3z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M3 7l2-4h14l2 4" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="9" cy="12" r="1" fill="currentColor"/>
+                      <circle cx="15" cy="12" r="1" fill="currentColor"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Kitchen & Dining</h3>
+                    <p className="text-sm text-gray-500">Functional & stylish dining</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Dining Table Set</span>
+                    <span className="text-teal-600 font-semibold">$1,800</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Kitchen Island</span>
+                    <span className="text-teal-600 font-semibold">$1,200</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Bar Stools</span>
+                    <span className="text-teal-600 font-semibold">$400</span>
+                  </div>
+                </div>
+                <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow-md shadow-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5 mt-4 transition-all duration-200">Select Package</button>
+              </div>
+
+              {/* Bedroom */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-purple-100 text-purple-700 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 11h10" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Bedroom</h3>
+                    <p className="text-sm text-gray-500">Restful & organized spaces</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Bed Frame</span>
+                    <span className="text-teal-600 font-semibold">$1,500</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Nightstands</span>
+                    <span className="text-teal-600 font-semibold">$600</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Dresser</span>
+                    <span className="text-teal-600 font-semibold">$900</span>
+                  </div>
+                </div>
+                <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow-md shadow-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5 mt-4 transition-all duration-200">Select Package</button>
+              </div>
+            </div>
+
+            {/* Customization Options */}
+            <div className="bg-teal-50/40 border border-teal-100 rounded-xl p-6 mb-8">
+              <h3 className="text-xl font-extrabold text-green-800 mb-4">Customization Options</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Material Selection */}
+                <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                  <div className="font-bold text-gray-900 mb-3">Material Selection</div>
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input type="radio" name="material" className="text-teal-600 focus:ring-green-500" defaultChecked />
+                      <span className="text-gray-700">Sustainable Bamboo</span>
+                      <span className="text-teal-600 font-semibold ml-auto">+$500</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input type="radio" name="material" className="text-teal-600 focus:ring-green-500" />
+                      <span className="text-gray-700">Reclaimed Wood</span>
+                      <span className="text-teal-600 font-semibold ml-auto">+$800</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input type="radio" name="material" className="text-teal-600 focus:ring-green-500" />
+                      <span className="text-gray-700">FSC Certified Oak</span>
+                      <span className="text-teal-600 font-semibold ml-auto">+$1,200</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Color Schemes */}
+                <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                  <div className="font-bold text-gray-900 mb-3">Color Schemes</div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <button className="w-full h-12 bg-gray-100 rounded border-2 border-green-500 hover:border-teal-600 transition-all duration-200" title="Natural Wood"></button>
+                    <button className="w-full h-12 bg-gray-200 rounded border-2 border-transparent hover:border-green-500 transition-all duration-200" title="Light Oak"></button>
+                    <button className="w-full h-12 bg-gray-300 rounded border-2 border-transparent hover:border-green-500 transition-all duration-200" title="Dark Walnut"></button>
+                    <button className="w-full h-12 bg-gray-400 rounded border-2 border-transparent hover:border-green-500 transition-all duration-200" title="Charcoal"></button>
+                    <button className="w-full h-12 bg-gray-500 rounded border-2 border-transparent hover:border-green-500 transition-all duration-200" title="Slate"></button>
+                    <button className="w-full h-12 bg-gray-600 rounded border-2 border-transparent hover:border-green-500 transition-all duration-200" title="Espresso"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Smart Features */}
+            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-8">
+              <h3 className="text-xl font-extrabold text-gray-900 mb-4">Smart Features</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex items-start gap-3">
+                  <span className="bg-blue-100 text-blue-700 rounded-full p-2 mt-1">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <div className="font-semibold text-gray-900 mb-1">Smart Lighting</div>
+                    <div className="text-gray-600 text-sm">Automated lighting with motion sensors and natural light optimization</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-teal-100 text-teal-600 rounded-full p-2 mt-1">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m6.28 6.28l4.24 4.24M1 12h6m6 0h6" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <div className="font-semibold text-gray-900 mb-1">Climate Control</div>
+                    <div className="text-gray-600 text-sm">Integrated HVAC with furniture-optimized air circulation</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-purple-100 text-purple-700 rounded-full p-2 mt-1">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M8 21h8M12 17v4" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <div className="font-semibold text-gray-900 mb-1">Entertainment Hub</div>
+                    <div className="text-gray-600 text-sm">Built-in speakers and media storage with wireless charging</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-yellow-100 text-yellow-700 rounded-full p-2 mt-1">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2v20M2 12h20" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <div className="font-semibold text-gray-900 mb-1">Modular Design</div>
+                    <div className="text-gray-600 text-sm">Flexible furniture that adapts to your changing needs</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Total & Action */}
+            <div className="bg-teal-50 border border-teal-100 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <span className="font-bold text-lg text-gray-900">Furniture Package Total</span>
+                <span className="font-extrabold text-2xl text-teal-600">$8,500</span>
+              </div>
+              <div className="text-sm text-gray-600 mb-4">
+                Includes: Living room set, kitchen & dining, bedroom furniture, smart features, and sustainable materials
+              </div>
+              <div className="flex justify-end">
+                <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-6 py-3 rounded-lg shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5 transition-all duration-200">
+                  Add to Configuration
+                </button> 
+              </div>
+            </div>
+          </div>
+        )}
+        {tab === 'customize' && (
+          <div className="py-10">
+
+          <TabComponent exteriorContent={<div>
+            
+             {/* Decks */}
+            <div className="bg-teal-50/40 border border-teal-100 rounded-xl p-6 mb-8">
+              <div className="text-xl font-extrabold text-green-800 mb-4">Decks</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Ultimate Deck</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-teal-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-teal-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">1,000 sq ft multi-level comprehensive outdoor living space</div>
+                  <div className="font-extrabold text-teal-900 text-lg mt-auto">85,000</div>
+                </div>
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Luxury Deck</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-teal-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-teal-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">1,500 sq ft ultimate outdoor living experience with multiple zones</div>
+                  <div className="font-extrabold text-teal-900 text-lg mt-auto">125,000</div>
+                </div>
+              </div>
+            </div>
+            {/* Pergolas */}
+            <div className="bg-teal-50/40 border border-teal-100 rounded-xl p-6 mb-8">
+              <div className="text-xl font-extrabold text-green-800 mb-4">Pergolas</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Smart Pergola</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-teal-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-teal-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">600 sq ft climate-controlled smart pergola with integrated features</div>
+                  <div className="font-extrabold text-teal-900 text-lg mt-auto">65,000</div>
+                </div>
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Biophilic Pergola</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-teal-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-teal-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">Living architecture with integrated ecosystems and water features</div>
+                  <div className="font-extrabold text-teal-900 text-lg mt-auto">95,000</div>
+                </div>
+              </div>
+            </div>
+            {/* Outdoor Features */}
+            <div className="bg-teal-50/40 border border-teal-100 rounded-xl p-6 mb-8">
+              <div className="text-xl font-extrabold text-green-800 mb-4">Outdoor Features</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Infinity Pool</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-teal-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-teal-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">Luxury 30 x 15 infinity edge pool with spa</div>
+                  <div className="font-extrabold text-teal-900 text-lg mt-auto">145,000</div>
+                </div>
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Gourmet Outdoor Kitchen</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-teal-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-teal-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">Professional-grade outdoor kitchen with multiple cooking zones</div>
+                  <div className="font-extrabold text-teal-900 text-lg mt-auto">85,000</div>
+                </div>
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Comprehensive Entertainment</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-teal-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-teal-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">Complete outdoor living room with bar, fireplace and media</div>
+                  <div className="font-extrabold text-teal-900 text-lg mt-auto">95,000</div>
+                </div>
+              </div>
+            </div>
+
+                    </div>} interiorContent={<div>
+
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Customize Your Dome</h2>
+            <p className="text-gray-600 mb-8">Select individual items to customize your interior. Each item can be added to your cart separately.</p>
+
+            {/* Interior Package Categories */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              {/* Standard Package */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="text-center mb-6">
+                  <div className="bg-blue-100 rounded-full p-3 mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2L2 7v7c0 5 4 7 9 7s9-2 9-7V7l-9-5Z" stroke="#3b82f6" strokeWidth="2"/>
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Standard Package</h3>
+                  <p className="text-gray-600 text-sm">Essential comfort for everyday living</p>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Kitchen & Dining</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Basic kitchen cabinets</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$2,500</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Stainless steel sink</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$800</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">4-burner gas stove</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,200</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Refrigerator</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,500</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Dining table & chairs</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,000</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Living Area</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Comfortable sofa</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$2,200</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Coffee table</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$600</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">TV stand</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$400</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Floor lamps</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$300</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Bedrooms</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Queen bed with frame</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,800</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Bedside tables</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$400</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Wardrobe</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,200</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Bedding set</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$500</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Bathroom</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Shower enclosure</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,500</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Vanity with sink</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$800</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Toilet</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$400</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Towel racks</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$200</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Comfort Package */}
+              <div className="bg-white rounded-xl border-2 border-emerald-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200 relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-md shadow-emerald-500/30">Most Popular</span>
+                </div>
+                <div className="text-center mb-6">
+                  <div className="bg-emerald-100 rounded-full p-3 mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2L2 7v7c0 5 4 7 9 7s9-2 9-7V7l-9-5Z" stroke="#22c55e" strokeWidth="2"/>
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Comfort Package</h3>
+                  <p className="text-gray-600 text-sm">Enhanced comfort with premium features</p> 
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Kitchen & Dining</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Premium kitchen cabinets</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$4,500</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Granite countertops</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$3,200</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">6-burner gas stove</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$2,800</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Built-in dishwasher</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$1,500</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Wine refrigerator</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$1,200</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Designer dining set</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$2,500</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Living Area</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Sectional sofa</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$3,500</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Entertainment center</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$1,800</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart TV</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$1,200</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Ambient lighting system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$800</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Sound system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$1,500</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Bedrooms</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">King bed with premium frame</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$2,800</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Memory foam mattress</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$1,500</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Walk-in closet</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$2,200</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Premium bedding</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$800</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart blinds</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$600</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Bathroom</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Walk-in shower</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$2,500</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Double vanity</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$1,500</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Heated towel rack</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$400</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart toilet</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$1,200</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                          <span className="text-sm font-medium text-gray-900">Premium fixtures</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-emerald-600">$800</span>
+                          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:shadow-md hover:shadow-emerald-500/30 transition-all duration-200">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Premium Package */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="text-center mb-6">
+                  <div className="bg-purple-100 rounded-full p-3 mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2L2 7v7c0 5 4 7 9 7s9-2 9-7V7l-9-5Z" stroke="#8b5cf6" strokeWidth="2"/>
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Premium Package</h3>
+                  <p className="text-gray-600 text-sm">Luxury living with smart technology</p> 
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Kitchen & Dining</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Custom kitchen cabinets</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$8,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Quartz countertops</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$5,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Professional range</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$4,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart refrigerator</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Wine cellar</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$2,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Butler is pantry</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Designer dining room</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$4,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Living Area</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Custom furniture</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$6,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Home theater system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart home hub</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$1,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Automated lighting</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$1,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Climate control</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$2,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Security system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$1,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Bedrooms</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">California king bed</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$4,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Adjustable base</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$2,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Custom closet system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Luxury bedding</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$1,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart mirrors</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Sleep tracking</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$600</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Bathroom</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Spa shower system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$4,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Freestanding tub</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Double vanity with makeup area</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$2,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart toilet with bidet</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$2,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Heated floors</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$1,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Steam room</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Features */}
+            <div className="bg-teal-50/40 border border-teal-100 rounded-xl p-6 mb-8">
+              <h3 className="text-xl font-extrabold text-green-800 mb-4">All Packages Include</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Professional Installation</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">2-Year Warranty</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Free Design Consultation</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Custom Color Options</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Delivery & Setup</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">24/7 Support</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>} /> 
+          </div>
+        )}
+        {tab === '3dview' && (
+          <div className="py-10">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">3D Interactive View</h2>
+            <p className="text-gray-600 mb-8">Explore your dome home in stunning 3D detail. Switch between different viewing angles to see every aspect of your sustainable living space.</p>
+            
+            {/* 3D Viewer Container */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden mb-8">
+              <div className="relative h-96 bg-gradient-to-br from-gray-50 to-gray-100">
+                {/* Placeholder for 3D viewer */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="bg-teal-100 rounded-full p-4 mb-4 mx-auto w-16 h-16 flex items-center justify-center">
+                      <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="#22c55e" strokeWidth="2"/>
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Interactive 3D Viewer</h3>
+                    <p className="text-gray-600 mb-4">Click to launch the full 3D experience</p>
+                    <button 
+                      onClick={() => setIs3DModalOpen(true)}
+                      className="bg-teal-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-teal-600 transition-all duration-200 flex items-center gap-2 mx-auto"
+                    >
+                      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                      Launch 3D Viewer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* View Options */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-blue-100 text-blue-700 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Exterior Views</h3>
+                    <p className="text-sm text-gray-500">See your dome from all angles</p>
+                  </div>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-center gap-2"><span className="text-blue-500">•</span> Front elevation</li>
+                  <li className="flex items-center gap-2"><span className="text-blue-500">•</span> Side perspectives</li>
+                  <li className="flex items-center gap-2"><span className="text-blue-500">•</span> Aerial view</li>
+                  <li className="flex items-center gap-2"><span className="text-blue-500">•</span> Night lighting</li>
+                </ul>
+              </div>
+
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-emerald-100 text-emerald-600 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Interior Views</h3>
+                    <p className="text-sm text-gray-500">Explore inside your dome</p>
+                  </div>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-center gap-2"><span className="text-teal-500">•</span> Living room</li>
+                  <li className="flex items-center gap-2"><span className="text-teal-500">•</span> Kitchen & dining</li>
+                  <li className="flex items-center gap-2"><span className="text-teal-500">•</span> Bedrooms</li>
+                  <li className="flex items-center gap-2"><span className="text-teal-500">•</span> Bathrooms</li>
+                </ul>
+              </div>
+
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-purple-100 text-purple-700 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <path d="M3 3h18v18H3z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M9 9h6v6H9z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Floor Plans</h3>
+                    <p className="text-sm text-gray-500">Detailed layout views</p>
+                  </div>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-center gap-2"><span className="text-purple-500">•</span> Ground floor</li>
+                  <li className="flex items-center gap-2"><span className="text-purple-500">•</span> Upper level</li>
+                  <li className="flex items-center gap-2"><span className="text-purple-500">•</span> Roof plan</li>
+                  <li className="flex items-center gap-2"><span className="text-purple-500">•</span> Site layout</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="bg-teal-50/40 border border-teal-100 rounded-xl p-6">
+              <h3 className="text-xl font-extrabold text-green-800 mb-4">3D Viewer Features</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">360° Rotation</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Zoom & Pan Controls</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Material Swapping</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Day/Night Lighting</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Furniture Placement</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-teal-100 text-teal-600 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Measurement Tools</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {tab === 'materials' && (
+          <div className="py-10">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Sustainable Materials</h2>
+            <p className="text-gray-600 mb-8">Every material used in your dome is carefully selected for sustainability, durability, and health. We prioritize recycled content, low emissions, and renewable resources.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              {/* Exterior Materials */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow flex-1">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-teal-600"><svg width="22" height="22" fill="none"><path d="M11 2L2 7v7c0 5 4 7 9 7s9-2 9-7V7l-9-5Z" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                  <span className="text-xl font-extrabold text-gray-900">Exterior Materials</span>
+                </div>
+                <div className="space-y-3">
+                  <div className="bg-teal-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Steel Frame Structure</div>
+                    <div className="text-gray-600 text-sm">100% recyclable galvanized steel, 50-year structural warranty</div>
+                  </div>
+                  <div className="bg-teal-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Composite Panel System</div>
+                    <div className="text-gray-600 text-sm">Recycled wood fiber and polymer blend, fade resistant</div>
+                  </div>
+                  <div className="bg-teal-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Metal Roofing</div>
+                    <div className="text-gray-600 text-sm">Recycled aluminum with reflective coating for energy efficiency</div>
+                  </div>
+                  <div className="bg-teal-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Triple-Pane Windows</div>
+                    <div className="text-gray-600 text-sm">Low-E glass with argon fill, sustainably sourced frames</div>
+                  </div>
+                </div>
+              </div>
+              {/* Interior Materials */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow flex-1">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-teal-600"><svg width="22" height="22" fill="none"><circle cx="11" cy="11" r="9" stroke="#22c55e" strokeWidth="2"/><path d="M7 14l2-2 4 4 4-4" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                  <span className="text-xl font-extrabold text-gray-900">Interior Materials</span>
+                </div>
+                <div className="space-y-3">
+                  <div className="bg-teal-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Bamboo Flooring</div>
+                    <div className="text-gray-600 text-sm">Rapidly renewable bamboo with low-VOC finish</div>
+                  </div>
+                  <div className="bg-teal-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Recycled Glass Countertops</div>
+                    <div className="text-gray-600 text-sm">75% recycled glass with bio-based resin binder</div>
+                  </div>
+                  <div className="bg-teal-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Natural Wool Insulation</div>
+                    <div className="text-gray-600 text-sm">Chemical-free sheeps wool, naturally fire resistant</div>
+                  </div>
+                  <div className="bg-teal-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Zero-VOC Paint</div>
+                    <div className="text-gray-600 text-sm">Plant-based paints with natural pigments</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Environmental Certifications */}
+            <div className="bg-white rounded-xl border border-teal-100 p-6 shadow flex flex-col mb-4">
+              <div className="flex items-center gap-2 mb-6">
+                <span className="text-teal-600"><svg width="22" height="22" fill="none"><path d="M11 2C6.03 2 2 6.03 2 11c0 4.97 4.03 9 9 9s9-4.03 9-9c0-4.97-4.03-9-9-9Z" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                <span className="text-xl font-extrabold text-green-800">Environmental Certifications</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="flex flex-col items-center text-center">
+                  <span className="bg-teal-100 rounded-full p-3 mb-2"><svg width="36" height="36" fill="none"><circle cx="18" cy="18" r="16" stroke="#22c55e" strokeWidth="2"/><path d="M12 19l4 4 8-8" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                  <div className="font-bold text-teal-900 mb-1">LEED Platinum Ready</div>
+                  <div className="text-gray-600 text-sm">Meets highest green building standards</div>
+                </div>
+                <div className="flex flex-col items-center text-center">
+                  <span className="bg-teal-100 rounded-full p-3 mb-2"><svg width="36" height="36" fill="none"><circle cx="18" cy="18" r="16" stroke="#22c55e" strokeWidth="2"/><path d="M18 12a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                  <div className="font-bold text-teal-900 mb-1">GREENGUARD Gold</div>
+                  <div className="text-gray-600 text-sm">Low chemical emissions certified</div>
+                </div>
+                <div className="flex flex-col items-center text-center">
+                  <span className="bg-teal-100 rounded-full p-3 mb-2"><svg width="36" height="36" fill="none"><circle cx="18" cy="18" r="16" stroke="#22c55e" strokeWidth="2"/><path d="M18 10v8M14 14h8" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                  <div className="font-bold text-teal-900 mb-1">ENERGY STAR</div>
+                  <div className="text-gray-600 text-sm">Exceeds energy efficiency requirements</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {tab === 'pricing' && (
+          <div className="py-10">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Transparent Pricing</h2>
+            <p className="text-gray-600 mb-8">Our pricing is transparent and comprehensive. See exactly what is included and how your customizations affect the total investment.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Base Package Includes */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow flex-1">
+                <div className="text-xl font-extrabold text-gray-900 mb-4">Base Package Includes</div>
+                <ul className="divide-y divide-gray-100">
+                  {[
+                    'Complete dome structure',
+                    'Professional installation',
+                    'Standard electrical & plumbing',
+                    'Basic appliance package',
+                    '10-year structural warranty',
+                    'Permits and inspections',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center justify-between py-3 text-gray-800 text-base">
+                      <span>{item}</span>
+                      <span className="text-teal-500 text-lg">✓</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {/* Your Configuration */}
+              <div className="bg-white rounded-xl border border-teal-100 p-6 shadow flex-1">
+                <div className="text-xl font-extrabold text-gray-900 mb-4">Your Configuration</div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-gray-700 font-medium">Base Price</span>
+                  <span className="font-extrabold text-lg text-gray-900">$350,000</span>
+                </div>
+                <div className="text-gray-400 text-sm mb-4">No add-ons selected</div>
+                <hr className="my-4" />
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-extrabold text-lg text-gray-900">Total Investment</span>
+                  <span className="font-extrabold text-2xl text-teal-600">$350,000</span>
+                </div>
+                <div className="bg-teal-50 border border-teal-100 rounded-lg p-4 mt-4">
+                  <div className="font-semibold text-gray-900 mb-1">Payment Options</div>
+                  <ul className="text-gray-700 text-sm list-disc pl-5 space-y-1">
+                    <li>25% down payment to start construction</li>
+                    <li>Progress payments during construction</li>
+                    <li>Final payment upon completion</li>
+                    <li>Financing options available</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        </div>
+        
+        {/* Bottom Bar */}
+        <div className="sticky bottom-0 z-20 bg-white border-t border-gray-200 shadow-lg">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xl font-bold text-gray-900">Total: <span className="font-extrabold text-emerald-600">${basePrice.toLocaleString()}</span></span>
+              <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-8 py-3 rounded-lg shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5 transition-all duration-200 text-lg">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+}
+
+export default function Home() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  // Background images for the slider - Nature photos for dome building
+  const backgroundImages = [
+    "/home-screen.jpg",
+    "/main/aegean/img-1.webp",
+    "/main/aegean/img-2.jpg", 
+    "/main/aegean/img-3.jpg",
+    "/main/atlas/img-1.jpg",
+    "/main/atlas/img-2.jpg",
+    "/main/atlas/img-3.jpg",
+    "/main/assos/img-1.jpg",
+    "/main/assos/img-2.jpg",
+    "/main/assos/img-3.jpg"
+  ];
+ 
+
+  // Auto-rotate background images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        prevIndex === backgroundImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [backgroundImages.length]);
+
+  // Dome data for cards and modal
+  const domes: Dome[] = [
+    {
+      img: "/main/domy/d6/img.jpg",
+      title: "Compact Studio",
+      size: "400 sq ft",
+      people: "1-2 people",
+      price: "$150,000",
+      description: "A cozy, efficient dome perfect for singles or couples. Customizable with decks, outdoor features, and pergolas.",
+      features: "+ Decks\n+ Outdoor Features\n+ Pergolas",
+    },
+    {
+      img: "/main/domy/d7/img-1.jpg",
+      title: "Current Model",
+      size: "700 sq ft",
+      people: "2-3 people",
+      price: "$175,000",
+      description: "Spacious enough for a small family, with all the eco-friendly features and customization options you need.",
+      features: "+ Decks\n+ Outdoor Features\n+ Pergolas",
+    },
+    {
+      img: "/main/domy/d8/img-1.jpg",
+      title: "Two-Level Haven",
+      size: "1000 sq ft",
+      people: "2-4 people",
+      price: "$225,000",
+      description: "A two-level dome for families or those wanting more space. Expand with decks, pergolas, and more.",
+      features: "+ Decks\n+ Outdoor Features\n+ Pergolas",
+    },
+    {
+      img: "/main/domy/d9/img-1.jpg",
+      title: "Family Dome",
+      size: "1500 sq ft",
+      people: "4-6 people",
+      price: "$275,000",
+      description: "Ideal for larger families, this dome offers ample space and all signature eco features.",
+      features: "+ Decks\n+ Outdoor Features\n+ Pergolas",
+    },
+    {
+      img: "/main/domy/d10/img-1.jpg",
+      title: "Grand Dome",
+      size: "2000 sq ft",
+      people: "6-8 people",
+      price: "$350,000",
+      description: "Our largest dome, perfect for big families or those who love to entertain.",
+      features: "+ Decks\n+ Outdoor Features\n+ Pergolas",
+    },
+  ];
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedDome, setSelectedDome] = useState<Dome | null>(null);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(3);
+
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 640) setVisibleCards(1);
+      else if (window.innerWidth < 1024) setVisibleCards(2);
+      else setVisibleCards(3);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // 3D View State Management
+  const [active3DView, setActive3DView] = useState<'exterior' | 'interior' | 'plan'>('exterior');
+  const [is3DModalOpen, setIs3DModalOpen] = useState(false);
+  const [selected3DModel, setSelected3DModel] = useState<string>('grand-dome');
+  const [viewAngle, setViewAngle] = useState<'front' | 'side' | 'back' | 'top'>('front');
+  const [isAutoRotate, setIsAutoRotate] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(false);
+
+  // 3D Model Data
+  const threeDModels = {
+    'grand-dome': {
+      name: 'Grand Dome',
+      price: '$350,000',
+      size: '2000 sq ft',
+      views: {
+        exterior: [
+          { angle: 'front', img: '/main/domy/d10/img-1.jpg', title: 'Front View', description: 'Majestic entrance with panoramic windows' },
+          { angle: 'side', img: '/main/domy/d10/img-2.jpg', title: 'Side View', description: 'Elegant profile with solar integration' },
+          { angle: 'back', img: '/main/domy/d10/img-1.jpg', title: 'Back View', description: 'Private outdoor living spaces' },
+          { angle: 'top', img: '/main/domy/d10/img-2.jpg', title: 'Aerial View', description: 'Complete dome structure overview' }
+        ],
+        interior: [
+          { angle: 'front', img: '/main/domy/d10/img-1.jpg', title: 'Living Area', description: 'Spacious open-concept living space' },
+          { angle: 'side', img: '/main/domy/d10/img-2.jpg', title: 'Kitchen', description: 'Modern kitchen with island' },
+          { angle: 'back', img: '/main/domy/d10/img-1.jpg', title: 'Bedroom', description: 'Peaceful bedroom retreat' },
+          { angle: 'top', img: '/main/domy/d10/img-2.jpg', title: 'Loft Area', description: 'Upper level living space' }
+        ],
+        plan: [
+          { angle: 'front', img: '/plan/plan-1.jpg', title: 'Ground Floor', description: 'Main living areas and bedrooms' },
+          { angle: 'side', img: '/plan/plan-2.jpg', title: 'Upper Floor', description: 'Additional bedrooms and loft' },
+          { angle: 'back', img: '/plan/plan-1.jpg', title: 'Site Plan', description: 'Complete property layout' },
+          { angle: 'top', img: '/plan/plan-2.jpg', title: 'Aerial Layout', description: 'Bird\'s eye view of entire property' }
+        ]
+      }
+    },
+    'family-dome': {
+      name: 'Family Dome',
+      price: '$275,000',
+      size: '1500 sq ft',
+      views: {
+        exterior: [
+          { angle: 'front', img: '/main/domy/d9/img-1.jpg', title: 'Front View', description: 'Welcoming family entrance' },
+          { angle: 'side', img: '/main/domy/d9/img-2.jpg', title: 'Side View', description: 'Perfect family proportions' },
+          { angle: 'back', img: '/main/domy/d9/img-1.jpg', title: 'Back View', description: 'Private family outdoor space' },
+          { angle: 'top', img: '/main/domy/d9/img-2.jpg', title: 'Aerial View', description: 'Complete family dome structure' }
+        ],
+        interior: [
+          { angle: 'front', img: '/main/domy/d9/img-1.jpg', title: 'Living Room', description: 'Cozy family gathering space' },
+          { angle: 'side', img: '/main/domy/d9/img-2.jpg', title: 'Kitchen', description: 'Family-friendly kitchen design' },
+          { angle: 'back', img: '/main/domy/d9/img-1.jpg', title: 'Bedroom', description: 'Comfortable family bedrooms' },
+          { angle: 'top', img: '/main/domy/d9/img-2.jpg', title: 'Family Area', description: 'Multi-purpose family space' }
+        ],
+        plan: [
+          { angle: 'front', img: '/plan/plan-1.jpg', title: 'Main Floor', description: 'Family living and dining areas' },
+          { angle: 'side', img: '/plan/plan-2.jpg', title: 'Bedroom Level', description: 'Family bedroom layout' },
+          { angle: 'back', img: '/plan/plan-1.jpg', title: 'Family Site', description: 'Complete family property layout' },
+          { angle: 'top', img: '/plan/plan-2.jpg', title: 'Family Aerial', description: 'Family property overview' }
+        ]
+      }
+    },
+    'compact-dome': {
+      name: 'Compact Studio',
+      price: '$150,000',
+      size: '400 sq ft',
+      views: {
+        exterior: [
+          { angle: 'front', img: '/main/domy/d6/img.jpg', title: 'Front View', description: 'Compact and efficient design' },
+          { angle: 'side', img: '/main/domy/d6/img-2.jpg', title: 'Side View', description: 'Perfect for singles or couples' },
+          { angle: 'back', img: '/main/domy/d6/img.jpg', title: 'Back View', description: 'Intimate outdoor space' },
+          { angle: 'top', img: '/main/domy/d6/img-2.jpg', title: 'Aerial View', description: 'Compact dome overview' }
+        ],
+        interior: [
+          { angle: 'front', img: '/main/domy/d6/img.jpg', title: 'Living Area', description: 'Efficient open living space' },
+          { angle: 'side', img: '/main/domy/d6/img-2.jpg', title: 'Kitchen', description: 'Compact kitchen design' },
+          { angle: 'back', img: '/main/domy/d6/img.jpg', title: 'Sleeping Area', description: 'Cozy sleeping space' },
+          { angle: 'top', img: '/main/domy/d6/img-2.jpg', title: 'Studio Layout', description: 'Efficient studio arrangement' }
+        ],
+        plan: [
+          { angle: 'front', img: '/plan/plan-1.jpg', title: 'Studio Floor', description: 'Efficient studio layout' },
+          { angle: 'side', img: '/plan/plan-2.jpg', title: 'Compact Plan', description: 'Space-optimized design' },
+          { angle: 'back', img: '/plan/plan-1.jpg', title: 'Studio Site', description: 'Compact property layout' },
+          { angle: 'top', img: '/plan/plan-2.jpg', title: 'Studio Aerial', description: 'Compact property overview' }
+        ]
+      }
+    }
+  };
+
+  // Get current 3D model data
+  const currentModel = threeDModels[selected3DModel as keyof typeof threeDModels];
+  const currentViews = currentModel?.views[active3DView];
+  const currentView = currentViews?.find(v => v.angle === viewAngle);
+
+  // Auto-rotate 3D view
+  useEffect(() => {
+    if (!isAutoRotate) return;
+    
+    const interval = setInterval(() => {
+      setViewAngle((prev) => {
+        const angles = ['front', 'side', 'back', 'top'] as const;
+        const currentIndex = angles.indexOf(prev);
+        const nextIndex = (currentIndex + 1) % angles.length;
+        return angles[nextIndex];
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isAutoRotate]);
+
+  // Reset 3D view when modal opens
+  useEffect(() => {
+    if (is3DModalOpen) {
+      setViewAngle('front');
+      setIsImageLoading(false);
+    }
+  }, [is3DModalOpen]);
+
+  // 3D View Modal Component
+  const ThreeDViewModal = () => {
+    if (!is3DModalOpen || !currentModel) return null;
+
+    return (
+      <div className="fixed inset-0 z-[9999]">
+        {/* Overlay */}
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur-md"
+          onClick={() => setIs3DModalOpen(false)}
+          aria-label="Close 3D view"
+        />
+        
+        {/* Modal Content - Full Screen */}
+        <div className="fixed inset-0 bg-white shadow-2xl p-0 flex flex-col overflow-hidden">
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 lg:px-8 py-6 border-b border-gray-200 bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-2xl lg:text-3xl font-extrabold text-gray-900 truncate bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">{currentModel.name} - 3D View</h2>
+              <p className="text-gray-700 font-medium text-base mt-1">{currentModel.size} • Starting from {currentModel.price}</p>
+            </div>
+            <button 
+              onClick={() => setIs3DModalOpen(false)} 
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white text-gray-600 hover:bg-gradient-to-r hover:from-emerald-500 hover:to-teal-500 hover:text-white transition-all duration-200 focus:outline-none shadow-sm flex-shrink-0 ml-4"
+              aria-label="Close 3D view"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex flex-col lg:flex-row flex-1 overflow-hidden min-h-0">
+            {/* Left Panel - 3D View Controls */}
+            <div className="lg:w-80 bg-gradient-to-b from-gray-50 to-white p-4 sm:p-6 border-r border-gray-200 overflow-y-auto">
+              {/* Model Selector */}
+              <div className="mb-6">
+                <h3 className="font-bold text-gray-900 mb-3 text-lg">Select Model</h3>
+                <div className="space-y-3">
+                  {Object.entries(threeDModels).map(([key, model]) => (
+                    <button
+                      key={key}
+                      onClick={() => setSelected3DModel(key)}
+                      className={`w-full text-left p-4 rounded-xl border-2 transition-all shadow-sm hover:shadow-md ${
+                        selected3DModel === key 
+                          ? 'border-green-500 bg-teal-50 text-green-800 shadow-lg' 
+                          : 'border-gray-200 bg-white hover:border-green-300 hover:bg-teal-50/50'
+                      }`}
+                    >
+                      <div className="font-bold text-lg text-gray-800">{model.name}</div>
+                      <div className="text-sm text-gray-700 font-medium">{model.size} • {model.price}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* View Type Selector */}
+              <div className="mb-6">
+                <h3 className="font-bold text-gray-900 mb-3 text-lg">View Type</h3>
+                <div className="grid grid-cols-3 gap-3">
+                  {(['exterior', 'interior', 'plan'] as const).map((view) => (
+                    <button
+                      key={view}
+                      onClick={() => setActive3DView(view)}
+                      className={`p-3 rounded-xl border-2 text-sm font-bold text-gray-800 transition-all shadow-sm hover:shadow-md ${
+                        active3DView === view 
+                          ? 'border-green-500 bg-teal-50 text-green-800 shadow-lg' 
+                          : 'border-gray-200 bg-white hover:border-green-300 hover:bg-teal-50/50'
+                      }`}
+                    >
+                      {view.charAt(0).toUpperCase() + view.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Angle Controls */}
+              <div className="mb-6">
+                <h3 className="font-bold text-gray-900 mb-3 text-lg">View Angle</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {(['front', 'side', 'back', 'top'] as const).map((angle) => (
+                    <button
+                      key={angle}
+                      onClick={() => setViewAngle(angle)}
+                      className={`p-3 rounded-xl border-2 text-gray-800 text-sm font-bold transition-all shadow-sm hover:shadow-md ${
+                        viewAngle === angle 
+                          ? 'border-green-500 bg-teal-50 text-green-800 shadow-lg' 
+                          : 'border-gray-200 bg-white hover:border-green-300 hover:bg-teal-50/50'
+                      }`}
+                    >
+                      {angle.charAt(0).toUpperCase() + angle.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Auto-rotate Toggle */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between p-3 bg-white rounded-xl border-2 border-gray-200 shadow-sm">
+                  <span className="font-bold text-gray-900">Auto-rotate</span>
+                  <button
+                    onClick={() => setIsAutoRotate(!isAutoRotate)}
+                    className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors shadow-inner ${
+                      isAutoRotate ? 'bg-teal-500' : 'bg-gray-300'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm ${
+                        isAutoRotate ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              {/* Current View Info */}
+              {currentView && (
+                <div className="bg-white rounded-xl p-4 border-2 border-gray-200 shadow-sm">
+                  <h4 className="font-bold text-gray-900 mb-2 text-lg">{currentView.title}</h4>
+                  <p className="text-sm text-gray-700 leading-relaxed">{currentView.description}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Right Panel - 3D View Display */}
+            <div className="flex-1 flex flex-col min-h-0">
+              {/* View Display */}
+              <div className="flex-1 relative bg-gradient-to-br from-gray-100 to-gray-200 min-h-0">
+                {currentView ? (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {isImageLoading && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                        <div className="flex items-center gap-3 text-gray-700 font-medium">
+                          <svg className="animate-spin h-8 w-8 text-teal-600" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                          </svg>
+                          Loading 3D view...
+                        </div>
+                      </div>
+                    )}
+                    <Image
+                      src={currentView.img}
+                      alt={currentView.title}
+                      fill
+                      className="object-contain"
+                      onLoad={() => setIsImageLoading(false)}
+                      onLoadStart={() => setIsImageLoading(true)}
+                    />
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-gray-600 text-xl font-medium">Select a view to see the 3D model</div>
+                  </div>
+                )}
+              </div>
+
+              {/* View Navigation */}
+              <div className="p-4 sm:p-6 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-3 sm:gap-4">
+                  <div className="flex gap-2 flex-wrap justify-center lg:justify-start">
+                    {currentViews?.map((view) => (
+                      <button
+                        key={view.angle}
+                        onClick={() => setViewAngle(view.angle as 'front' | 'side' | 'back' | 'top')}
+                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-sm hover:shadow-md ${
+                          viewAngle === view.angle
+                            ? 'bg-teal-500 text-white shadow-lg'
+                            : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
+                        }`}
+                      >
+                        {view.title}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center lg:justify-end">
+                    <button className="bg-teal-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold hover:bg-teal-600 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base">
+                      Customize This Model
+                    </button>
+                    <button className="bg-gray-100 text-gray-800 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold hover:bg-gray-200 transition-all shadow-lg text-sm sm:text-base">
+                      Get Quote
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Add environment domes carousel state and data to Home component
+  const envDomes = [
+    {
+      img: "/main/aegean/img-1.webp",
+      badge: "Ocean Breeze",
+      badgeClass: "absolute top-4 left-4 bg-blue-200 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full",
+      icon: <svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#0ea5e9' strokeWidth='2'/></svg>,
+      location: "Coastal Locations",
+      title: "Seaside Retreat",
+      description: "Experience comfort living in our salt-resistant seaside domes. Built to withstand coastal conditions, featuring corrosion-resistant materials, hurricane-proof design, and stunning ocean vistas. Your perfect beachfront paradise.",
+      priceClass: "text-xs bg-blue-100 text-blue-800 rounded px-2 py-1 inline-block mb-2",
+      priceLabel: "Ocean Breeze",
+      price: "Starting from $320,000",
+      features: [
+        { iconClass: "text-blue-500", text: "Salt-resistant construction materials" },
+        { iconClass: "text-blue-500", text: "Hurricane-proof structural design" },
+        { iconClass: "text-blue-500", text: "Ocean breeze ventilation systems" },
+      ],
+      button: "Explore Seaside Retreat",
+    },
+    {
+      img: "/main/domy/d8/img-1.jpg",
+      badge: "Forest Canopy",
+      badgeClass: "absolute top-4 left-4 bg-green-200 text-green-800 text-xs font-semibold px-3 py-1 rounded-full",
+      icon: <svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#22c55e' strokeWidth='2'/></svg>,
+      location: "Woodland Areas",
+      title: "Forest Haven",
+      description: "Immerse yourself in nature with our forest domes, designed to blend seamlessly with woodland surroundings. Features natural camouflage, wildlife-friendly design, and forest-inspired interiors that connect you with the natural world.",
+      priceClass: "text-xs bg-teal-100 text-green-800 rounded px-2 py-1 inline-block mb-2",
+      priceLabel: "Forest Canopy",
+      price: "Starting from $260,000",
+      features: [
+        { iconClass: "text-teal-500", text: "Natural camouflage exterior design" },
+        { iconClass: "text-teal-500", text: "Wildlife-friendly construction" },
+        { iconClass: "text-teal-500", text: "Forest-inspired interior themes" },
+      ],
+      button: "Explore Forest Haven",
+    },
+    {
+      img: "/main/domy/d9/img-1.jpg",
+      badge: "Alpine/Arctic",
+      badgeClass: "absolute top-4 left-4 bg-blue-300 text-blue-900 text-xs font-semibold px-3 py-1 rounded-full",
+      icon: <svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke="#38bdf8" strokeWidth='2'/></svg>,
+      location: "Cold Climate Zones",
+      title: "Winter Wonderland",
+      description: "Stay warm and cozy in our winter optimized domes. Enhanced insulation and heating systems make this the perfect retreat for cold climates. Features snow-load resistant design and energy-efficient heating for year-round comfort.",
+      priceClass: "text-xs bg-blue-200 text-blue-900 rounded px-2 py-1 inline-block mb-2",
+      priceLabel: "Alpine/Arctic",
+      price: "Starting from $340,000",
+      features: [
+        { iconClass: "text-blue-500", text: "Snow-load resistant structure" },
+        { iconClass: "text-blue-500", text: "Advanced insulation systems" },
+        { iconClass: "text-blue-500", text: "Energy-efficient heating" },
+      ],
+      button: "Explore Winter Wonderland",
+    },
+    {
+      img: "/main/domy/d10/img-1.jpg",
+      badge: "Tropical/Mediterranean",
+      badgeClass: "absolute top-4 left-4 bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full",
+      icon: <svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke="#facc15" strokeWidth='2'/></svg>,
+      location: "Warm Climate Zones",
+      title: "Summer Paradise",
+      description: "Beat the heat in our summer optimized domes featuring advanced cooling systems and sun-shading technology. Perfect for tropical and Mediterranean climates with natural ventilation and heat-reflective materials for ultimate comfort.",
+      priceClass: "text-xs bg-yellow-100 text-yellow-800 rounded px-2 py-1 inline-block mb-2",
+      priceLabel: "Tropical/Mediterranean",
+      price: "Starting from $300,000",
+      features: [
+        { iconClass: "text-yellow-500", text: "Advanced cooling systems" },
+        { iconClass: "text-yellow-500", text: "Sun-shading technology" },
+        { iconClass: "text-yellow-500", text: "Heat-reflective materials" },
+      ],
+      button: "Explore Summer Paradise",
+    },
+  ];
+  const [envCarouselIndex, setEnvCarouselIndex] = useState(0);
+  const [envVisibleCards, setEnvVisibleCards] = useState(3);
+  useEffect(() => {
+    function handleResizeEnv() {
+      if (window.innerWidth < 640) setEnvVisibleCards(1);
+      else if (window.innerWidth < 1024) setEnvVisibleCards(2);
+      else setEnvVisibleCards(3);
+    }
+    handleResizeEnv();
+    window.addEventListener('resize', handleResizeEnv);
+    return () => window.removeEventListener('resize', handleResizeEnv);
+  }, []);
+
+  /** --- IMPROVED 'Explore Our House Types' SECTION START --- */
+  const houseTypes = {
+    aFrame: [
+      {
+        img: "/main/taurus/img-1.jpg",
+        title: "A-Frame Compact",
+        price: "$150,000",
+        badge: "Popular",
+        badgeColor: "bg-teal-500 text-teal-900",
+        features: [
+          "Compact 1-2 bedroom layout",
+          "Vaulted ceilings",
+          "Energy-efficient windows",
+          "Eco-insulated walls"
+        ],
+        details: "Perfect for couples or small families seeking a cozy, modern retreat with a small footprint.",
+      },
+      {
+        img: "/main/talia/img-1.jpg",
+        title: "A-Frame Standard",
+        price: "$220,000",
+        badge: "New",
+        badgeColor: "bg-green-200 text-teal-900",
+        features: [
+          "2-3 bedrooms",
+          "Open-plan living",
+          "Large deck option",
+          "Solar-ready roof"
+        ],
+        details: "A versatile A-Frame for families, with flexible living space and outdoor connection.",
+      },
+      {
+        img: "/main/assos/img-1.jpg",
+        title: "A-Frame Deluxe",
+        price: "$300,000",
+        badge: "Luxury",
+        badgeColor: "bg-yellow-200 text-yellow-800",
+        features: [
+          "3+ bedrooms",
+          "Premium finishes",
+          "Smart home features",
+          "Panoramic windows"
+        ],
+        details: "Spacious, high-end A-Frame for those who want the best in comfort and design.",
+      },
+    ],
+    box: [
+      {
+        img: "/main/atlas/img-1.jpg",
+        title: "Box Modern",
+        price: "$180,000",
+        badge: "Efficient",
+        badgeColor: "bg-blue-200 text-blue-800",
+        features: [
+          "Minimalist design",
+          "2 bedrooms",
+          "Green roof option",
+          "Rainwater harvesting"
+        ],
+        details: "A modern, efficient box house with a focus on sustainability and simplicity.",
+      },
+      {
+        img: "/main/atlas/img-2.jpg",
+        title: "Box Family",
+        price: "$240,000",
+        badge: "Family",
+        badgeColor: "bg-green-300 text-teal-900",
+        features: [
+          "3 bedrooms",
+          "Spacious kitchen",
+          "Private backyard",
+          "EV charging ready"
+        ],
+        details: "Ideal for families who want a modern, sustainable home with room to grow.",
+      },
+      {
+        img: "/main/atlas/img-3.jpg",
+        title: "Box Luxe",
+        price: "$320,000",
+        badge: "Premium",
+        badgeColor: "bg-yellow-300 text-yellow-900",
+        features: [
+          "4+ bedrooms",
+          "Luxury appliances",
+          "Home office",
+          "Rooftop terrace"
+        ],
+        details: "A luxury box house with all the amenities for modern living and entertaining.",
+      },
+    ]
+  };
+
+  const [houseTab, setHouseTab] = useState<'aFrame' | 'box'>("aFrame");
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+
+  // ... existing code ...
+
+  {/* Section: Explore Our House Types */}
+  <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white overflow-hidden">
+    {/* Decorative background pattern */}
+    <div className="absolute z-10 inset-0 pointer-events-none select-none opacity-30 z-0">
+      <svg width="100%" height="100%" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+        <ellipse cx="300" cy="100" rx="320" ry="80" fill="#bbf7d0" />
+        <ellipse cx="300" cy="120" rx="220" ry="60" fill="#f0fdf4" />
+      </svg>
+    </div>
+    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-2 relative z-10">Explore Our House Types</h2>
+    <div className="text-teal-600 text-base font-semibold mb-2 text-center relative z-10">Modern designs for every lifestyle</div>
+    <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg relative z-10">Beyond our signature dome homes, we offer beautiful A-Frame and Box house options. Each design combines modern architecture with sustainable living principles.</p>
+    {/* House type selector with animated underline */}
+    <div className="flex w-full max-w-xl mb-8 relative z-10" role="tablist" aria-label="House Types">
+      <button
+        role="tab"
+        aria-selected={houseTab === 'aFrame'}
+        tabIndex={houseTab === 'aFrame' ? 0 : -1}
+        className={`flex-1 px-4 py-2 font-semibold rounded-l shadow border-r border-teal-200 transition-all duration-200 focus:outline-none relative ${houseTab === 'aFrame' ? 'bg-teal-600 text-white' : 'bg-teal-100 text-green-800 hover:bg-green-200'}`}
+        onClick={() => { setHouseTab('aFrame'); setExpandedCard(null); }}
+      >
+        <span className="inline-flex items-center gap-2"><svg width="20" height="20" fill="none"><polygon points="10,2 18,18 2,18" fill="#bef264" /></svg> A-Frame Houses</span>
+        {houseTab === 'aFrame' && <span className="absolute left-0 bottom-0 w-full h-1 bg-teal-500 rounded transition-all duration-300" />}
+      </button>
+      <button
+        role="tab"
+        aria-selected={houseTab === 'box'}
+        tabIndex={houseTab === 'box' ? 0 : -1}
+        className={`flex-1 px-4 py-2 font-semibold rounded-r shadow transition-all duration-200 focus:outline-none relative ${houseTab === 'box' ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+        onClick={() => { setHouseTab('box'); setExpandedCard(null); }}
+      >
+        <span className="inline-flex items-center gap-2"><svg width="20" height="20" fill="none"><rect x="4" y="4" width="12" height="12" rx="2" fill="#a3e635" /></svg> Box Houses</span>
+        {houseTab === 'box' && <span className="absolute left-0 bottom-0 w-full h-1 bg-teal-500 rounded transition-all duration-300" />}
+        {houseTab !== 'box' && <span className="absolute top-1 right-3 bg-yellow-400 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">Coming Soon</span>}
+      </button>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl relative z-10">
+      {houseTypes[houseTab].map((card, idx) => (
+        <div
+          key={card.title}
+          className="bg-white rounded-2xl shadow-lg p-6 flex flex-col border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-lime-400 transition-all duration-300 group cursor-pointer relative overflow-hidden focus-within:ring-2 focus-within:ring-lime-400"
+          tabIndex={0}
+          aria-expanded={expandedCard === idx}
+          onClick={() => setExpandedCard(expandedCard === idx ? null : idx)}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setExpandedCard(expandedCard === idx ? null : idx); }}
+        >
+          {/* Badge */}
+          <span className={`absolute z-10 top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow ${card.badgeColor} animate-pulse`}>{card.badge}</span>
+          {/* Icon */}
+        
+          <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
+          <h3 className="font-bold text-xl text-gray-900 mb-1 mt-2">{card.title}</h3>
+          <div className="text-base text-gray-500 mb-1">Starting from {card.price}</div>
+          {/* Feature list */}
+          <ul className="mb-3 mt-2 text-sm text-gray-700 space-y-1">
+            {card.features.map((f, i) => (
+              <li key={i} className="flex items-center gap-2"><span className="text-teal-400">•</span> {f}</li>
+            ))}
+          </ul>
+          {/* Expandable details */}
+          <button
+            className="text-teal-600 text-xs font-semibold underline mb-2 self-start focus:outline-none"
+            tabIndex={0}
+            aria-controls={`details-${idx}`}
+            aria-expanded={expandedCard === idx}
+            onClick={e => { e.stopPropagation(); setExpandedCard(expandedCard === idx ? null : idx); }}
+          >
+            {expandedCard === idx ? 'Hide Details' : 'Learn More'}
+          </button>
+          <div
+            id={`details-${idx}`}
+            className={`transition-all duration-300 overflow-hidden text-gray-600 text-sm ${expandedCard === idx ? 'max-h-32 opacity-100 mb-2' : 'max-h-0 opacity-0'}`}
+            aria-hidden={expandedCard !== idx}
+          >
+            {card.details}
+          </div>
+          <button className="bg-teal-500 text-teal-900 font-semibold px-4 py-2 rounded shadow hover:bg-teal-300 hover:scale-105 transition-all duration-200 mt-auto">View Details</button>
+        </div>
+      ))}
+    </div>
+  </section>
+  /** --- IMPROVED 'Explore Our House Types' SECTION END --- */
+
+  // 1. Add state and data for the carousel near the top of the Home component (after other carousel states)
+  const [availableCarouselIndex, setAvailableCarouselIndex] = useState(0);
+  const [availableVisibleCards, setAvailableVisibleCards] = useState(3);
+
+  const availableLocations = [
+    {
+      img: "/main/domy/d6/img.jpg",
+      badge: "Available",
+      badgeClass: "absolute top-4 right-4 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full",
+      title: "Monteverde Retreat",
+      location: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#06b6d4' strokeWidth='2'/></svg> Monteverde, Costa Rica</>,
+      climate: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#fbbf24' strokeWidth='2'/></svg> Tropical Climate</>,
+      description: "Immerse yourself in biodiversity. Our eco-domes are inspired by the rich flora, offering an unparalleled sustainable living experience in the heart of Costa Rica's cloud forest.",
+      features: [
+        { iconClass: "text-teal-500", text: "Cloud forest integration" },
+        { iconClass: "text-teal-500", text: "Biodiversity preservation" },
+        { iconClass: "text-teal-500", text: "Sustainable tourism focus" },
+      ],
+      button: "Explore Location",
+      buttonClass: "bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto"
+    },
+    {
+      img: "/main/domy/d7/img-1.jpg",
+      badge: "Available",
+      badgeClass: "absolute top-4 right-4 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full",
+      title: "Adriatic Haven",
+      location: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#0ea5e9' strokeWidth='2'/></svg> Dubrovnik, Croatia</>,
+      climate: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#fbbf24' strokeWidth='2'/></svg> Mediterranean Climate</>,
+      description: "Perched on the stunning Adriatic coastline, these domes are designed for sea breezes and historic cultural sites. Experience the perfect blend of luxury and Mediterranean charm.",
+      features: [
+        { iconClass: "text-blue-500", text: "Adriatic sea views" },
+        { iconClass: "text-blue-500", text: "Historic site proximity" },
+        { iconClass: "text-blue-500", text: "Mediterranean architecture" },
+      ],
+      button: "Explore Location",
+      buttonClass: "bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto"
+    },
+    {
+      img: "/main/domy/d8/img-1.jpg",
+      badge: "Available",
+      badgeClass: "absolute top-4 right-4 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full",
+      title: "Algarve Coastal Village",
+      location: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#22c55e' strokeWidth='2'/></svg> Lagos, Portugal</>,
+      climate: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#fbbf24' strokeWidth='2'/></svg> Mediterranean Climate</>,
+      description: "Beachfront eco-village with sustainable living and direct access to golden sand beaches and the crystal blue waters of Portugal's famous Algarve region.",
+      features: [
+        { iconClass: "text-teal-500", text: "Beachfront access" },
+        { iconClass: "text-teal-500", text: "Algarve region charm" },
+        { iconClass: "text-teal-500", text: "Coastal village lifestyle" },
+      ],
+      button: "Explore Location",
+      buttonClass: "bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto"
+    },
+    {
+      img: "/main/domy/d9/img-1.jpg",
+      badge: "Under Development",
+      badgeClass: "absolute top-4 right-4 bg-yellow-400 text-white text-xs font-semibold px-3 py-1 rounded-full",
+      title: "Pocono Mountain Retreat",
+      location: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#a3a3a3' strokeWidth='2'/></svg> Pocono Mountains, PA, United States</>,
+      climate: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#fbbf24' strokeWidth='2'/></svg> Continental Climate</>,
+      description: "Nestled in Pennsylvania's beautiful Pocono Mountains, these domes offer four-season living with easy access to hiking, skiing, and pristine lakes.",
+      features: [
+        { iconClass: "text-gray-500", text: "Four-season mountain living" },
+        { iconClass: "text-gray-500", text: "Outdoor recreation access" },
+        { iconClass: "text-gray-500", text: "Mountain views and privacy" },
+      ],
+      button: "View Details",
+      buttonClass: "bg-gray-200 text-gray-700 font-semibold px-4 py-2 rounded shadow mt-auto cursor-not-allowed"
+    },
+    {
+      img: "/main/domy/d10/img-1.jpg",
+      badge: "Coming Soon",
+      badgeClass: "absolute top-4 right-4 bg-blue-400 text-white text-xs font-semibold px-3 py-1 rounded-full",
+      title: "Thousand Lakes Sanctuary",
+      location: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#a3a3a3' strokeWidth='2'/></svg> Muskoka, Ontario, Canada</>,
+      climate: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke="#fbbf24" strokeWidth='2'/></svg> Continental Climate</>,
+      description: "Located in Canada's stunning Thousand Lakes region, these domes provide lakeside living with incredible natural beauty and abundant wildlife.",
+      features: [
+        { iconClass: "text-blue-500", text: "Lakeside living experience" },
+        { iconClass: "text-blue-500", text: "Wildlife observation" },
+        { iconClass: "text-blue-500", text: "Canadian wilderness access" },
+      ],
+      button: "View Details",
+      buttonClass: "bg-gray-200 text-gray-700 font-semibold px-4 py-2 rounded shadow mt-auto cursor-not-allowed"
+    },
+  ];
+
+  // Responsive handler for visible cards
+  useEffect(() => {
+    function handleResizeAvailable() {
+      if (window.innerWidth < 640) setAvailableVisibleCards(1);
+      else if (window.innerWidth < 1024) setAvailableVisibleCards(2);
+      else setAvailableVisibleCards(3);
+    }
+    handleResizeAvailable();
+    window.addEventListener('resize', handleResizeAvailable);
+    return () => window.removeEventListener('resize', handleResizeAvailable);
+  }, []);
+
+  // If modal is open, show only the dome details page
+  if (modalOpen && selectedDome) {
+    return <DomeDetailsPage open={modalOpen} onClose={() => setModalOpen(false)} dome={selectedDome} setIs3DModalOpen={setIs3DModalOpen} />;
+  }
+
+  return (
+    <div className="relative min-h-screen flex flex-col bg-white">
+      {/* Background Image with Overlay */}
+    
+
+      {/* Navigation - Improved */}
+      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center gap-3">
+              {/* Logo Image */}
+              <Image 
+                src="/logo.png" 
+                alt="RoomyDomy Logo" 
+                width={120} 
+                height={75} 
+              />
+            </div>
+            <ul className="hidden lg:flex gap-6 text-gray-700 font-medium text-sm">
+              <li><a href="#benefits" className="hover:text-emerald-600 transition">Benefits</a></li>
+              <li><a href="#pricing" className="hover:text-emerald-600 transition">Pricing</a></li>
+              <li><a href="#locations" className="hover:text-emerald-600 transition">Locations</a></li>
+              <li><a href="#realtors" className="hover:text-emerald-600 transition">Partners</a></li>
+              <li><Link href="/contact" className="hover:text-emerald-600 transition">Contact</Link></li>
+            </ul>
+            {/* Hamburger for mobile (UI only) */}
+            <div className="lg:hidden flex items-center">
+              <button className="text-gray-800 hover:text-emerald-600 focus:outline-none p-2 rounded transition" aria-label="Open menu">
+                <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><rect y="4" width="24" height="2" rx="1" fill="currentColor"/><rect y="11" width="24" height="2" rx="1" fill="currentColor"/><rect y="18" width="24" height="2" rx="1" fill="currentColor"/></svg>
+              </button>
+            </div>
+            <div className="hidden lg:flex gap-3 ml-6">
+              <button className="px-5 py-2.5 rounded-full border-2 border-gray-300 text-gray-700 hover:border-emerald-500 hover:text-emerald-600 transition font-medium text-sm">Start A Demo</button>
+              <Link href="/contact" className="px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-medium hover:shadow-lg hover:shadow-emerald-500/30 transition shadow-md text-sm inline-block">Contact Us</Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="bg-gray-50 py-12 lg:py-16">
+        <div className="mx-auto container   px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 shadow-2xl">
+            {/* Background Image Overlay */}
+            <div 
+              className="absolute inset-0 opacity-40"
+              style={{
+                backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuA_zu6Hg6c-nVSV1PyThc69Klh6EfzM0ony9sQQPS7g7yga2Fqe6P0GsXy7IKhBajSKxzdIc-aAWJLwvBBMuQY2JTNsaAcKJutcwIg1Hc8mux0PESB4Hd2tt2PtiTOCnuRklq3_gnjHYF6hsseIUKjQircxtFRLjsGLaP5lYPyzfnD8FLOknS_JRYPzxzxbH5UiZEyKlaTgX8KN3aEko0SyUF2pOVrV3sxbq_5ig6XUTDASMH8WvoX0L45i83H2JlZ47-i3wTyDg7I")`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent" />
+            
+            {/* Decorative Elements */}
+            <div className="absolute top-10 right-10 h-72 w-72 rounded-full bg-emerald-500/20 blur-3xl" />
+            <div className="absolute bottom-10 left-10 h-96 w-96 rounded-full bg-teal-500/10 blur-3xl" />
+            
+            <div className="relative mx-auto max-w-4xl px-8 py-20 text-center lg:py-32">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-emerald-300 backdrop-blur-sm">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                Now accepting new dome owners
+              </div>
+              <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl tracking-tight">
+                Your Dream Home in
+                <br />
+                <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+                  Paradise.
+                </span>
+              </h1>
+              <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
+                Own a self-sustaining eco-dome in nature&apos;s most stunning locations. Earn{" "}
+                <span className="font-semibold text-emerald-400">$60,000/year</span> in passive income while enjoying your private sanctuary.
+              </p>
+              <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <button className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-4 text-base font-semibold text-white shadow-xl shadow-emerald-500/30 transition-all hover:shadow-2xl hover:shadow-emerald-500/40 hover:-translate-y-1">
+                  Design Your Dome
+                  <svg className="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+                <button className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/10">
+                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  Watch Video
+                </button>
+              </div>
+              
+              {/* Stats */}
+              <div className="mt-16 grid grid-cols-3 gap-8 border-t border-white/10 pt-10">
+                {[
+                  { value: "500+", label: "Domes Built" },
+                  { value: "$30M+", label: "Owner Earnings" },
+                  { value: "98%", label: "Satisfaction" },
+                ].map((stat) => (
+                  <div key={stat.label} className="text-center">
+                    <div className="text-2xl font-bold text-white sm:text-3xl">{stat.value}</div>
+                    <div className="mt-1 text-sm text-slate-400">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+     
+
+      {/* Section 1: Build Your Perfect Eco-Home */}  
+      <section id="benefits" className="relative z-10 flex flex-col items-center justify-center py-20 bg-white">
+        <div className="max-w-4xl w-full flex flex-col items-center mb-14">
+          <div className="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 text-teal-600 font-semibold text-sm">
+            Why Choose Us
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 text-center leading-tight">A Sanctuary That Sustains<br /><span className="text-teal-600">Itself, and You.</span></h2>
+          <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Experience the perfect blend of modern luxury and off-grid living. Our eco-domes are designed to be self-sufficient, allowing you to live in harmony with nature.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-6xl">
+          {/* Card 1 */}
+          <div className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg transition-all duration-200">
+            <span className="bg-teal-100 text-teal-600 rounded-full p-4 mb-2">
+              <svg width='32' height='32' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth='2'>
+                <path strokeLinecap='round' strokeLinejoin='round' d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' />
+              </svg>
+            </span>
+            <h3 className="font-bold text-lg text-gray-900">Passive Income</h3>
+            <p className="text-gray-600 text-sm">Earn up to $50k/yr renting your dome when you&apos;re away, fully managed hassle-free.</p>
+          </div>
+          {/* Card 2 */}
+          <div className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg transition-all duration-200">
+            <span className="bg-teal-100 text-teal-600 rounded-full p-4 mb-2">
+              <svg width='32' height='32' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth='2'>
+                <path strokeLinecap='round' strokeLinejoin='round' d='M13 10V3L4 14h7v7l9-11h-7z' />
+              </svg>
+            </span>
+            <h3 className="font-bold text-lg text-gray-900">Self-Sustaining</h3>
+            <p className="text-gray-600 text-sm">Live off-grid with solar energy systems that power your entire home sustainably.</p>
+          </div>
+          {/* Card 3 */}
+          <div className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg transition-all duration-200">
+            <span className="bg-teal-100 text-teal-600 rounded-full p-4 mb-2">
+              <svg width='32' height='32' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth='2'>
+                <path strokeLinecap='round' strokeLinejoin='round' d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' />
+                <path strokeLinecap='round' strokeLinejoin='round' d='M15 11a3 3 0 11-6 0 3 3 0 016 0z' />
+              </svg>
+            </span>
+            <h3 className="font-bold text-lg text-gray-900">Stunning Locations</h3>
+            <p className="text-gray-600 text-sm">Be nestled in the most scenic and desirable spots, far from the hustle.</p>
+          </div>
+          {/* Card 4 */}
+          <div className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg transition-all duration-200">
+            <span className="bg-teal-100 text-teal-600 rounded-full p-4 mb-2">
+              <svg width='32' height='32' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth='2'>
+                <path strokeLinecap='round' strokeLinejoin='round' d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' />
+              </svg>
+            </span>
+            <h3 className="font-bold text-lg text-gray-900">Personal Sanctuary</h3>
+            <p className="text-gray-600 text-sm">Indulge in your private escape where solitude and peace reign supreme.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section: Choose Your Perfect Dome */}
+      <section id="pricing" className="relative z-20 flex flex-col items-center justify-center py-16 bg-gray-50">
+        <div className="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 text-teal-600 font-semibold text-sm">
+          Simple Process
+        </div>
+        <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-3 text-center">How It Works</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">
+          Select your ideal dome size and customize with add-ons like decks, pergolas, pools, and outdoor kitchens. Start with a base model and build your dream eco-home with the features that matter most to you.
+        </p>
+        {/* Carousel Implementation */}
+        <div className="relative w-full max-w-6xl mb-8 px-2 sm:px-0">
+          {/* Carousel Arrows */}
+          <button
+            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-teal-50 text-teal-600 rounded-full shadow-lg p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ left: '-2.5rem' }}
+            onClick={() => setCarouselIndex((prev) => Math.max(prev - visibleCards, 0))}
+            disabled={carouselIndex === 0}
+            aria-label="Previous domes"
+          >
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          <button
+            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-teal-50 text-teal-600 rounded-full shadow-lg p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ right: '-2.5rem' }}
+            onClick={() => setCarouselIndex((prev) => Math.min(prev + visibleCards, domes.length - visibleCards))}
+            disabled={carouselIndex >= domes.length - visibleCards}
+            aria-label="Next domes"
+          >
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          {/* Carousel Cards */}
+          <div className="overflow-x-hidden">
+            <div
+              className="flex transition-transform duration-500"
+              style={{ transform: `translateX(-${(carouselIndex * (100 / visibleCards))}%)` }}
+            >
+              {domes.map((dome) => (
+                <div
+                  key={dome.title}
+                  className={`bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100 relative transition-transform duration-200 group min-w-0${visibleCards === 1 ? '' : ' mx-2'}`}
+                  style={{ flex: `0 0 ${100 / visibleCards}%`, maxWidth: `${100 / visibleCards}%` }}
+                >
+                  <Image src={dome.img} alt={dome.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
+                  <span className="absolute top-4 right-4 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow m-[3px]">Customizable</span>
+                  <div className="text-sm text-gray-500 mb-1">{dome.size} · {dome.people}</div>
+                  <h3 className="font-bold text-xl text-gray-900 mb-1">{dome.title}</h3>
+                  <div className="text-sm bg-gray-100 text-gray-700 rounded px-2 py-1 inline-block mb-2">Base Model</div>
+                  <div className="text-base mb-2 text-gray-700 whitespace-pre-line">Customizable with:\n{dome.features}</div>
+                  <div className="font-semibold text-teal-600 mb-2">Starting from <span className="text-gray-900 font-bold">{dome.price}</span></div>
+                  <button
+                    className="bg-teal-500 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-teal-600 hover:scale-105 transition-all duration-200 mt-auto focus:outline-none focus:ring-2 focus:ring-teal-400"
+                    onClick={() => { setSelectedDome(dome); setModalOpen(true); }}
+                  >
+                    View Details
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Carousel Dots */}
+          <div className="flex justify-center gap-2 mt-4">
+            {Array.from({ length: Math.ceil(domes.length / visibleCards) }).map((_, i) => (
+              <button
+                key={i}
+                className={`w-3 h-3 rounded-full ${carouselIndex / visibleCards === i ? 'bg-teal-500 scale-125' : 'bg-gray-300'} transition-all`}
+                onClick={() => setCarouselIndex(i * visibleCards)}
+                aria-label={`Go to domes slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+        <ThreeDViewModal />
+        <div className="text-gray-500 text-base text-center mb-4">
+          All dome models include our signature eco-friendly features: solar power, rainwater collection, and sustainable materials.
+        </div>
+        <button className="bg-teal-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Schedule a Consultation</button>
+      </section>
+
+    
+
+      {/* Section: Ready to Own Your Paradise CTA */} 
+      <section className="relative z-10 flex flex-col items-center justify-center py-24 bg-gradient-to-br from-teal-500 via-teal-600 to-teal-700 overflow-hidden">
+        {/* Decorative Blurred Glowing Shapes */}
+        <div className="absolute -top-16 -left-16 w-72 h-72 bg-white opacity-10 rounded-full filter blur-3xl z-0 animate-pulse-slow" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-white opacity-10 rounded-full filter blur-2xl z-0 animate-pulse-slower" />
+        {/* Content */}
+        <div className="max-w-4xl w-full flex flex-col items-center text-center gap-6 relative z-10 px-6">
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-2">Ready to Own Your Paradise?</h2>
+          <p className="text-white/90 text-lg max-w-2xl leading-relaxed">
+            Join 500+ happy dome owners who are enjoying passive income while savoring their private sanctuaries.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+            <button className="bg-white text-teal-600 font-semibold px-8 py-4 rounded-lg shadow-xl hover:bg-gray-50 hover:scale-105 transition-all duration-200 text-base">
+              Get Started Today
+            </button>
+            <button className="bg-teal-800 border-2 border-white/30 text-white font-semibold px-8 py-4 rounded-lg hover:bg-teal-900 transition-all duration-200 text-base">
+              Schedule a Call
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Add keyframes for slow pulse animation in your global CSS if not present: */}
+      {/*
+      @keyframes pulse-slow { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.5; } }
+      .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
+      @keyframes pulse-slower { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.35; } }
+      .animate-pulse-slower { animation: pulse-slower 10s ease-in-out infinite; }
+      */}
+
+      {/* Section: Exterior & Interior Views */}
+      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white">
+        <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center">DESIGN PREVIEW</div>
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Exterior & Interior Views</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Explore the stunning exterior design and comfortable interior spaces of our eco-friendly dome homes.</p>
+        
+        <div className="w-full max-w-6xl">
+          <TabComponent
+            exteriorContent={
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d10/img-1.jpg" alt="Front View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Front View</h3>
+                  <p className="text-gray-600 mb-3">Majestic entrance with panoramic windows and sustainable design elements.</p>
+                  <div className="flex items-center gap-2 text-sm text-teal-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Solar Integration
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d10/img-2.jpg" alt="Side View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Side View</h3>
+                  <p className="text-gray-600 mb-3">Elegant profile showcasing the dome is aerodynamic design and natural materials.</p>
+                  <div className="flex items-center gap-2 text-sm text-teal-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Weather Resistant
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d9/img-1.jpg" alt="Aerial View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Aerial View</h3>
+                  <p className="text-gray-600 mb-3">Complete dome structure overview showing the harmonious integration with nature.</p>
+                  <div className="flex items-center gap-2 text-sm text-teal-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Eco-Friendly Design
+                  </div>
+                </div>
+              </div>
+            }
+            interiorContent={
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d9/img-2.jpg" alt="Living Area" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Living Area</h3>
+                  <p className="text-gray-600 mb-3">Spacious open-concept living space with natural light and sustainable materials.</p>
+                  <div className="flex items-center gap-2 text-sm text-teal-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Natural Lighting
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d8/img-1.jpg" alt="Kitchen" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Kitchen</h3>
+                  <p className="text-gray-600 mb-3">Modern kitchen with energy-efficient appliances and sustainable countertops.</p>
+                  <div className="flex items-center gap-2 text-sm text-teal-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Energy Efficient
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d7/img-1.jpg" alt="Bedroom" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Bedroom</h3>
+                  <p className="text-gray-600 mb-3">Peaceful bedroom retreat with optimal insulation and natural ventilation.</p>
+                  <div className="flex items-center gap-2 text-sm text-teal-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Climate Controlled
+                  </div>
+                </div>
+              </div>
+            }
+          />
+        </div>
+        
+        <div className="text-gray-500 text-base text-center mt-8">
+          Experience the perfect blend of exterior beauty and interior comfort in our sustainable dome homes.
+        </div>
+      </section>
+
+     
+
+      {/* Section: Domes Designed for Your Environment */}
+      <section id="locations" className="relative z-10 flex flex-col items-center justify-center py-16 bg-white">
+        <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center">LOCATION-SPECIFIC DESIGN</div>
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Domes Designed for Your Environment</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Each location presents unique challenges and opportunities. Our specialized dome designs are optimized for specific environments, ensuring perfect harmony with your chosen setting.</p>
+        {/* Carousel Implementation */}
+        <div className="relative w-full max-w-6xl mb-8 px-2 sm:px-0">
+          {/* Carousel Arrows */}
+          <button
+            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-teal-200 text-teal-600 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ left: '-2.5rem' }}
+            onClick={() => setEnvCarouselIndex((prev) => Math.max(prev - envVisibleCards, 0))}
+            disabled={envCarouselIndex === 0}
+            aria-label="Previous environment domes"
+          >
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          <button
+            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-teal-200 text-teal-600 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ right: '-2.5rem' }}
+            onClick={() => setEnvCarouselIndex((prev) => Math.min(prev + envVisibleCards, envDomes.length - envVisibleCards))}
+            disabled={envCarouselIndex >= envDomes.length - envVisibleCards}
+            aria-label="Next environment domes"
+          >
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          {/* Carousel Cards */}
+          <div className="overflow-x-hidden">
+            <div
+              className="flex transition-transform duration-500"
+              style={{ transform: `translateX(-${(envCarouselIndex * (100 / envVisibleCards))}%)` }}
+            >
+              {envDomes.map((card) => (
+                <div
+                  key={card.title}
+                  className={`bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100 relative transition-transform duration-200 group min-w-0${envVisibleCards === 1 ? '' : ' mx-2'}`}
+                  style={{ flex: `0 0 ${100 / envVisibleCards}%`, maxWidth: `${100 / envVisibleCards}%` }}
+                >
+                  <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3" width={320} height={160} />
+                  <span className={card.badgeClass + ' m-[3px]'}>{card.badge}</span>
+                  <div className="text-sm text-gray-500 mb-1 flex items-center gap-1">{card.icon}{card.location}</div>
+                  <h3 className="font-bold text-xl text-gray-900 mb-1">{card.title}</h3>
+                  <p className="text-base mb-2 text-gray-600">{card.description}</p>
+                  <div className={card.priceClass}>{card.priceLabel} <span className="font-semibold">{card.price}</span></div>
+                  <div className="text-sm text-gray-600 mb-3">
+                    {card.features.map((f, i) => (
+                      <div className="flex items-center gap-2 mb-1" key={i}><span className={f.iconClass}>✓</span> {f.text}</div>
+                    ))}
+                  </div>
+                  <button className="bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto">{card.button}</button>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Carousel Dots */}
+          <div className="flex justify-center gap-2 mt-4">
+            {Array.from({ length: Math.ceil(envDomes.length / envVisibleCards) }).map((_, i) => (
+              <button
+                key={i}
+                className={`w-3 h-3 rounded-full ${envCarouselIndex / envVisibleCards === i ? 'bg-teal-500 scale-125' : 'bg-gray-300'} transition-all`}
+                onClick={() => setEnvCarouselIndex(i * envVisibleCards)}
+                aria-label={`Go to environment domes slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="text-gray-500 text-base text-center mb-4">
+          Need a dome for a specific location or climate? Our design team can create custom solutions.
+        </div>
+        <button className="bg-teal-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Request Custom Design</button>
+      </section>
+
+      {/* Section: Investment in Your Future (Pricing) */}
+      <section className="relative z-10 flex flex-col items-center justify-center  py-16 bg-white">
+        <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center">TRANSPARENT PRICING</div>
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Investment in Your Future</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Our eco-domes are an investment in sustainable living that pays dividends through energy savings, increased property value, and reduced environmental impact.</p>
+        <div className="flex gap-4 mb-8">
+          <button className="bg-teal-100 text-green-800 font-semibold px-4 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Base Price</button>
+          <button className="bg-white text-green-800 font-semibold px-4 py-2 rounded shadow border border-teal-200 hover:bg-teal-50 transition-all duration-200">With Energy Savings</button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mb-8">
+          {/* Starter Dome */}
+          <div className="bg-white rounded-xl shadow p-8 flex flex-col border border-gray-100">
+            <div className="font-bold text-xl text-gray-900 mb-1">Starter Dome</div>
+            <div className="text-base text-gray-500 mb-4">Perfect for individuals or couples looking for a sustainable living home.</div>
+            <div className="text-3xl font-extrabold text-teal-600 mb-1">$89k</div>
+            <div className="text-xs text-gray-400 mb-4">Base price: $89,000</div>
+            <ul className="mb-6 text-base text-gray-700 space-y-2">
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> 600-900 sq ft living space</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Basic solar panel system</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Rainwater collection system</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Eco-friendly materials</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Standard insulation package</li>
+            </ul>
+            <button className="bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto">Request Quote</button>
+          </div>
+          {/* Family Dome (Most Popular) */}
+          <div className="bg-white rounded-xl shadow p-8 flex flex-col border-2 border-green-700 relative">
+            <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-teal-600 text-white text-xs font-semibold px-4 py-1 rounded-full">Most Popular</div>
+            <div className="font-bold text-xl text-gray-900 mb-1 mt-4">Family Dome</div>
+            <div className="text-base text-gray-500 mb-4">Ideal for small families with space for comfortable sustainable living.</div>
+            <div className="text-3xl font-extrabold text-teal-600 mb-1">$149k</div>
+            <div className="text-xs text-gray-400 mb-4">Base price: $149,000</div>
+            <ul className="mb-6 text-base text-gray-700 space-y-2">
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> 800-1200 sq ft living space</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Advanced solar array</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Complete water management system</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Premium eco-friendly materials</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Enhanced insulation package</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Smart home integration</li>
+            </ul>
+            <button className="bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto">Request Quote</button>
+          </div>
+          {/* Luxury Dome */}
+          <div className="bg-white rounded-xl shadow p-8 flex flex-col border border-gray-100">
+            <div className="font-bold text-xl text-gray-900 mb-1">Luxury Dome</div>
+            <div className="text-base text-gray-500 mb-4">Our premium offering with maximum space and cutting-edge sustainability features.</div>
+            <div className="text-3xl font-extrabold text-teal-600 mb-1">$249k</div>
+            <div className="text-xs text-gray-400 mb-4">Base price: $249,000</div>
+            <ul className="mb-6 text-base text-gray-700 space-y-2">
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> 1500-2000+ sq ft living space</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Premium full battery system</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Advanced water reclamation</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Maximum insulation package</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Full smart home ecosystem</li>
+              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Customizable add-on packages included</li>
+            </ul>
+            <button className="bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto">Request Quote</button>
+          </div>
+        </div>
+        <div className="text-gray-500 text-sm text-center mb-4 max-w-2xl mx-auto">
+          All prices are starting points. Final pricing depends on specific customizations, location, and additional features. Contact us for a personalized quote tailored to your needs and location.
+        </div>
+        <button className="bg-teal-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Get Custom Quote</button>
+      </section>
+
+
+ 
+      {/* Section: Domed in Nature, Rooted in Comfort - Redesigned */}
+      <section className="relative z-10 py-20 bg-gradient-to-br from-gray-50 via-white to-emerald-50 overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-100 rounded-full blur-3xl opacity-30 -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-100 rounded-full blur-3xl opacity-30 translate-y-1/2 -translate-x-1/2" />
+        
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-50 to-teal-50 px-6 py-2 border border-emerald-200">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-emerald-700 font-semibold text-sm tracking-wide">YOUR SUSTAINABLE SANCTUARY</span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Domed in Nature,<br />
+              <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                Rooted in Comfort
+              </span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Your Roomydomy home is not just built on the land – it&apos;s rooted in it. Experience the perfect harmony between luxury living and environmental stewardship.
+            </p>
+          </div>
+
+          {/* Split Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            {/* Left: Image Carousel */}
+            <div className="relative group">
+              <div className="relative overflow-hidden rounded-3xl shadow-2xl">
+                {backgroundImages.map((image, index) => (
+                  <div
+                    key={`nature-${index}`}
+                    className={`transition-opacity duration-1000 ${
+                      index === currentImageIndex ? 'opacity-100' : 'opacity-0 absolute inset-0'
+                    }`}
+                  >
+                    <Image
+                      src={image}
+                      alt={`Nature living ${index + 1}`}
+                      width={600}
+                      height={700}
+                      className="w-full h-[500px] object-cover"
+                    />
+                  </div>
+                ))}
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 via-transparent to-transparent" />
+                
+                {/* Carousel indicators */}
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                  {backgroundImages.map((_, index) => (
+                    <button
+                      key={`indicator-${index}`}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        index === currentImageIndex 
+                          ? 'w-8 bg-white' 
+                          : 'w-2 bg-white/50 hover:bg-white/75'
+                      }`}
+                      aria-label={`View image ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+              
+              {/* Floating stat cards */}
+              <div className="absolute -top-6 -right-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100 max-w-[180px] hidden lg:block">
+                <div className="text-3xl font-bold text-emerald-600 mb-1">100%</div>
+                <div className="text-sm text-gray-600 font-medium">Off-Grid Capable</div>
+              </div>
+              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100 max-w-[180px] hidden lg:block">
+                <div className="text-3xl font-bold text-teal-600 mb-1">$60K+</div>
+                <div className="text-sm text-gray-600 font-medium">Annual Income</div>
+              </div>
+            </div>
+
+            {/* Right: Features Grid */}
+            <div className="space-y-6">
+              {[
+                {
+                  icon: (
+                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  ),
+                  title: "Harmony with Nature",
+                  description: "Every element designed to integrate seamlessly with your natural surroundings while minimizing environmental impact."
+                },
+                {
+                  icon: (
+                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  ),
+                  title: "Built to Last",
+                  description: "Premium construction with sustainable materials ensures your dome stands strong for generations to come."
+                },
+                {
+                  icon: (
+                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  ),
+                  title: "Energy Independent",
+                  description: "Advanced solar systems and efficient design let you live completely off-grid with modern comforts."
+                },
+                {
+                  icon: (
+                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  ),
+                  title: "Investment Value",
+                  description: "Generate passive income through our rental program while building long-term equity in sustainable real estate."
+                }
+              ].map((feature, index) => (
+                <div 
+                  key={index}
+                  className="flex gap-4 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-emerald-200 group"
+                >
+                  <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    {feature.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 rounded-3xl p-10 text-center shadow-2xl">
+            <h3 className="text-3xl font-bold text-white mb-4">
+              Ready to Make Nature Your Neighbor?
+            </h3>
+            <p className="text-emerald-50 text-lg mb-8 max-w-2xl mx-auto">
+              Contact Roomydomy today and discover how luxury living can be beautifully, responsibly, naturally yours.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link 
+                href="/contact" 
+                className="px-8 py-4 bg-white text-emerald-700 rounded-full font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
+              >
+                Contact Us Today
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+              <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-emerald-700 transition-all duration-300">
+                Explore Designs
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+ 
+
+      {/* Section: Explore Our House Types */}
+      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white overflow-hidden">
+        {/* Decorative background pattern */}
+        <div className="absolute z-10 inset-0 pointer-events-none select-none opacity-30 z-0">
+          <svg width="100%" height="100%" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <ellipse cx="300" cy="100" rx="320" ry="80" fill="#bbf7d0" />
+            <ellipse cx="300" cy="120" rx="220" ry="60" fill="#f0fdf4" />
+          </svg>
+        </div>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-2 relative z-10">Explore Our House Types</h2>
+        <div className="text-teal-600 text-base font-semibold mb-2 text-center relative z-10">Modern designs for every lifestyle</div>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg relative z-10">Beyond our signature dome homes, we offer beautiful A-Frame and Box house options. Each design combines modern architecture with sustainable living principles.</p>
+        {/* House type selector with animated underline */}
+        <div className="flex w-full max-w-xl mb-8 relative z-10" role="tablist" aria-label="House Types">
+          <button
+            role="tab"
+            aria-selected={houseTab === 'aFrame'}
+            tabIndex={houseTab === 'aFrame' ? 0 : -1}
+            className={`flex-1 px-4 py-2 font-semibold rounded-l shadow border-r border-teal-200 transition-all duration-200 focus:outline-none relative ${houseTab === 'aFrame' ? 'bg-teal-600 text-white' : 'bg-teal-100 text-green-800 hover:bg-green-200'}`}
+            onClick={() => { setHouseTab('aFrame'); setExpandedCard(null); }}
+          >
+            <span className="inline-flex items-center gap-2"><svg width="20" height="20" fill="none"><polygon points="10,2 18,18 2,18" fill="#bef264" /></svg> A-Frame Houses</span>
+            {houseTab === 'aFrame' && <span className="absolute left-0 bottom-0 w-full h-1 bg-teal-500 rounded transition-all duration-300" />}
+          </button>
+          <button
+            role="tab"
+            aria-selected={houseTab === 'box'}
+            tabIndex={houseTab === 'box' ? 0 : -1}
+            className={`flex-1 px-4 py-2 font-semibold rounded-r shadow transition-all duration-200 focus:outline-none relative ${houseTab === 'box' ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+            onClick={() => { setHouseTab('box'); setExpandedCard(null); }}
+          >
+            <span className="inline-flex items-center gap-2"><svg width="20" height="20" fill="none"><rect x="4" y="4" width="12" height="12" rx="2" fill="#a3e635" /></svg> Box Houses</span>
+            {houseTab === 'box' && <span className="absolute left-0 bottom-0 w-full h-1 bg-teal-500 rounded transition-all duration-300" />}
+            {houseTab !== 'box' && <span className="absolute top-1 right-3 bg-yellow-400 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">Coming Soon</span>}
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl relative z-10">
+          {houseTypes[houseTab].map((card, idx) => (
+            <div
+              key={card.title}
+              className="bg-white rounded-2xl shadow-lg p-6 flex flex-col border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-lime-400 transition-all duration-300 group cursor-pointer relative overflow-hidden focus-within:ring-2 focus-within:ring-lime-400"
+              tabIndex={0}
+              aria-expanded={expandedCard === idx}
+              onClick={() => setExpandedCard(expandedCard === idx ? null : idx)}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setExpandedCard(expandedCard === idx ? null : idx); }}
+            >
+              {/* Badge */}
+              <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow ${card.badgeColor} animate-pulse`}>{card.badge}</span>
+              {/* Icon */}
+          
+              <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
+              <h3 className="font-bold text-xl text-gray-900 mb-1 mt-2">{card.title}</h3>
+              <div className="text-base text-gray-500 mb-1">Starting from {card.price}</div>
+              {/* Feature list */}
+              <ul className="mb-3 mt-2 text-sm text-gray-700 space-y-1">
+                {card.features.map((f, i) => (
+                  <li key={i} className="flex items-center gap-2"><span className="text-teal-400">•</span> {f}</li>
+                ))}
+              </ul>
+              {/* Expandable details */}
+              <button
+                className="text-teal-600 text-xs font-semibold underline mb-2 self-start focus:outline-none"
+                tabIndex={0}
+                aria-controls={`details-${idx}`}
+                aria-expanded={expandedCard === idx}
+                onClick={e => { e.stopPropagation(); setExpandedCard(expandedCard === idx ? null : idx); }}
+              >
+                {expandedCard === idx ? 'Hide Details' : 'Learn More'}
+              </button>
+              <div
+                id={`details-${idx}`}
+                className={`transition-all duration-300 overflow-hidden text-gray-600 text-sm ${expandedCard === idx ? 'max-h-32 opacity-100 mb-2' : 'max-h-0 opacity-0'}`}
+                aria-hidden={expandedCard !== idx}
+              >
+                {card.details}
+              </div>
+              <button className="bg-teal-500 text-teal-900 font-semibold px-4 py-2 rounded shadow hover:bg-teal-300 hover:scale-105 transition-all duration-200 mt-auto">View Details</button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+        {/* Section: Testimonials */}
+      <section className="relative z-10 flex flex-col items-center justify-center py-20 bg-gray-50">
+        <div className="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 text-teal-600 font-semibold text-sm">
+          Testimonials
+        </div>
+        <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 text-center mb-4">Loved by Dreamers & <span className="text-teal-600">Doers</span></h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-16 text-lg">Real experiences from real dome owners who have transformed their lives with sustainable living.</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto">
+          {/* Testimonial 1 */}
+          <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-6 border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden group">
+            {/* Decorative background element */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-teal-100 rounded-full -translate-y-16 translate-x-16 opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+            
+            {/* Quote icon */}
+            <div className="flex items-start gap-4 mb-2">
+              <div className="bg-teal-100 rounded-full p-3 flex-shrink-0">
+                <svg className="text-teal-600 w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                </svg>
+              </div>
+              <p className="text-gray-700 text-lg leading-relaxed font-medium">Our EcoDome has transformed our lives. We are saving over 70% on energy costs, and the natural light is incredible. Best decision we ever made!</p>
+            </div>
+            
+            <div className="flex items-center gap-4 mt-auto">
+              <Image src="/team/testi-01.jpg" alt="Sarah Johnson" className="w-14 h-14 rounded-full object-cover ring-4 ring-teal-100" width={56} height={56} />
+              <div>
+                <div className="font-bold text-gray-900 text-lg">Sarah Johnson</div>
+                <div className="text-teal-600 font-medium">Colorado</div>
+                <div className="flex items-center gap-1 mt-1">
+                  <span className="text-yellow-400 text-lg">★★★★★</span>
+                  <span className="text-xs text-gray-400 ml-2">Verified Owner</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Testimonial 2 */}
+          <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-6 border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden group">
+            {/* Decorative background element */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-teal-100 rounded-full -translate-y-16 translate-x-16 opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+            
+            {/* Quote icon */}
+            <div className="flex items-start gap-4 mb-2">
+              <div className="bg-teal-100 rounded-full p-3 flex-shrink-0">
+                <svg className="text-teal-600 w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                </svg>
+              </div>
+              <p className="text-gray-700 text-lg leading-relaxed font-medium">We have lived in our dome for 2 years now. The customizability was perfect - we added the solar pergola and natural pool. It is like living in a resort!</p>
+            </div>
+            
+            <div className="flex items-center gap-4 mt-auto">
+              <Image src="/team/testi-02.jpg" alt="Michael & Emma Davis" className="w-14 h-14 rounded-full object-cover ring-4 ring-teal-100" width={56} height={56} />
+              <div>
+                <div className="font-bold text-gray-900 text-lg">Michael & Emma Davis</div>
+                <div className="text-teal-600 font-medium">Oregon</div>
+                <div className="flex items-center gap-1 mt-1">
+                  <span className="text-yellow-400 text-lg">★★★★★</span>
+                  <span className="text-xs text-gray-400 ml-2">Verified Owner</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Testimonial 3 */}
+          <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-6 border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden group">
+            {/* Decorative background element */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-teal-100 rounded-full -translate-y-16 translate-x-16 opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+            
+            {/* Quote icon */}
+            <div className="flex items-start gap-4 mb-2">
+              <div className="bg-teal-100 rounded-full p-3 flex-shrink-0">
+                <svg className="text-teal-600 w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                </svg>
+              </div>
+              <p className="text-gray-700 text-lg leading-relaxed font-medium">After researching sustainable homes for years, the EcoDome stood out for quality and value. The rainwater collection system is brilliant engineering.</p>
+            </div>
+            
+            <div className="flex items-center gap-4 mt-auto">
+              <Image src="/team/testi-03.jpg" alt="Robert Chen" className="w-14 h-14 rounded-full object-cover ring-4 ring-teal-100" width={56} height={56} />
+              <div>
+                <div className="font-bold text-gray-900 text-lg">Robert Chen</div>
+                <div className="text-teal-600 font-medium">Washington</div>
+                <div className="flex items-center gap-1 mt-1">
+                  <span className="text-yellow-400 text-lg">★★★★★</span>
+                  <span className="text-xs text-gray-400 ml-2">Verified Owner</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Stats section */}
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-4xl mx-auto">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-teal-600 mb-2">500+</div>
+            <div className="text-gray-700 font-medium">Happy Families</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-teal-600 mb-2">70%</div>
+            <div className="text-gray-700 font-medium">Energy Savings</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-teal-600 mb-2">4.9★</div>
+            <div className="text-gray-700 font-medium">Average Rating</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-teal-600 mb-2">30yr</div>
+            <div className="text-gray-700 font-medium">Warranty</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section: Where Our Domes Are Available */}
+      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white">
+        <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center">GLOBAL PRESENCE</div>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-2">Where Our Domes Are Available</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Discover our eco-dome communities around the world. From tropical retreats to coastal havens, our sustainable living solutions are designed to integrate with diverse climates and landscapes.</p>
+        {/* Carousel Implementation */}
+        <div className="relative w-full max-w-6xl mb-8 px-2 sm:px-0">
+          {/* Carousel Arrows */}
+          <button
+            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-teal-200 text-teal-600 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ left: '-2.5rem' }}
+            onClick={() => setAvailableCarouselIndex((prev) => Math.max(prev - availableVisibleCards, 0))}
+            disabled={availableCarouselIndex === 0}
+            aria-label="Previous locations"
+          >
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          <button
+            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-teal-200 text-teal-600 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ right: '-2.5rem' }}
+            onClick={() => setAvailableCarouselIndex((prev) => Math.min(prev + availableVisibleCards, availableLocations.length - availableVisibleCards))}
+            disabled={availableCarouselIndex >= availableLocations.length - availableVisibleCards}
+            aria-label="Next locations"
+          >
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          {/* Carousel Cards */}
+          <div className="overflow-x-hidden">
+            <div
+              className="flex transition-transform duration-500"
+              style={{ transform: `translateX(-${(availableCarouselIndex * (100 / availableVisibleCards))}%)` }}
+            >
+              {availableLocations.map((card) => (
+                <div
+                  key={card.title}
+                  className={`bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100 relative transition-transform duration-200 group min-w-0${availableVisibleCards === 1 ? '' : ' mx-2'}`}
+                  style={{ flex: `0 0 ${100 / availableVisibleCards}%`, maxWidth: `${100 / availableVisibleCards}%` }}
+                >
+                  <Image src={card.img} alt={card.title} className="rounded-lg h-32 w-full object-cover mb-3" width={320} height={128} />
+                  <span className={card.badgeClass}>{card.badge}</span>
+                  <div className="font-bold text-xl text-gray-900 mb-1">{card.title}</div>
+                  <div className="text-sm text-gray-500 mb-1 flex items-center gap-1">{card.location}</div>
+                  <div className="text-sm text-gray-500 mb-2 flex items-center gap-1">{card.climate}</div>
+                  <p className="text-base mb-4 text-gray-800">{card.description}</p>
+                  <div className="text-sm text-gray-600 mb-3">
+                    {card.features.map((f, i) => (
+                      <div className="flex items-center gap-2 mb-1" key={i}><span className={f.iconClass}>✓</span> {f.text}</div>
+                    ))}
+                  </div>
+                  <button className={card.buttonClass}>{card.button}</button>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Carousel Dots */}
+          <div className="flex justify-center gap-2 mt-4">
+            {Array.from({ length: Math.ceil(availableLocations.length / availableVisibleCards) }).map((_, i) => (
+              <button
+                key={i}
+                className={`w-3 h-3 rounded-full ${availableCarouselIndex / availableVisibleCards === i ? 'bg-teal-500 scale-125' : 'bg-gray-300'} transition-all`}
+                onClick={() => setAvailableCarouselIndex(i * availableVisibleCards)}
+                aria-label={`Go to locations slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="text-gray-500 text-base text-center mb-4">
+          Don not see your preferred location? We are constantly expanding our available sites.
+        </div>
+        <button className="bg-teal-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Request a New Location</button>
+      </section>
+
+      {/* Section: Our Solution Partners */}
+      <section id="realtors" className="relative z-10 flex flex-col items-center justify-center py-16 bg-gray-50 overflow-hidden">
+        {/* Decorative background pattern */}
+        <div className="absolute inset-0 pointer-events-none select-none opacity-20 z-0">
+          <svg width="100%" height="100%" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <ellipse cx="300" cy="100" rx="320" ry="80" fill="#bbf7d0" />
+            <ellipse cx="300" cy="120" rx="220" ry="60" fill="#f0fdf4" />
+          </svg>
+        </div>
+        <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center relative z-10">COLLABORATION</div>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-2 relative z-10">Our Solution Partners</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg relative z-10">Join our network of professionals to help clients achieve their sustainable living dreams. We partner with top experts in various fields to deliver exceptional results.</p>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 w-full max-w-5xl mb-8 relative z-10">
+          {/* Card 1 */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-lime-400 transition-all duration-300 group cursor-pointer relative overflow-hidden focus-within:ring-2 focus-within:ring-lime-400">
+            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow bg-teal-100 text-green-800 animate-pulse">Real Estate</span>
+            <div className="mb-3 mt-2">
+              {/* Home/Key Icon */}
+              <svg width="36" height="36" fill="none" viewBox="0 0 24 24"><path d="M3 10.5L12 4l9 6.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><rect x="7" y="14" width="10" height="6" rx="2" stroke="#22c55e" strokeWidth="2"/></svg>
+            </div>
+            <h3 className="font-bold text-lg text-gray-900 mb-1 mt-1">Real Estate Agents</h3>
+            <p className="text-base text-gray-500 mb-4 text-center">Connect with clients seeking eco-friendly housing solutions.</p>
+            <button className="bg-teal-100 text-green-800 font-semibold px-4 py-2 rounded shadow hover:bg-teal-200 hover:scale-105 transition-all duration-200 flex items-center gap-2 group-hover:bg-teal-200">Learn More <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
+          </div>
+          {/* Card 2 */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-lime-400 transition-all duration-300 group cursor-pointer relative overflow-hidden focus-within:ring-2 focus-within:ring-lime-400">
+            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow bg-teal-100 text-teal-900 animate-pulse">Builder</span>
+            <div className="mb-3 mt-2">
+              {/* Construction Icon */}
+              <svg width="36" height="36" fill="none" viewBox="0 0 24 24"><rect x="3" y="13" width="18" height="7" rx="2" stroke="#22c55e" strokeWidth="2"/><path d="M7 13V7a5 5 0 0 1 10 0v6" stroke="#22c55e" strokeWidth="2"/></svg>
+            </div>
+            <h3 className="font-bold text-lg text-gray-900 mb-1 mt-1">Builders</h3>
+            <p className="text-base text-gray-500 mb-4 text-center">Join our network of sustainable construction specialists.</p>
+            <button className="bg-teal-100 text-teal-900 font-semibold px-4 py-2 rounded shadow hover:bg-green-200 hover:scale-105 transition-all duration-200 flex items-center gap-2 group-hover:bg-green-200">Learn More <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
+          </div>
+          {/* Card 3 */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-lime-400 transition-all duration-300 group cursor-pointer relative overflow-hidden focus-within:ring-2 focus-within:ring-lime-400">
+            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow bg-yellow-100 text-yellow-800 animate-pulse">Designer</span>
+            <div className="mb-3 mt-2">
+              {/* Interior Icon */}
+              <svg width="36" height="36" fill="none" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2" stroke="#eab308" strokeWidth="2"/><rect x="8" y="4" width="8" height="6" rx="2" stroke="#eab308" strokeWidth="2"/></svg>
+            </div>
+            <h3 className="font-bold text-lg text-gray-900 mb-1 mt-1">Interior Designers</h3>
+            <p className="text-base text-gray-500 mb-4 text-center">Create stunning interiors for our eco-dome homes.</p>
+            <button className="bg-yellow-100 text-yellow-800 font-semibold px-4 py-2 rounded shadow hover:bg-yellow-200 hover:scale-105 transition-all duration-200 flex items-center gap-2 group-hover:bg-yellow-200">Learn More <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke="#eab308" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
+          </div>
+          {/* Card 4 */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-lime-400 transition-all duration-300 group cursor-pointer relative overflow-hidden focus-within:ring-2 focus-within:ring-lime-400">
+            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow bg-blue-100 text-blue-800 animate-pulse">Architect</span>
+            <div className="mb-3 mt-2">
+              {/* Architect Icon */}
+              <svg width="36" height="36" fill="none" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2" stroke="#38bdf8" strokeWidth="2"/><path d="M12 10V4" stroke="#38bdf8" strokeWidth="2"/><path d="M8 4h8" stroke="#38bdf8" strokeWidth="2"/></svg>
+            </div>
+            <h3 className="font-bold text-lg text-gray-900 mb-1 mt-1">Architects</h3>
+            <p className="text-base text-gray-500 mb-4 text-center">Design innovative additions to our sustainable dome homes.</p>
+            <button className="bg-blue-100 text-blue-800 font-semibold px-4 py-2 rounded shadow hover:bg-blue-200 hover:scale-105 transition-all duration-200 flex items-center gap-2 group-hover:bg-blue-200">Learn More <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
+          </div>
+        </div>
+        <button className="bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white font-bold px-8 py-3 rounded-full shadow-xl hover:from-teal-300 hover:to-teal-700 hover:scale-105 transition-all duration-300 flex items-center gap-2 text-lg mt-2 relative z-10">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          Become a Partner
+        </button>
+      </section>
+
+      {/* Section: Interested in a RomyDomy? (Contact) */}
+      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-teal-50 overflow-hidden">
+        {/* Decorative background pattern */}
+        <div className="absolute inset-0 pointer-events-none select-none opacity-20 z-0">
+          <svg width="100%" height="100%" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <ellipse cx="300" cy="100" rx="320" ry="80" fill="#bbf7d0" />
+            <ellipse cx="300" cy="120" rx="220" ry="60" fill="#f0fdf4" />
+          </svg>
+        </div>
+        <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center relative z-10">GET IN TOUCH</div>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-2 relative z-10">Interested in a RomyDomy?</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-6 text-lg relative z-10">Have questions or want to learn more about our eco-friendly domes? Fill out the form below and one of our specialists will contact you shortly.</p>
+        <div className="flex gap-4 mb-10 relative z-10">
+          <button className="bg-teal-600 text-white font-semibold px-6 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200">Get Quote</button>
+          <button className="bg-white text-green-800 font-semibold px-6 py-2 rounded shadow border border-teal-200 hover:bg-teal-100 transition-all duration-200">Schedule Tour</button>
+        </div>
+        <div className="relative w-full max-w-4xl mx-auto flex flex-col md:flex-row gap-10 items-start bg-white/90 rounded-2xl shadow-2xl border border-teal-100 p-6 md:p-10 z-10">
+          {/* Contact Form */}
+          <form className="flex-1 flex flex-col gap-5 min-w-[280px]">
+            <div className="font-semibold text-gray-900 mb-2 text-lg flex items-center gap-2">
+              <span className="bg-teal-500/30 rounded-full p-1"><svg width="20" height="20" fill="none"><circle cx="10" cy="10" r="9" stroke="#14B8A6" strokeWidth="2"/></svg></span>
+              Send us a message
+            </div>
+            {/* Floating label input with icon */}
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-400"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="8" stroke="#22c55e" strokeWidth="2"/></svg></span>
+              <input type="text" id="contact-name" placeholder=" " className="pl-10 pr-3 py-3 rounded border border-gray-200 bg-gray-50 text-gray-900 w-full focus:ring-2 focus:ring-teal-400 focus:border-lime-400 transition peer" required />
+              <label htmlFor="contact-name" className="absolute left-10 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none transition-all duration-200 origin-left bg-white px-1 text-sm peer-focus:-translate-y-6 peer-focus:text-xs peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-sm">Your Name</label>
+            </div>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-400"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="8" stroke="#22c55e" strokeWidth="2"/><path d="M4 7l8 5 8-5" stroke="#22c55e" strokeWidth="2"/></svg></span>
+              <input type="email" id="contact-email" placeholder=" " className="pl-10 pr-3 py-3 rounded border border-gray-200 bg-gray-50 text-gray-900 w-full focus:ring-2 focus:ring-teal-400 focus:border-lime-400 transition peer" required />
+              <label htmlFor="contact-email" className="absolute left-10 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none transition-all duration-200 origin-left bg-white px-1 text-sm peer-focus:-translate-y-6 peer-focus:text-xs peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-sm">Email Address</label>
+            </div>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-400"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="8" stroke="#22c55e" strokeWidth="2"/><path d="M6 9h6v4H6z" stroke="#22c55e" strokeWidth="2"/></svg></span>
+              <input type="text" id="contact-phone" placeholder=" " className="pl-10 pr-3 py-3 rounded border border-gray-200 bg-gray-50 text-gray-900 w-full focus:ring-2 focus:ring-teal-400 focus:border-lime-400 transition peer" />
+              <label htmlFor="contact-phone" className="absolute left-10 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none transition-all duration-200 origin-left bg-white px-1 text-sm peer-focus:-translate-y-6 peer-focus:text-xs peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-sm">Phone Number</label>
+            </div>
+            <div className="relative">
+              <textarea id="contact-message" placeholder=" " className="pl-3 pr-3 py-3 rounded border border-gray-200 bg-gray-50 text-gray-900 w-full focus:ring-2 focus:ring-teal-400 focus:border-lime-400 transition min-h-[80px] resize-none peer" required />
+              <label htmlFor="contact-message" className="absolute left-4 top-3 text-gray-500 pointer-events-none transition-all duration-200 origin-left bg-white px-1 text-sm peer-focus:-translate-y-6 peer-focus:text-xs peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-sm">What would you like to know?</label>
+            </div>
+            <button type="submit" className="bg-teal-600 text-white font-semibold px-6 py-3 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-2 flex items-center justify-center gap-2 text-base focus:outline-none focus:ring-2 focus:ring-teal-400">
+              <span>Send Message</span>
+            </button>
+            <div className="text-xs text-gray-400 text-center mt-1">We respect your privacy. Your information is never shared.</div>
+          </form>
+          {/* Vertical divider for desktop */}
+          <div className="hidden md:block w-px bg-gradient-to-b from-teal-200 via-teal-100 to-transparent h-full mx-2 self-stretch" />
+          {/* Contact Info */}
+          <div className="flex-1 flex flex-col gap-6 min-w-[220px] bg-white/95 rounded-xl shadow-lg border border-teal-100 p-6">
+            <div>
+              <div className="font-semibold text-gray-900 mb-2 text-lg flex items-center gap-2"><svg width='20' height='20' fill='none'><circle cx='10' cy='10' r='9' stroke='#22c55e' strokeWidth='2'/></svg>Contact Information</div>
+              <div className="flex items-center gap-2 text-gray-700 text-sm mb-1"><svg width='18' height='18' fill='none'><circle cx='9' cy='9' r='8' stroke='#22c55e' strokeWidth='2'/></svg> 123 Eco Drive, Green Valley, Sustainable City</div>
+              <div className="flex items-center gap-2 text-gray-700 text-sm mb-1"><svg width='18' height='18' fill='none'><circle cx='9' cy='9' r='8' stroke='#22c55e' strokeWidth='2'/></svg> info@romydomy.com</div>
+              <div className="flex items-center gap-2 text-gray-700 text-sm"><svg width='18' height='18' fill='none'><circle cx='9' cy='9' r='8' stroke='#22c55e' strokeWidth='2'/></svg> +1 (555) 123-4567</div>
+            </div>
+            <div>
+              <div className="font-semibold text-gray-900 mb-2 text-lg flex items-center gap-2"><svg width='20' height='20' fill='none'><circle cx='10' cy='10' r='9' stroke='#22c55e' strokeWidth='2'/></svg>Business Hours</div>
+              <div className="flex justify-between text-gray-700 text-sm"><span>Monday - Friday:</span><span>9:00 AM - 6:00 PM</span></div>
+              <div className="flex justify-between text-gray-700 text-sm"><span>Saturday:</span><span>10:00 AM - 4:00 PM</span></div>
+              <div className="flex justify-between text-gray-700 text-sm"><span>Sunday:</span><span>Closed</span></div>
+            </div>
+            <div className="mt-4 text-teal-600 text-sm font-medium bg-teal-50 rounded-lg px-3 py-2 border border-teal-100 flex items-center gap-2"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="8" stroke="#22c55e" strokeWidth="2"/></svg>Our team typically responds within 24 hours.</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Professional Footer with Roomydomy Logo */}
+      <footer className="bg-gradient-to-br from-black via-gray-900 to-black text-white">
+        {/* Main Footer Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            {/* Company Info with Logo */}
+            <div className="lg:col-span-1">
+              <div className="flex items-center gap-3 mb-6">
+                
+                   <Image src="/logo.png" alt="Roomydomy Logo" width={160} height={75} />
+     
+              </div>
+              <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                Pioneering the future of sustainable living with innovative dome homes that harmonize luxury, comfort, and environmental responsibility.
+              </p>
+              <div className="flex gap-4">
+                <a href="#" className="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded-lg flex items-center justify-center transition-all duration-200 shadow-lg" aria-label="Facebook">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M22 12c0-5.522-4.477-10-10-10S2 6.478 2 12c0 5 3.657 9.127 8.438 9.877v-6.987h-2.54v-2.89h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.242 0-1.632.771-1.632 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.127 22 17 22 12z"/>
+                  </svg>
+                </a>
+                <a href="#" className="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded-lg flex items-center justify-center transition-all duration-200 shadow-lg" aria-label="Twitter">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  </svg>
+                </a>
+                <a href="#" className="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded-lg flex items-center justify-center transition-all duration-200 shadow-lg" aria-label="Instagram">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+                <a href="#" className="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded-lg flex items-center justify-center transition-all duration-200 shadow-lg" aria-label="LinkedIn">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Products & Services */}
+            <div>
+              <h4 className="text-lg font-bold text-gray-200 mb-6">Products & Services</h4>
+              <ul className="space-y-3 text-sm">
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Dome Homes
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Custom Design
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Installation
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Maintenance
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Financing
+                </a></li>
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h4 className="text-lg font-bold text-gray-200 mb-6">Company</h4>
+              <ul className="space-y-3 text-sm">
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  About Us
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Our Mission
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Sustainability
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Careers
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Press
+                </a></li>
+              </ul>
+            </div>
+
+            {/* Support & Legal */}
+            <div>
+              <h4 className="text-lg font-bold text-gray-200 mb-6">Support & Legal</h4>
+              <ul className="space-y-3 text-sm">
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Contact Support
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Privacy Policy
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Terms of Service
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Cookie Policy
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Accessibility
+                </a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Newsletter Signup */}
+        <div className="border-t border-gray-800/50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+              <div className="flex-1">
+                <h4 className="text-lg font-bold text-gray-200 mb-2">Stay Updated</h4>
+                <p className="text-gray-300 text-sm">Get the latest news about sustainable living and dome home innovations.</p>
+              </div>
+              <div className="flex gap-3 w-full lg:w-auto">
+                <input 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  className="flex-1 lg:w-80 px-4 py-3 bg-gradient-to-r from-gray-900 to-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent shadow-lg"
+                />
+                <button className="px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-900 font-semibold rounded-lg hover:from-gray-200 hover:to-gray-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 shadow-lg">
+                  Subscribe
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-800/50 bg-gradient-to-r from-gray-900/50 to-black/50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="flex items-center gap-4 text-sm text-gray-300">
+                <span>© 2025 Roomydomy. All rights reserved.</span>
+                <span className="hidden sm:inline">•</span>
+                <span className="hidden sm:inline">Designed for Prasanga</span>
+              </div>
+              <div className="flex items-center gap-6 text-sm">
+                <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">Sitemap</a>
+                <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">Accessibility</a>
+                <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">Security</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+    
+    </div>
+  );
+}
