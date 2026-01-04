@@ -164,6 +164,14 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen }: { open: bool
             onClick={() => setTab('materials')}
           >Materials</button>
           <button
+            className={`min-w-max px-5 py-2.5 font-semibold rounded-lg transition-all duration-200 ${tab === 'exterior' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'} focus:outline-none`}
+            onClick={() => setTab('exterior')}
+          >Exterior</button>
+          <button
+            className={`min-w-max px-5 py-2.5 font-semibold rounded-lg transition-all duration-200 ${tab === 'interior' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'} focus:outline-none`}
+            onClick={() => setTab('interior')}
+          >Interior</button>
+          <button
             className={`min-w-max px-5 py-2.5 font-semibold rounded-lg transition-all duration-200 ${tab === 'pricing' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'} focus:outline-none`}
             onClick={() => setTab('pricing')}
           >$ Pricing</button>
@@ -1607,6 +1615,107 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen }: { open: bool
                   <div className="text-gray-600 text-sm">Exceeds energy efficiency requirements</div>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+        {tab === 'exterior' && (
+          <div className="py-8">
+            <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center">DESIGN PREVIEW</div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3 text-center">Exterior Views</h2>
+            <p className="text-gray-600 text-center max-w-2xl mx-auto mb-8 text-lg">Explore the stunning exterior design of our eco-friendly dome homes.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                <Image src="/main/domy/d10/img-1.jpg" alt="Front View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <h3 className="font-bold text-xl text-gray-900 mb-2">Front View</h3>
+                <p className="text-gray-600 mb-3">Majestic entrance with panoramic windows and sustainable design elements.</p>
+                <div className="flex items-center gap-2 text-sm text-teal-600">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  Solar Integration
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                <Image src="/main/domy/d10/img-2.jpg" alt="Side View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <h3 className="font-bold text-xl text-gray-900 mb-2">Side View</h3>
+                <p className="text-gray-600 mb-3">Elegant profile showcasing the dome is aerodynamic design and natural materials.</p>
+                <div className="flex items-center gap-2 text-sm text-teal-600">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  Weather Resistant
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                <Image src="/main/domy/d9/img-1.jpg" alt="Aerial View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <h3 className="font-bold text-xl text-gray-900 mb-2">Aerial View</h3>
+                <p className="text-gray-600 mb-3">Complete dome structure overview showing the harmonious integration with nature.</p>
+                <div className="flex items-center gap-2 text-sm text-teal-600">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  Eco-Friendly Design
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-gray-500 text-base text-center mt-8">
+              Experience the perfect blend of exterior beauty and sustainable design in our dome homes.
+            </div>
+          </div>
+        )}
+        {tab === 'interior' && (
+          <div className="py-8">
+            <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center">DESIGN PREVIEW</div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3 text-center">Interior Views</h2>
+            <p className="text-gray-600 text-center max-w-2xl mx-auto mb-8 text-lg">Explore the comfortable interior spaces of our eco-friendly dome homes.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                <Image src="/main/domy/d9/img-2.jpg" alt="Living Area" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <h3 className="font-bold text-xl text-gray-900 mb-2">Living Area</h3>
+                <p className="text-gray-600 mb-3">Spacious open-concept living space with natural light and sustainable materials.</p>
+                <div className="flex items-center gap-2 text-sm text-teal-600">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                    <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  Natural Lighting
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                <Image src="/main/domy/d8/img-1.jpg" alt="Kitchen" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <h3 className="font-bold text-xl text-gray-900 mb-2">Kitchen</h3>
+                <p className="text-gray-600 mb-3">Modern kitchen with energy-efficient appliances and sustainable countertops.</p>
+                <div className="flex items-center gap-2 text-sm text-teal-600">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                    <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  Energy Efficient
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                <Image src="/main/domy/d7/img-1.jpg" alt="Bedroom" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <h3 className="font-bold text-xl text-gray-900 mb-2">Bedroom</h3>
+                <p className="text-gray-600 mb-3">Peaceful bedroom retreat with optimal insulation and natural ventilation.</p>
+                <div className="flex items-center gap-2 text-sm text-teal-600">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                    <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  Climate Controlled
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-gray-500 text-base text-center mt-8">
+              Experience the perfect blend of interior comfort and sustainable living in our dome homes.
             </div>
           </div>
         )}
@@ -3119,87 +3228,7 @@ export default function Home() {
       </section>
  
 
-      {/* Section: Explore Our House Types */}
-      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white overflow-hidden">
-        {/* Decorative background pattern */}
-        <div className="absolute z-10 inset-0 pointer-events-none select-none opacity-30 z-0">
-          <svg width="100%" height="100%" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <ellipse cx="300" cy="100" rx="320" ry="80" fill="#bbf7d0" />
-            <ellipse cx="300" cy="120" rx="220" ry="60" fill="#f0fdf4" />
-          </svg>
-        </div>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-2 relative z-10">Explore Our House Types</h2>
-        <div className="text-teal-600 text-base font-semibold mb-2 text-center relative z-10">Modern designs for every lifestyle</div>
-        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg relative z-10">Beyond our signature dome homes, we offer beautiful A-Frame and Box house options. Each design combines modern architecture with sustainable living principles.</p>
-        {/* House type selector with animated underline */}
-        <div className="flex w-full max-w-xl mb-8 relative z-10" role="tablist" aria-label="House Types">
-          <button
-            role="tab"
-            aria-selected={houseTab === 'aFrame'}
-            tabIndex={houseTab === 'aFrame' ? 0 : -1}
-            className={`flex-1 px-4 py-2 font-semibold rounded-l shadow border-r border-teal-200 transition-all duration-200 focus:outline-none relative ${houseTab === 'aFrame' ? 'bg-teal-600 text-white' : 'bg-teal-100 text-green-800 hover:bg-green-200'}`}
-            onClick={() => { setHouseTab('aFrame'); setExpandedCard(null); }}
-          >
-            <span className="inline-flex items-center gap-2"><svg width="20" height="20" fill="none"><polygon points="10,2 18,18 2,18" fill="#bef264" /></svg> A-Frame Houses</span>
-            {houseTab === 'aFrame' && <span className="absolute left-0 bottom-0 w-full h-1 bg-teal-500 rounded transition-all duration-300" />}
-          </button>
-          <button
-            role="tab"
-            aria-selected={houseTab === 'box'}
-            tabIndex={houseTab === 'box' ? 0 : -1}
-            className={`flex-1 px-4 py-2 font-semibold rounded-r shadow transition-all duration-200 focus:outline-none relative ${houseTab === 'box' ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
-            onClick={() => { setHouseTab('box'); setExpandedCard(null); }}
-          >
-            <span className="inline-flex items-center gap-2"><svg width="20" height="20" fill="none"><rect x="4" y="4" width="12" height="12" rx="2" fill="#a3e635" /></svg> Box Houses</span>
-            {houseTab === 'box' && <span className="absolute left-0 bottom-0 w-full h-1 bg-teal-500 rounded transition-all duration-300" />}
-            {houseTab !== 'box' && <span className="absolute top-1 right-3 bg-yellow-400 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">Coming Soon</span>}
-          </button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl relative z-10">
-          {houseTypes[houseTab].map((card, idx) => (
-            <div
-              key={card.title}
-              className="bg-white rounded-2xl shadow-lg p-6 flex flex-col border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-lime-400 transition-all duration-300 group cursor-pointer relative overflow-hidden focus-within:ring-2 focus-within:ring-lime-400"
-              tabIndex={0}
-              aria-expanded={expandedCard === idx}
-              onClick={() => setExpandedCard(expandedCard === idx ? null : idx)}
-              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setExpandedCard(expandedCard === idx ? null : idx); }}
-            >
-              {/* Badge */}
-              <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow ${card.badgeColor} animate-pulse`}>{card.badge}</span>
-              {/* Icon */}
-          
-              <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
-              <h3 className="font-bold text-xl text-gray-900 mb-1 mt-2">{card.title}</h3>
-              <div className="text-base text-gray-500 mb-1">Starting from {card.price}</div>
-              {/* Feature list */}
-              <ul className="mb-3 mt-2 text-sm text-gray-700 space-y-1">
-                {card.features.map((f, i) => (
-                  <li key={i} className="flex items-center gap-2"><span className="text-teal-400">•</span> {f}</li>
-                ))}
-              </ul>
-              {/* Expandable details */}
-              <button
-                className="text-teal-600 text-xs font-semibold underline mb-2 self-start focus:outline-none"
-                tabIndex={0}
-                aria-controls={`details-${idx}`}
-                aria-expanded={expandedCard === idx}
-                onClick={e => { e.stopPropagation(); setExpandedCard(expandedCard === idx ? null : idx); }}
-              >
-                {expandedCard === idx ? 'Hide Details' : 'Learn More'}
-              </button>
-              <div
-                id={`details-${idx}`}
-                className={`transition-all duration-300 overflow-hidden text-gray-600 text-sm ${expandedCard === idx ? 'max-h-32 opacity-100 mb-2' : 'max-h-0 opacity-0'}`}
-                aria-hidden={expandedCard !== idx}
-              >
-                {card.details}
-              </div>
-              <button className="bg-teal-500 text-teal-900 font-semibold px-4 py-2 rounded shadow hover:bg-teal-300 hover:scale-105 transition-all duration-200 mt-auto">View Details</button>
-            </div>
-          ))}
-        </div>
-      </section>
+              
 
         {/* Section: Testimonials */}
       <section className="relative z-10 flex flex-col items-center justify-center py-20 bg-gray-50">
