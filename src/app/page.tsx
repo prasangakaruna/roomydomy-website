@@ -3304,6 +3304,7 @@ export default function Home() {
               <li><a href="#locations" className="hover:text-emerald-600 transition">Locations</a></li>
               <li><a href="#realtors" className="hover:text-emerald-600 transition">Partners</a></li>
               <li><Link href="/contact" className="hover:text-emerald-600 transition">Contact</Link></li>
+              <li><Link href="/admin" className="hover:text-emerald-600 transition">Admin</Link></li>
             </ul>
             {/* Hamburger for mobile (UI only) */}
             <div className="lg:hidden flex items-center">
