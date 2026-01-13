@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import ProtectedRoute from '../../components/ProtectedRoute';
 import AdminLayout from '../../components/AdminLayout';
 import Image from 'next/image';
@@ -14,7 +14,6 @@ import {
 
 export default function DomesManagementPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [domes, setDomes] = useState<Dome[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingDome, setEditingDome] = useState<Dome | null>(null);
@@ -34,10 +33,14 @@ export default function DomesManagementPage() {
 
   useEffect(() => {
     loadDomes();
-    if (searchParams.get('action') === 'add') {
-      setIsModalOpen(true);
+    // Check URL params client-side only
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('action') === 'add') {
+        setIsModalOpen(true);
+      }
     }
-  }, [searchParams]);
+  }, []);
 
   const loadDomes = () => {
     const allDomes = getDomes();

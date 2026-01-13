@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import ProtectedRoute from '../../components/ProtectedRoute';
 import AdminLayout from '../../components/AdminLayout';
 import {
@@ -14,7 +14,6 @@ import {
 
 export default function OrdersManagementPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [orders, setOrders] = useState<Order[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,14 +33,18 @@ export default function OrdersManagementPage() {
 
   useEffect(() => {
     loadOrders();
-    if (searchParams.get('action') === 'add') {
-      setIsModalOpen(true);
+    // Check URL params client-side only
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('action') === 'add') {
+        setIsModalOpen(true);
+      }
+      const status = params.get('status');
+      if (status) {
+        setStatusFilter(status);
+      }
     }
-    const status = searchParams.get('status');
-    if (status) {
-      setStatusFilter(status);
-    }
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     filterOrders();
