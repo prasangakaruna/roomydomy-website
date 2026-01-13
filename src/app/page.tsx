@@ -2940,7 +2940,7 @@ export default function Home() {
 
   const availableLocations = [
     {
-      img: "/main/domy/d6/img.jpg",
+      img: "/new/Costa Rica Project Renderings 1.jpg",
       badge: "Available",
       badgeClass: "absolute top-4 right-4 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full",
       title: "Monteverde Retreat",
@@ -2957,7 +2957,7 @@ export default function Home() {
       buttonClass: "bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto"
     },
     {
-      img: "/main/domy/d7/img-1.jpg",
+      img: "/new/11R Lotus Cafe Render1.jpg",
       badge: "Available",
       badgeClass: "absolute top-4 right-4 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full",
       title: "Adriatic Haven",
@@ -2974,7 +2974,7 @@ export default function Home() {
       buttonClass: "bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto"
     },
     {
-      img: "/main/domy/d8/img-1.jpg",
+      img: "/new/11R Lotus Cafe Render2.jpg",
       badge: "Available",
       badgeClass: "absolute top-4 right-4 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full",
       title: "Algarve Coastal Village",
@@ -2991,7 +2991,7 @@ export default function Home() {
       buttonClass: "bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto"
     },
     {
-      img: "/main/domy/d9/img-1.jpg",
+      img: "/new/11R Lotus Cafe Render3.jpg",
       badge: "Under Development",
       badgeClass: "absolute top-4 right-4 bg-yellow-400 text-white text-xs font-semibold px-3 py-1 rounded-full",
       title: "Pocono Mountain Retreat",
@@ -3007,7 +3007,7 @@ export default function Home() {
       buttonClass: "bg-gray-200 text-gray-700 font-semibold px-4 py-2 rounded shadow mt-auto cursor-not-allowed"
     },
     {
-      img: "/main/domy/d10/img-1.jpg",
+      img: "/new/11R Lotus Cafe Render4.jpg",
       badge: "Coming Soon",
       badgeClass: "absolute top-4 right-4 bg-blue-400 text-white text-xs font-semibold px-3 py-1 rounded-full",
       title: "Thousand Lakes Sanctuary",
