@@ -50,6 +50,7 @@ export default function ContactPage() {
               <li><Link href="/#pricing" className="hover:text-emerald-600 transition">Pricing</Link></li>
               <li><Link href="/#locations" className="hover:text-emerald-600 transition">Locations</Link></li>
               <li><Link href="/#realtors" className="hover:text-emerald-600 transition">Partners</Link></li>
+              <li><Link href="/gallery" className="hover:text-emerald-600 transition">Gallery</Link></li>
               <li><Link href="/contact" className="hover:text-emerald-600 transition">Contact</Link></li>
             </ul>
             {/* Hamburger for mobile (UI only) */}

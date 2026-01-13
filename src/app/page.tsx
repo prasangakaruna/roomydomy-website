@@ -1734,7 +1734,7 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen, onPackageSelec
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                <Image src="/main/domy/d10/img-1.jpg" alt="Front View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <Image src="/new/11R Lotus Cafe Render1.jpg" alt="Front View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                 <h3 className="font-bold text-xl text-gray-900 mb-2">Front View</h3>
                 <p className="text-gray-600 mb-3">Majestic entrance with panoramic windows and sustainable design elements.</p>
                 <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -1746,7 +1746,7 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen, onPackageSelec
               </div>
               
               <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                <Image src="/main/domy/d10/img-2.jpg" alt="Side View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <Image src="/new/11R Lotus Cafe Render2.jpg" alt="Side View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                 <h3 className="font-bold text-xl text-gray-900 mb-2">Side View</h3>
                 <p className="text-gray-600 mb-3">Elegant profile showcasing the dome is aerodynamic design and natural materials.</p>
                 <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -1758,7 +1758,7 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen, onPackageSelec
               </div>
               
               <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                <Image src="/main/domy/d9/img-1.jpg" alt="Aerial View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <Image src="/new/11R Lotus Cafe Render4.jpg" alt="Aerial View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                 <h3 className="font-bold text-xl text-gray-900 mb-2">Aerial View</h3>
                 <p className="text-gray-600 mb-3">Complete dome structure overview showing the harmonious integration with nature.</p>
                 <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -1783,7 +1783,7 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen, onPackageSelec
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                <Image src="/main/domy/d9/img-2.jpg" alt="Living Area" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <Image src="/new/8R Lotus Render1.jpg" alt="Living Area" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                 <h3 className="font-bold text-xl text-gray-900 mb-2">Living Area</h3>
                 <p className="text-gray-600 mb-3">Spacious open-concept living space with natural light and sustainable materials.</p>
                 <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -1796,7 +1796,7 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen, onPackageSelec
               </div>
               
               <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                <Image src="/main/domy/d8/img-1.jpg" alt="Kitchen" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <Image src="/new/8R Lotus Render2.jpg" alt="Kitchen" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                 <h3 className="font-bold text-xl text-gray-900 mb-2">Kitchen</h3>
                 <p className="text-gray-600 mb-3">Modern kitchen with energy-efficient appliances and sustainable countertops.</p>
                 <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -1809,7 +1809,7 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen, onPackageSelec
               </div>
               
               <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                <Image src="/main/domy/d7/img-1.jpg" alt="Bedroom" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                <Image src="/new/8R Lotus Render3.jpg" alt="Bedroom" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                 <h3 className="font-bold text-xl text-gray-900 mb-2">Bedroom</h3>
                 <p className="text-gray-600 mb-3">Peaceful bedroom retreat with optimal insulation and natural ventilation.</p>
                 <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -1898,15 +1898,15 @@ export default function Home() {
   // Background images for the slider - Nature photos for dome building
   const backgroundImages = [
     "/7R Version 1 Exterior1.jpg",
-    "/main/aegean/img-1.webp",
-    "/main/aegean/img-2.jpg", 
-    "/main/aegean/img-3.jpg",
-    "/main/atlas/img-1.jpg",
-    "/main/atlas/img-2.jpg",
-    "/main/atlas/img-3.jpg",
-    "/main/assos/img-1.jpg",
-    "/main/assos/img-2.jpg",
-    "/main/assos/img-3.jpg"
+    "/project-01.jpg",
+    "/project-02.jpg", 
+    "/project-03.jpg",
+    "/project-04.jpg",
+    "/project-05.jpg",
+    "/plan/project-1.jpg",
+    "/plan/project-2.jpg",
+    "/plan/project-3.jpg",
+    "/plan/project-4.jpg"
   ];
  
 
@@ -1924,7 +1924,7 @@ export default function Home() {
   // Dome data for cards and modal
   const domes: Dome[] = [
     {
-      img: "/main/domy/d6/img.jpg",
+      img: "/new/11R Lotus Cafe Render3.jpg",
       title: "Compact Studio",
       size: "400 sq ft",
       people: "1-2 people",
@@ -1933,7 +1933,7 @@ export default function Home() {
       features: "+ Decks\n+ Outdoor Features\n+ Pergolas",
     },
     {
-      img: "/main/domy/d7/img-1.jpg",
+      img: "/new/11R Lotus Cafe Render4.jpg",
       title: "Current Model",
       size: "700 sq ft",
       people: "2-3 people",
@@ -1942,7 +1942,7 @@ export default function Home() {
       features: "+ Decks\n+ Outdoor Features\n+ Pergolas",
     },
     {
-      img: "/main/domy/d8/img-1.jpg",
+      img: "/new/11R Lotus Cafe Render5.jpg",
       title: "Two-Level Haven",
       size: "1000 sq ft",
       people: "2-4 people",
@@ -1951,7 +1951,7 @@ export default function Home() {
       features: "+ Decks\n+ Outdoor Features\n+ Pergolas",
     },
     {
-      img: "/main/domy/d9/img-1.jpg",
+      img: "/new/11R Lotus Cafe Render6.jpg",
       title: "Family Dome",
       size: "1500 sq ft",
       people: "4-6 people",
@@ -1960,7 +1960,7 @@ export default function Home() {
       features: "+ Decks\n+ Outdoor Features\n+ Pergolas",
     },
     {
-      img: "/main/domy/d10/img-1.jpg",
+      img: "/new/11R Lotus Cafe Render7.jpg",
       title: "Grand Dome",
       size: "2000 sq ft",
       people: "6-8 people",
@@ -1983,6 +1983,7 @@ export default function Home() {
       week: "Week 1",
       title: "Initial Consultation",
       gradient: "from-emerald-500 to-teal-500",
+      img: "/how-it-works/step-1.jpg",
       description: "Free consultation to discuss your vision, budget, and site. We'll provide preliminary recommendations and pricing.",
       items: [
         "Virtual or in-person meeting",
@@ -1996,6 +1997,7 @@ export default function Home() {
       week: "Week 2-3",
       title: "Design & Planning",
       gradient: "from-teal-500 to-cyan-500",
+      img: "/how-it-works/step-2.jpg",
       description: "Our team creates detailed plans, handles permits, and finalizes customizations with you.",
       items: [
         "Custom design renderings",
@@ -2009,6 +2011,7 @@ export default function Home() {
       week: "Week 4-9",
       title: "Manufacturing",
       gradient: "from-cyan-500 to-blue-500",
+      img: "/how-it-works/step-3.jpg",
       description: "Your dome home is precision-manufactured in our facility with quality checks at every stage.",
       items: [
         "Component fabrication",
@@ -2022,6 +2025,7 @@ export default function Home() {
       week: "Week 10-11",
       title: "Site Prep & Installation",
       gradient: "from-blue-500 to-indigo-500",
+      img: "/how-it-works/step-4.jpg",
       description: "Professional site preparation followed by expert installation of your new home.",
       items: [
         "Foundation preparation",
@@ -2035,6 +2039,7 @@ export default function Home() {
       week: "Week 12",
       title: "Final Inspection & Handover",
       gradient: "from-indigo-500 to-purple-500",
+      img: "/how-it-works/step-5.jpg",
       description: "Complete walkthrough, inspections, and you receive keys to your new eco-friendly home!",
       items: [
         "Building inspections",
@@ -2083,16 +2088,16 @@ export default function Home() {
       size: '2000 sq ft',
       views: {
         exterior: [
-          { angle: 'front', img: '/main/domy/d10/img-1.jpg', title: 'Front View', description: 'Majestic entrance with panoramic windows' },
-          { angle: 'side', img: '/main/domy/d10/img-2.jpg', title: 'Side View', description: 'Elegant profile with solar integration' },
-          { angle: 'back', img: '/main/domy/d10/img-1.jpg', title: 'Back View', description: 'Private outdoor living spaces' },
-          { angle: 'top', img: '/main/domy/d10/img-2.jpg', title: 'Aerial View', description: 'Complete dome structure overview' }
+          { angle: 'front', img: '/new/11R Lotus Cafe Render1.jpg', title: 'Front View', description: 'Majestic entrance with panoramic windows' },
+          { angle: 'side', img: '/new/11R Lotus Cafe Render2.jpg', title: 'Side View', description: 'Elegant profile with solar integration' },
+          { angle: 'back', img: '/new/11R Lotus Cafe Render4.jpg', title: 'Back View', description: 'Private outdoor living spaces' },
+          { angle: 'top', img: '/new/11R Lotus Cafe Render5.jpg', title: 'Aerial View', description: 'Complete dome structure overview' }
         ],
         interior: [
-          { angle: 'front', img: '/main/domy/d10/img-1.jpg', title: 'Living Area', description: 'Spacious open-concept living space' },
-          { angle: 'side', img: '/main/domy/d10/img-2.jpg', title: 'Kitchen', description: 'Modern kitchen with island' },
-          { angle: 'back', img: '/main/domy/d10/img-1.jpg', title: 'Bedroom', description: 'Peaceful bedroom retreat' },
-          { angle: 'top', img: '/main/domy/d10/img-2.jpg', title: 'Loft Area', description: 'Upper level living space' }
+          { angle: 'front', img: '/new/8R Lotus Render1.jpg', title: 'Living Area', description: 'Spacious open-concept living space' },
+          { angle: 'side', img: '/new/8R Lotus Render2.jpg', title: 'Kitchen', description: 'Modern kitchen with island' },
+          { angle: 'back', img: '/new/8R Lotus Render3.jpg', title: 'Bedroom', description: 'Peaceful bedroom retreat' },
+          { angle: 'top', img: '/new/8R Lotus Render4.jpg', title: 'Loft Area', description: 'Upper level living space' }
         ],
         plan: [
           { angle: 'front', img: '/plan/plan-1.jpg', title: 'Ground Floor', description: 'Main living areas and bedrooms' },
@@ -2108,16 +2113,16 @@ export default function Home() {
       size: '1500 sq ft',
       views: {
         exterior: [
-          { angle: 'front', img: '/main/domy/d9/img-1.jpg', title: 'Front View', description: 'Welcoming family entrance' },
-          { angle: 'side', img: '/main/domy/d9/img-2.jpg', title: 'Side View', description: 'Perfect family proportions' },
-          { angle: 'back', img: '/main/domy/d9/img-1.jpg', title: 'Back View', description: 'Private family outdoor space' },
-          { angle: 'top', img: '/main/domy/d9/img-2.jpg', title: 'Aerial View', description: 'Complete family dome structure' }
+          { angle: 'front', img: '/new/11R Lotus Cafe Render6.jpg', title: 'Front View', description: 'Welcoming family entrance' },
+          { angle: 'side', img: '/new/11R Lotus Cafe Render7.jpg', title: 'Side View', description: 'Perfect family proportions' },
+          { angle: 'back', img: '/new/11R Lotus Cafe Render9.jpg', title: 'Back View', description: 'Private family outdoor space' },
+          { angle: 'top', img: '/new/11R Lotus Cafe Render10.jpg', title: 'Aerial View', description: 'Complete family dome structure' }
         ],
         interior: [
-          { angle: 'front', img: '/main/domy/d9/img-1.jpg', title: 'Living Room', description: 'Cozy family gathering space' },
-          { angle: 'side', img: '/main/domy/d9/img-2.jpg', title: 'Kitchen', description: 'Family-friendly kitchen design' },
-          { angle: 'back', img: '/main/domy/d9/img-1.jpg', title: 'Bedroom', description: 'Comfortable family bedrooms' },
-          { angle: 'top', img: '/main/domy/d9/img-2.jpg', title: 'Family Area', description: 'Multi-purpose family space' }
+          { angle: 'front', img: '/new/8R Lotus Render5.jpg', title: 'Living Room', description: 'Cozy family gathering space' },
+          { angle: 'side', img: '/new/8R Lotus Render6.jpg', title: 'Kitchen', description: 'Family-friendly kitchen design' },
+          { angle: 'back', img: '/new/8R Lotus Render7.jpg', title: 'Bedroom', description: 'Comfortable family bedrooms' },
+          { angle: 'top', img: '/new/8R Lotus Render8.jpg', title: 'Family Area', description: 'Multi-purpose family space' }
         ],
         plan: [
           { angle: 'front', img: '/plan/plan-1.jpg', title: 'Main Floor', description: 'Family living and dining areas' },
@@ -2133,16 +2138,16 @@ export default function Home() {
       size: '400 sq ft',
       views: {
         exterior: [
-          { angle: 'front', img: '/main/domy/d6/img.jpg', title: 'Front View', description: 'Compact and efficient design' },
-          { angle: 'side', img: '/main/domy/d6/img-2.jpg', title: 'Side View', description: 'Perfect for singles or couples' },
-          { angle: 'back', img: '/main/domy/d6/img.jpg', title: 'Back View', description: 'Intimate outdoor space' },
-          { angle: 'top', img: '/main/domy/d6/img-2.jpg', title: 'Aerial View', description: 'Compact dome overview' }
+          { angle: 'front', img: '/new/11R Lotus Cafe Render3.jpg', title: 'Front View', description: 'Compact and efficient design' },
+          { angle: 'side', img: '/new/6R Render15.jpg', title: 'Side View', description: 'Perfect for singles or couples' },
+          { angle: 'back', img: '/new/Costa Rica Project Renderings 1.jpg', title: 'Back View', description: 'Intimate outdoor space' },
+          { angle: 'top', img: '/new/Costa Rica Project Renderings 2.jpg', title: 'Aerial View', description: 'Compact dome overview' }
         ],
         interior: [
-          { angle: 'front', img: '/main/domy/d6/img.jpg', title: 'Living Area', description: 'Efficient open living space' },
-          { angle: 'side', img: '/main/domy/d6/img-2.jpg', title: 'Kitchen', description: 'Compact kitchen design' },
-          { angle: 'back', img: '/main/domy/d6/img.jpg', title: 'Sleeping Area', description: 'Cozy sleeping space' },
-          { angle: 'top', img: '/main/domy/d6/img-2.jpg', title: 'Studio Layout', description: 'Efficient studio arrangement' }
+          { angle: 'front', img: '/new/Costa Rica Project Renderings 3.jpg', title: 'Living Area', description: 'Efficient open living space' },
+          { angle: 'side', img: '/new/Costa Rica Project Renderings 6.jpg', title: 'Kitchen', description: 'Compact kitchen design' },
+          { angle: 'back', img: '/new/Costa Rica Project Renderings 7.jpg', title: 'Sleeping Area', description: 'Cozy sleeping space' },
+          { angle: 'top', img: '/new/Costa Rica Project Renderings 8.jpg', title: 'Studio Layout', description: 'Efficient studio arrangement' }
         ],
         plan: [
           { angle: 'front', img: '/plan/plan-1.jpg', title: 'Studio Floor', description: 'Efficient studio layout' },
@@ -2379,7 +2384,7 @@ export default function Home() {
   // Add environment domes carousel state and data to Home component
   const envDomes = [
     {
-      img: "/main/aegean/img-1.webp",
+      img: "/project-01.jpg",
       badge: "Ocean Breeze",
       badgeClass: "absolute top-4 left-4 bg-blue-200 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full",
       icon: <svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#0ea5e9' strokeWidth='2'/></svg>,
@@ -2397,7 +2402,7 @@ export default function Home() {
       button: "Explore Seaside Retreat",
     },
     {
-      img: "/main/domy/d8/img-1.jpg",
+      img: "/project-02.jpg",
       badge: "Forest Canopy",
       badgeClass: "absolute top-4 left-4 bg-green-200 text-green-800 text-xs font-semibold px-3 py-1 rounded-full",
       icon: <svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#22c55e' strokeWidth='2'/></svg>,
@@ -2415,7 +2420,7 @@ export default function Home() {
       button: "Explore Forest Haven",
     },
     {
-      img: "/main/domy/d9/img-1.jpg",
+      img: "/project-03.jpg",
       badge: "Alpine/Arctic",
       badgeClass: "absolute top-4 left-4 bg-blue-300 text-blue-900 text-xs font-semibold px-3 py-1 rounded-full",
       icon: <svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke="#38bdf8" strokeWidth='2'/></svg>,
@@ -2433,7 +2438,7 @@ export default function Home() {
       button: "Explore Winter Wonderland",
     },
     {
-      img: "/main/domy/d10/img-1.jpg",
+      img: "/project-04.jpg",
       badge: "Tropical/Mediterranean",
       badgeClass: "absolute top-4 left-4 bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full",
       icon: <svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke="#facc15" strokeWidth='2'/></svg>,
@@ -2593,10 +2598,10 @@ export default function Home() {
       title: "Living Room",
       subtitle: "Comfortable seating & entertainment",
       images: [
-        "/main/domy/d8/img-1.jpg",
-        "/main/domy/d8/img-2.jpg",
-        "/main/domy/d7/img-1.jpg",
-        "/main/domy/d6/img.jpg",
+        "/new/8R Lotus Render1.jpg",
+        "/new/8R Lotus Render2.jpg",
+        "/new/8R Lotus Render3.jpg",
+        "/new/8R Lotus Render4.jpg",
       ],
       items: [
         { 
@@ -2607,7 +2612,7 @@ export default function Home() {
           dimensions: "Sofa: 84\" W x 36\" D x 34\" H | Loveseat: 60\" W x 36\" D x 34\" H",
           materials: "FSC-certified hardwood frame, organic cotton fabric, recycled foam cushions",
           colors: ["Charcoal Gray", "Navy Blue", "Forest Green", "Beige", "Custom colors available"],
-          image: "/main/domy/d8/img-1.jpg"
+          image: "/new/8R Lotus Render1.jpg"
         },
         { 
           name: "Coffee Table", 
@@ -2617,7 +2622,7 @@ export default function Home() {
           dimensions: "48\" W x 24\" D x 18\" H",
           materials: "Reclaimed wood top, metal legs with eco-friendly finish",
           colors: ["Natural Wood", "Dark Walnut", "Oak Finish"],
-          image: "/main/domy/d7/img-1.jpg"
+          image: "/new/8R Lotus Render2.jpg"
         },
         { 
           name: "TV Stand", 
@@ -2627,7 +2632,7 @@ export default function Home() {
           dimensions: "60\" W x 16\" D x 24\" H",
           materials: "Bamboo composite, metal brackets",
           colors: ["Black", "White", "Natural Bamboo"],
-          image: "/main/domy/d6/img.jpg"
+          image: "/new/8R Lotus Render3.jpg"
         },
         { 
           name: "Area Rug", 
@@ -2637,7 +2642,7 @@ export default function Home() {
           dimensions: "8' x 10' (96\" x 120\")",
           materials: "100% recycled PET fibers, natural latex backing",
           colors: ["Gray Geometric", "Blue Waves", "Green Nature", "Beige Minimalist"],
-          image: "/main/domy/d8/img-2.jpg"
+          image: "/new/8R Lotus Render4.jpg"
         },
         { 
           name: "Lighting Set", 
@@ -2647,7 +2652,7 @@ export default function Home() {
           dimensions: "Floor lamps: 60\" H | Table lamps: 24\" H",
           materials: "Recycled metal, LED technology",
           colors: ["Brushed Nickel", "Matte Black", "Brass"],
-          image: "/main/domy/d7/img-2.jpg"
+          image: "/new/8R Lotus Render5.jpg"
         },
       ],
       total: "$4,600",
@@ -2675,10 +2680,10 @@ export default function Home() {
       title: "Kitchen & Dining",
       subtitle: "Functional & stylish dining",
       images: [
-        "/main/domy/d9/img-1.jpg",
-        "/main/domy/d9/img-2.jpg",
-        "/main/domy/d10/img-1.jpg",
-        "/main/domy/d10/img-2.jpg",
+        "/new/8R Lotus Render5.jpg",
+        "/new/8R Lotus Render6.jpg",
+        "/new/8R Lotus Render7.jpg",
+        "/new/8R Lotus Render8.jpg",
       ],
       items: [
         { 
@@ -2689,7 +2694,7 @@ export default function Home() {
           dimensions: "Table: 60\"-96\" W x 40\" D x 30\" H | Chairs: 18\" W x 20\" D x 40\" H",
           materials: "FSC-certified solid wood, organic cotton seat cushions",
           colors: ["Natural Oak", "Dark Walnut", "White Oak", "Custom stain available"],
-          image: "/main/domy/d9/img-1.jpg"
+          image: "/new/8R Lotus Render5.jpg"
         },
         { 
           name: "Kitchen Island", 
@@ -2699,7 +2704,7 @@ export default function Home() {
           dimensions: "48\" W x 24\" D x 36\" H",
           materials: "Solid wood construction, bamboo butcher block top, metal hardware",
           colors: ["Natural Wood", "Painted White", "Painted Gray", "Two-tone options"],
-          image: "/main/domy/d10/img-1.jpg"
+          image: "/new/8R Lotus Render6.jpg"
         },
         { 
           name: "Bar Stools", 
@@ -2709,7 +2714,7 @@ export default function Home() {
           dimensions: "18\" W x 18\" D x 24\"-30\" H (adjustable)",
           materials: "Metal frame, sustainable wood seat, eco-friendly upholstery",
           colors: ["Black Frame / Natural Seat", "Chrome Frame / Gray Seat", "Brass Frame / Brown Seat"],
-          image: "/main/domy/d9/img-2.jpg"
+          image: "/new/8R Lotus Render7.jpg"
         },
         { 
           name: "Dining Storage", 
@@ -2719,7 +2724,7 @@ export default function Home() {
           dimensions: "60\" W x 18\" D x 32\" H",
           materials: "Solid wood, soft-close hardware, glass display shelf",
           colors: ["Natural Wood", "Painted", "Mixed finish"],
-          image: "/main/domy/d10/img-2.jpg"
+          image: "/new/8R Lotus Render8.jpg"
         },
         { 
           name: "Kitchen Accessories", 
@@ -2729,7 +2734,7 @@ export default function Home() {
           dimensions: "Various sizes",
           materials: "Bamboo, stainless steel, glass, silicone",
           colors: ["Natural", "Assorted"],
-          image: "/main/domy/d9/img-1.jpg"
+          image: "/new/Costa Rica Project Renderings 1.jpg"
         },
       ],
       total: "$4,100",
@@ -2757,10 +2762,10 @@ export default function Home() {
       title: "Bedroom",
       subtitle: "Restful & organized spaces",
       images: [
-        "/main/domy/d7/img-1.jpg",
-        "/main/domy/d7/img-2.jpg",
-        "/main/domy/d6/img.jpg",
-        "/main/domy/d11/img-1.jpg",
+        "/new/Costa Rica Project Renderings 2.jpg",
+        "/new/Costa Rica Project Renderings 3.jpg",
+        "/new/Costa Rica Project Renderings 6.jpg",
+        "/new/Costa Rica Project Renderings 7.jpg",
       ],
       items: [
         { 
@@ -2771,7 +2776,7 @@ export default function Home() {
           dimensions: "60\" W x 80\" L x 42\" H (with headboard)",
           materials: "FSC-certified hardwood, organic cotton headboard, metal slats",
           colors: ["Natural Wood", "Upholstered Gray", "Upholstered Navy", "Upholstered Beige"],
-          image: "/main/domy/d7/img-1.jpg"
+          image: "/new/Costa Rica Project Renderings 2.jpg"
         },
         { 
           name: "Nightstands", 
@@ -2781,7 +2786,7 @@ export default function Home() {
           dimensions: "20\" W x 16\" D x 26\" H each",
           materials: "Solid wood, metal hardware, integrated charging technology",
           colors: ["Natural Wood", "Dark Walnut", "White", "Black"],
-          image: "/main/domy/d7/img-2.jpg"
+          image: "/new/Costa Rica Project Renderings 3.jpg"
         },
         { 
           name: "Dresser", 
@@ -2791,7 +2796,7 @@ export default function Home() {
           dimensions: "60\" W x 20\" D x 48\" H",
           materials: "Solid wood construction, mirror glass, quality hardware",
           colors: ["Natural Wood", "White", "Gray", "Two-tone options"],
-          image: "/main/domy/d6/img.jpg"
+          image: "/new/Costa Rica Project Renderings 6.jpg"
         },
         { 
           name: "Wardrobe", 
@@ -2801,7 +2806,7 @@ export default function Home() {
           dimensions: "48\" W x 22\" D x 72\" H",
           materials: "Solid wood frame, metal hanging system, mirror door",
           colors: ["Natural Wood", "Painted White", "Painted Gray", "Sliding door options"],
-          image: "/main/domy/d11/img-1.jpg"
+          image: "/new/Costa Rica Project Renderings 7.jpg"
         },
         { 
           name: "Bedding Set", 
@@ -2811,7 +2816,7 @@ export default function Home() {
           dimensions: "Queen size (fits 60\" x 80\" mattress)",
           materials: "100% organic cotton, GOTS certified, hypoallergenic",
           colors: ["White", "Ivory", "Light Gray", "Sage Green", "Navy Blue"],
-          image: "/main/domy/d11/img-2.jpg"
+          image: "/new/Costa Rica Project Renderings 8.jpg"
         },
       ],
       total: "$4,500",
@@ -3303,6 +3308,7 @@ export default function Home() {
               <li><a href="#pricing" className="hover:text-emerald-600 transition">Pricing</a></li>
               <li><a href="#locations" className="hover:text-emerald-600 transition">Locations</a></li>
               <li><a href="#realtors" className="hover:text-emerald-600 transition">Partners</a></li>
+              <li><Link href="/gallery" className="hover:text-emerald-600 transition">Gallery</Link></li>
               <li><Link href="/contact" className="hover:text-emerald-600 transition">Contact</Link></li>
               <li><Link href="/admin" className="hover:text-emerald-600 transition">Admin</Link></li>
             </ul>
@@ -3721,7 +3727,7 @@ export default function Home() {
             exteriorContent={
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                  <Image src="/main/domy/d10/img-1.jpg" alt="Front View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <Image src="/new/11R Lotus Cafe Render1.jpg" alt="Front View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                   <h3 className="font-bold text-xl text-gray-900 mb-2">Front View</h3>
                   <p className="text-gray-600 mb-3">Majestic entrance with panoramic windows and sustainable design elements.</p>
                   <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -3733,7 +3739,7 @@ export default function Home() {
                 </div>
                 
                 <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                  <Image src="/main/domy/d10/img-2.jpg" alt="Side View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <Image src="/new/11R Lotus Cafe Render2.jpg" alt="Side View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                   <h3 className="font-bold text-xl text-gray-900 mb-2">Side View</h3>
                   <p className="text-gray-600 mb-3">Elegant profile showcasing the dome is aerodynamic design and natural materials.</p>
                   <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -3745,7 +3751,7 @@ export default function Home() {
                 </div>
                 
                 <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                  <Image src="/main/domy/d9/img-1.jpg" alt="Aerial View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <Image src="/new/11R Lotus Cafe Render4.jpg" alt="Aerial View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                   <h3 className="font-bold text-xl text-gray-900 mb-2">Aerial View</h3>
                   <p className="text-gray-600 mb-3">Complete dome structure overview showing the harmonious integration with nature.</p>
                   <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -3760,7 +3766,7 @@ export default function Home() {
             interiorContent={
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                  <Image src="/main/domy/d9/img-2.jpg" alt="Living Area" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <Image src="/new/8R Lotus Render1.jpg" alt="Living Area" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                   <h3 className="font-bold text-xl text-gray-900 mb-2">Living Area</h3>
                   <p className="text-gray-600 mb-3">Spacious open-concept living space with natural light and sustainable materials.</p>
                   <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -3773,7 +3779,7 @@ export default function Home() {
                 </div>
                 
                 <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                  <Image src="/main/domy/d8/img-1.jpg" alt="Kitchen" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <Image src="/new/8R Lotus Render2.jpg" alt="Kitchen" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                   <h3 className="font-bold text-xl text-gray-900 mb-2">Kitchen</h3>
                   <p className="text-gray-600 mb-3">Modern kitchen with energy-efficient appliances and sustainable countertops.</p>
                   <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -3786,7 +3792,7 @@ export default function Home() {
                 </div>
                 
                 <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
-                  <Image src="/main/domy/d7/img-1.jpg" alt="Bedroom" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <Image src="/new/8R Lotus Render3.jpg" alt="Bedroom" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
                   <h3 className="font-bold text-xl text-gray-900 mb-2">Bedroom</h3>
                   <p className="text-gray-600 mb-3">Peaceful bedroom retreat with optimal insulation and natural ventilation.</p>
                   <div className="flex items-center gap-2 text-sm text-teal-600">
@@ -4087,12 +4093,30 @@ export default function Home() {
                     style={{ width: `${100 / processVisibleCards}%` }}
                   >
                     <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 h-full">
-                      {/* Step Header */}
-                      <div className={`bg-gradient-to-br ${step.gradient} p-8 text-white text-center`}>
-                        <div className="text-5xl font-bold mb-2">{step.number}</div>
-                        <div className="text-sm font-semibold mb-2 opacity-90">{step.week}</div>
-                        <div className="text-xl font-bold">{step.title}</div>
-                      </div>
+                      {/* Step Image */}
+                      {step.img && (
+                        <div className="relative w-full h-48 overflow-hidden">
+                          <Image
+                            src={step.img}
+                            alt={step.title}
+                            fill
+                            className="object-cover"
+                          />
+                          <div className={`absolute inset-0 bg-gradient-to-br ${step.gradient} opacity-60`}></div>
+                          <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4">
+                            <div className="text-5xl font-bold mb-2">{step.number}</div>
+                            <div className="text-sm font-semibold mb-2 opacity-90">{step.week}</div>
+                            <div className="text-xl font-bold">{step.title}</div>
+                          </div>
+                        </div>
+                      )}
+                      {!step.img && (
+                        <div className={`bg-gradient-to-br ${step.gradient} p-8 text-white text-center`}>
+                          <div className="text-5xl font-bold mb-2">{step.number}</div>
+                          <div className="text-sm font-semibold mb-2 opacity-90">{step.week}</div>
+                          <div className="text-xl font-bold">{step.title}</div>
+                        </div>
+                      )}
                       
                       {/* Step Content */}
                       <div className="p-6">
