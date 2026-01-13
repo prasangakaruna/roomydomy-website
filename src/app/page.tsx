@@ -1897,7 +1897,7 @@ export default function Home() {
   
   // Background images for the slider - Nature photos for dome building
   const backgroundImages = [
-    "/home-screen.jpg",
+    "/7R Version 1 Exterior1.jpg",
     "/main/aegean/img-1.webp",
     "/main/aegean/img-2.jpg", 
     "/main/aegean/img-3.jpg",
@@ -3328,7 +3328,7 @@ export default function Home() {
             <div 
               className="absolute inset-0 opacity-40"
               style={{
-                backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuA_zu6Hg6c-nVSV1PyThc69Klh6EfzM0ony9sQQPS7g7yga2Fqe6P0GsXy7IKhBajSKxzdIc-aAWJLwvBBMuQY2JTNsaAcKJutcwIg1Hc8mux0PESB4Hd2tt2PtiTOCnuRklq3_gnjHYF6hsseIUKjQircxtFRLjsGLaP5lYPyzfnD8FLOknS_JRYPzxzxbH5UiZEyKlaTgX8KN3aEko0SyUF2pOVrV3sxbq_5ig6XUTDASMH8WvoX0L45i83H2JlZ47-i3wTyDg7I")`,
+                backgroundImage: `url("/7R Version 1 Exterior1.jpg")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
