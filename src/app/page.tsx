@@ -16,7 +16,7 @@ interface Dome {
 }
 
 // Dome Details Page Component (formerly modal)
-function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen }: { open: boolean; onClose: () => void; dome: Dome | null; setIs3DModalOpen: (open: boolean) => void }) {
+function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen, onPackageSelect }: { open: boolean; onClose: () => void; dome: Dome | null; setIs3DModalOpen: (open: boolean) => void; onPackageSelect: (packageId: string) => void }) {
   const [tab, setTab] = useState('overview');
   const [layoutTab, setLayoutTab] = useState('luxury');
   if (!open || !dome) return null;
@@ -250,16 +250,36 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen }: { open: bool
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               {/* Living Room */}
               <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="bg-emerald-100 text-emerald-600 rounded-full p-2">
-                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-emerald-100 text-emerald-600 rounded-full p-2">
+                      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                        <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-900">Living Room</h3>
+                      <p className="text-sm text-gray-500">Comfortable seating & entertainment</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => onPackageSelect("living-room")}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full p-2 transition-colors"
+                    aria-label="View package details"
+                    title="View what's included in this package"
+                  >
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                  </span>
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-900">Living Room</h3>
-                    <p className="text-sm text-gray-500">Comfortable seating & entertainment</p>
+                  </button>
+                </div>
+                <div className="mb-3">
+                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>5 items included</span>
                   </div>
                 </div>
                 <div className="space-y-3">
@@ -275,24 +295,60 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen }: { open: bool
                     <span className="text-gray-700">TV Stand</span>
                     <span className="text-teal-600 font-semibold">$600</span>
                   </div>
+                  <div className="text-xs text-gray-500 pt-1 border-t border-gray-100">
+                    <button
+                      onClick={() => onPackageSelect("living-room")}
+                      className="text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1"
+                    >
+                      <span>+ 2 more items</span>
+                      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow-md shadow-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5 mt-4 transition-all duration-200">Select Package</button>
+                <button 
+                  onClick={() => onPackageSelect("living-room")}
+                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow-md shadow-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5 mt-4 transition-all duration-200"
+                >
+                  Select Package
+                </button>
               </div>
 
               {/* Kitchen & Dining */}
               <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="bg-blue-100 text-blue-700 rounded-full p-2">
-                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                      <path d="M3 7h18v10H3z" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M3 7l2-4h14l2 4" stroke="currentColor" strokeWidth="2"/>
-                      <circle cx="9" cy="12" r="1" fill="currentColor"/>
-                      <circle cx="15" cy="12" r="1" fill="currentColor"/>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-blue-100 text-blue-700 rounded-full p-2">
+                      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                        <path d="M3 7h18v10H3z" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M3 7l2-4h14l2 4" stroke="currentColor" strokeWidth="2"/>
+                        <circle cx="9" cy="12" r="1" fill="currentColor"/>
+                        <circle cx="15" cy="12" r="1" fill="currentColor"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-900">Kitchen & Dining</h3>
+                      <p className="text-sm text-gray-500">Functional & stylish dining</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => onPackageSelect("kitchen-dining")}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full p-2 transition-colors"
+                    aria-label="View package details"
+                    title="View what's included in this package"
+                  >
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                  </span>
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-900">Kitchen & Dining</h3>
-                    <p className="text-sm text-gray-500">Functional & stylish dining</p>
+                  </button>
+                </div>
+                <div className="mb-3">
+                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>5 items included</span>
                   </div>
                 </div>
                 <div className="space-y-3">
@@ -308,23 +364,59 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen }: { open: bool
                     <span className="text-gray-700">Bar Stools</span>
                     <span className="text-teal-600 font-semibold">$400</span>
                   </div>
+                  <div className="text-xs text-gray-500 pt-1 border-t border-gray-100">
+                    <button
+                      onClick={() => onPackageSelect("kitchen-dining")}
+                      className="text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1"
+                    >
+                      <span>+ 2 more items</span>
+                      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow-md shadow-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5 mt-4 transition-all duration-200">Select Package</button>
+                <button 
+                  onClick={() => onPackageSelect("kitchen-dining")}
+                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow-md shadow-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5 mt-4 transition-all duration-200"
+                >
+                  Select Package
+                </button>
               </div>
 
               {/* Bedroom */}
               <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="bg-purple-100 text-purple-700 rounded-full p-2">
-                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M7 11h10" stroke="currentColor" strokeWidth="2"/>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-purple-100 text-purple-700 rounded-full p-2">
+                      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                        <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M7 11h10" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-900">Bedroom</h3>
+                      <p className="text-sm text-gray-500">Restful & organized spaces</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => onPackageSelect("bedroom")}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full p-2 transition-colors"
+                    aria-label="View package details"
+                    title="View what's included in this package"
+                  >
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                  </span>
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-900">Bedroom</h3>
-                    <p className="text-sm text-gray-500">Restful & organized spaces</p>
+                  </button>
+                </div>
+                <div className="mb-3">
+                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>5 items included</span>
                   </div>
                 </div>
                 <div className="space-y-3">
@@ -340,8 +432,24 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen }: { open: bool
                     <span className="text-gray-700">Dresser</span>
                     <span className="text-teal-600 font-semibold">$900</span>
                   </div>
+                  <div className="text-xs text-gray-500 pt-1 border-t border-gray-100">
+                    <button
+                      onClick={() => onPackageSelect("bedroom")}
+                      className="text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1"
+                    >
+                      <span>+ 2 more items</span>
+                      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow-md shadow-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5 mt-4 transition-all duration-200">Select Package</button>
+                <button 
+                  onClick={() => onPackageSelect("bedroom")}
+                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow-md shadow-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5 mt-4 transition-all duration-200"
+                >
+                  Select Package
+                </button>
               </div>
             </div>
 
@@ -1865,6 +1973,77 @@ export default function Home() {
   const [selectedDome, setSelectedDome] = useState<Dome | null>(null);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [visibleCards, setVisibleCards] = useState(3);
+  const [processSliderIndex, setProcessSliderIndex] = useState(0);
+  const [processVisibleCards, setProcessVisibleCards] = useState(1);
+
+  // Process steps data
+  const processSteps = [
+    {
+      number: 1,
+      week: "Week 1",
+      title: "Initial Consultation",
+      gradient: "from-emerald-500 to-teal-500",
+      description: "Free consultation to discuss your vision, budget, and site. We'll provide preliminary recommendations and pricing.",
+      items: [
+        "Virtual or in-person meeting",
+        "Site assessment (if available)",
+        "Budget discussion",
+        "Design preferences"
+      ]
+    },
+    {
+      number: 2,
+      week: "Week 2-3",
+      title: "Design & Planning",
+      gradient: "from-teal-500 to-cyan-500",
+      description: "Our team creates detailed plans, handles permits, and finalizes customizations with you.",
+      items: [
+        "Custom design renderings",
+        "Permit applications",
+        "Material selections",
+        "Contract finalization"
+      ]
+    },
+    {
+      number: 3,
+      week: "Week 4-9",
+      title: "Manufacturing",
+      gradient: "from-cyan-500 to-blue-500",
+      description: "Your dome home is precision-manufactured in our facility with quality checks at every stage.",
+      items: [
+        "Component fabrication",
+        "Quality inspections",
+        "Weather-resistant treatments",
+        "Packaging for transport"
+      ]
+    },
+    {
+      number: 4,
+      week: "Week 10-11",
+      title: "Site Prep & Installation",
+      gradient: "from-blue-500 to-indigo-500",
+      description: "Professional site preparation followed by expert installation of your new home.",
+      items: [
+        "Foundation preparation",
+        "Utility connections",
+        "Dome assembly (3-5 days)",
+        "Initial systems testing"
+      ]
+    },
+    {
+      number: 5,
+      week: "Week 12",
+      title: "Final Inspection & Handover",
+      gradient: "from-indigo-500 to-purple-500",
+      description: "Complete walkthrough, inspections, and you receive keys to your new eco-friendly home!",
+      items: [
+        "Building inspections",
+        "Systems demonstration",
+        "Documentation handover",
+        "Move-in ready!"
+      ]
+    }
+  ];
 
   useEffect(() => {
     function handleResize() {
@@ -1875,6 +2054,17 @@ export default function Home() {
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    function handleProcessResize() {
+      if (window.innerWidth < 768) setProcessVisibleCards(1);
+      else if (window.innerWidth < 1024) setProcessVisibleCards(2);
+      else setProcessVisibleCards(3);
+    }
+    handleProcessResize();
+    window.addEventListener('resize', handleProcessResize);
+    return () => window.removeEventListener('resize', handleProcessResize);
   }, []);
 
   // 3D View State Management
@@ -2367,9 +2557,294 @@ export default function Home() {
   };
 
   const [houseTab, setHouseTab] = useState<'aFrame' | 'box'>("aFrame");
+  const [packageModalOpen, setPackageModalOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
 
-  // ... existing code ...
+  // Package details data
+  const packageDetails: Record<string, {
+    id: string;
+    title: string;
+    subtitle: string;
+    images?: string[];
+    items: { 
+      name: string; 
+      price: string; 
+      description?: string;
+      specifications?: string[];
+      dimensions?: string;
+      materials?: string;
+      colors?: string[];
+      image?: string;
+    }[];
+    total: string;
+    description: string;
+    features: string[];
+    warranty?: string;
+    delivery?: string;
+    installation?: string;
+    careInstructions?: string;
+    returnPolicy?: string;
+    paymentOptions?: string[];
+    savings?: string;
+  }> = {
+    "living-room": {
+      id: "living-room",
+      title: "Living Room",
+      subtitle: "Comfortable seating & entertainment",
+      images: [
+        "/main/domy/d8/img-1.jpg",
+        "/main/domy/d8/img-2.jpg",
+        "/main/domy/d7/img-1.jpg",
+        "/main/domy/d6/img.jpg",
+      ],
+      items: [
+        { 
+          name: "Sofa Set", 
+          price: "$2,500", 
+          description: "Premium 3-seater sofa with matching loveseat, made from sustainable materials",
+          specifications: ["3-seater sofa (84\" x 36\" x 34\")", "Matching loveseat (60\" x 36\" x 34\")", "High-density foam cushions", "Removable, washable covers"],
+          dimensions: "Sofa: 84\" W x 36\" D x 34\" H | Loveseat: 60\" W x 36\" D x 34\" H",
+          materials: "FSC-certified hardwood frame, organic cotton fabric, recycled foam cushions",
+          colors: ["Charcoal Gray", "Navy Blue", "Forest Green", "Beige", "Custom colors available"],
+          image: "/main/domy/d8/img-1.jpg"
+        },
+        { 
+          name: "Coffee Table", 
+          price: "$800", 
+          description: "Modern coffee table with storage, eco-friendly wood finish",
+          specifications: ["Hidden storage compartment", "Adjustable shelf height", "Cable management system"],
+          dimensions: "48\" W x 24\" D x 18\" H",
+          materials: "Reclaimed wood top, metal legs with eco-friendly finish",
+          colors: ["Natural Wood", "Dark Walnut", "Oak Finish"],
+          image: "/main/domy/d7/img-1.jpg"
+        },
+        { 
+          name: "TV Stand", 
+          price: "$600", 
+          description: "Wall-mounted TV stand with cable management system",
+          specifications: ["Supports TVs up to 75\"", "Integrated cable management", "Adjustable shelves", "LED backlighting"],
+          dimensions: "60\" W x 16\" D x 24\" H",
+          materials: "Bamboo composite, metal brackets",
+          colors: ["Black", "White", "Natural Bamboo"],
+          image: "/main/domy/d6/img.jpg"
+        },
+        { 
+          name: "Area Rug", 
+          price: "$400", 
+          description: "Large eco-friendly area rug, made from recycled materials",
+          specifications: ["8' x 10' size", "Stain-resistant treatment", "Non-slip backing", "Machine washable"],
+          dimensions: "8' x 10' (96\" x 120\")",
+          materials: "100% recycled PET fibers, natural latex backing",
+          colors: ["Gray Geometric", "Blue Waves", "Green Nature", "Beige Minimalist"],
+          image: "/main/domy/d8/img-2.jpg"
+        },
+        { 
+          name: "Lighting Set", 
+          price: "$300", 
+          description: "LED lighting package with dimmer controls",
+          specifications: ["3 floor lamps", "2 table lamps", "Smart dimmer switches", "Energy-efficient LED bulbs"],
+          dimensions: "Floor lamps: 60\" H | Table lamps: 24\" H",
+          materials: "Recycled metal, LED technology",
+          colors: ["Brushed Nickel", "Matte Black", "Brass"],
+          image: "/main/domy/d7/img-2.jpg"
+        },
+      ],
+      total: "$4,600",
+      description: "Transform your living space with our complete living room package. All furniture is sustainably sourced and designed for comfort and style. Perfect for entertaining guests or relaxing with family. This comprehensive package includes everything you need to create a beautiful, functional living room that reflects your eco-conscious values.",
+      features: [
+        "Sustainable and eco-friendly materials",
+        "Modern, timeless design",
+        "Easy to assemble",
+        "5-year warranty on all items",
+        "Free delivery and setup",
+        "Customizable color options",
+        "Professional interior design consultation included",
+        "Compatible with smart home systems",
+      ],
+      warranty: "5 years comprehensive warranty covering defects, structural issues, and material quality",
+      delivery: "4-6 weeks from order confirmation. Free white-glove delivery and setup service included.",
+      installation: "Professional assembly and setup included. Our team will arrange furniture, connect lighting, and ensure everything is perfectly positioned.",
+      careInstructions: "All items come with detailed care instructions. Most pieces require minimal maintenance. Covers are machine washable, and wood surfaces can be cleaned with eco-friendly products.",
+      returnPolicy: "30-day satisfaction guarantee. If you're not completely happy, we'll arrange pickup and provide a full refund.",
+      paymentOptions: ["Full payment (5% discount)", "12-month interest-free financing", "24-month financing available", "Pay in 4 installments"],
+      savings: "Save $300 when purchasing as a package (vs. individual items)",
+    },
+    "kitchen-dining": {
+      id: "kitchen-dining",
+      title: "Kitchen & Dining",
+      subtitle: "Functional & stylish dining",
+      images: [
+        "/main/domy/d9/img-1.jpg",
+        "/main/domy/d9/img-2.jpg",
+        "/main/domy/d10/img-1.jpg",
+        "/main/domy/d10/img-2.jpg",
+      ],
+      items: [
+        { 
+          name: "Dining Table Set", 
+          price: "$1,800", 
+          description: "Expandable dining table with 6 matching chairs, seats up to 8",
+          specifications: ["Extends from 60\" to 96\"", "6 upholstered chairs included", "Leaf storage included", "Sturdy construction"],
+          dimensions: "Table: 60\"-96\" W x 40\" D x 30\" H | Chairs: 18\" W x 20\" D x 40\" H",
+          materials: "FSC-certified solid wood, organic cotton seat cushions",
+          colors: ["Natural Oak", "Dark Walnut", "White Oak", "Custom stain available"],
+          image: "/main/domy/d9/img-1.jpg"
+        },
+        { 
+          name: "Kitchen Island", 
+          price: "$1,200", 
+          description: "Mobile kitchen island with storage and butcher block top",
+          specifications: ["2 large drawers", "2 cabinet doors", "Butcher block top", "Locking casters", "Towel bar"],
+          dimensions: "48\" W x 24\" D x 36\" H",
+          materials: "Solid wood construction, bamboo butcher block top, metal hardware",
+          colors: ["Natural Wood", "Painted White", "Painted Gray", "Two-tone options"],
+          image: "/main/domy/d10/img-1.jpg"
+        },
+        { 
+          name: "Bar Stools", 
+          price: "$400", 
+          description: "Set of 2 adjustable bar stools with comfortable seating",
+          specifications: ["Height adjustable (24\"-30\")", "360° swivel", "Footrest included", "Ergonomic design"],
+          dimensions: "18\" W x 18\" D x 24\"-30\" H (adjustable)",
+          materials: "Metal frame, sustainable wood seat, eco-friendly upholstery",
+          colors: ["Black Frame / Natural Seat", "Chrome Frame / Gray Seat", "Brass Frame / Brown Seat"],
+          image: "/main/domy/d9/img-2.jpg"
+        },
+        { 
+          name: "Dining Storage", 
+          price: "$500", 
+          description: "Sideboard with drawers and cabinets for dining essentials",
+          specifications: ["4 drawers", "2 cabinet doors", "Wine storage", "Display shelf"],
+          dimensions: "60\" W x 18\" D x 32\" H",
+          materials: "Solid wood, soft-close hardware, glass display shelf",
+          colors: ["Natural Wood", "Painted", "Mixed finish"],
+          image: "/main/domy/d10/img-2.jpg"
+        },
+        { 
+          name: "Kitchen Accessories", 
+          price: "$200", 
+          description: "Complete set of eco-friendly kitchen accessories",
+          specifications: ["Bamboo cutting boards (3 sizes)", "Stainless steel utensil set", "Eco-friendly storage containers", "Reusable placemats"],
+          dimensions: "Various sizes",
+          materials: "Bamboo, stainless steel, glass, silicone",
+          colors: ["Natural", "Assorted"],
+          image: "/main/domy/d9/img-1.jpg"
+        },
+      ],
+      total: "$4,100",
+      description: "Create the perfect dining experience with our kitchen and dining package. All pieces are designed for functionality and style, made from sustainable materials that will last for years. This package transforms your dining area into a welcoming space for family meals and entertaining.",
+      features: [
+        "Expandable table for flexibility",
+        "Easy to clean surfaces",
+        "Sustainable wood materials",
+        "5-year warranty",
+        "Free delivery and assembly",
+        "Space-saving designs",
+        "Professional installation included",
+        "Compatible with various kitchen styles",
+      ],
+      warranty: "5 years comprehensive warranty on all furniture pieces",
+      delivery: "4-6 weeks from order. Free delivery and professional assembly included.",
+      installation: "Our team will assemble all furniture, position items, and ensure proper setup. Table extension mechanism will be tested and demonstrated.",
+      careInstructions: "Wood surfaces should be treated with food-safe finishes. All items include detailed maintenance guides. Butcher block requires periodic oiling.",
+      returnPolicy: "30-day return policy. Items must be in original condition. Free pickup for returns.",
+      paymentOptions: ["Full payment (5% discount)", "12-month interest-free financing", "24-month financing", "Pay in 4 installments"],
+      savings: "Save $250 when purchasing as a package",
+    },
+    "bedroom": {
+      id: "bedroom",
+      title: "Bedroom",
+      subtitle: "Restful & organized spaces",
+      images: [
+        "/main/domy/d7/img-1.jpg",
+        "/main/domy/d7/img-2.jpg",
+        "/main/domy/d6/img.jpg",
+        "/main/domy/d11/img-1.jpg",
+      ],
+      items: [
+        { 
+          name: "Bed Frame", 
+          price: "$1,500", 
+          description: "Queen-size platform bed frame with headboard, sustainable wood",
+          specifications: ["Queen size (60\" x 80\")", "Upholstered headboard", "No box spring needed", "Under-bed storage space", "Slat support system"],
+          dimensions: "60\" W x 80\" L x 42\" H (with headboard)",
+          materials: "FSC-certified hardwood, organic cotton headboard, metal slats",
+          colors: ["Natural Wood", "Upholstered Gray", "Upholstered Navy", "Upholstered Beige"],
+          image: "/main/domy/d7/img-1.jpg"
+        },
+        { 
+          name: "Nightstands", 
+          price: "$600", 
+          description: "Set of 2 matching nightstands with drawers and USB charging",
+          specifications: ["2 drawers each", "USB charging ports (2 per nightstand)", "Cable management", "Soft-close drawers", "Top shelf"],
+          dimensions: "20\" W x 16\" D x 26\" H each",
+          materials: "Solid wood, metal hardware, integrated charging technology",
+          colors: ["Natural Wood", "Dark Walnut", "White", "Black"],
+          image: "/main/domy/d7/img-2.jpg"
+        },
+        { 
+          name: "Dresser", 
+          price: "$900", 
+          description: "6-drawer dresser with mirror, ample storage space",
+          specifications: ["6 spacious drawers", "Full-length mirror", "Soft-close mechanism", "Jewelry drawer organizer", "Hanging rod for accessories"],
+          dimensions: "60\" W x 20\" D x 48\" H",
+          materials: "Solid wood construction, mirror glass, quality hardware",
+          colors: ["Natural Wood", "White", "Gray", "Two-tone options"],
+          image: "/main/domy/d6/img.jpg"
+        },
+        { 
+          name: "Wardrobe", 
+          price: "$1,200", 
+          description: "Freestanding wardrobe with hanging space and shelves",
+          specifications: ["Full-length hanging rod", "2 adjustable shelves", "Shoe storage", "Drawer at bottom", "Full-length mirror on door"],
+          dimensions: "48\" W x 22\" D x 72\" H",
+          materials: "Solid wood frame, metal hanging system, mirror door",
+          colors: ["Natural Wood", "Painted White", "Painted Gray", "Sliding door options"],
+          image: "/main/domy/d11/img-1.jpg"
+        },
+        { 
+          name: "Bedding Set", 
+          price: "$300", 
+          description: "Complete organic cotton bedding set (sheets, comforter, pillows)",
+          specifications: ["Queen size fitted sheet", "Queen size flat sheet", "2 pillowcases", "Comforter/duvet", "2 decorative pillows", "Duvet cover"],
+          dimensions: "Queen size (fits 60\" x 80\" mattress)",
+          materials: "100% organic cotton, GOTS certified, hypoallergenic",
+          colors: ["White", "Ivory", "Light Gray", "Sage Green", "Navy Blue"],
+          image: "/main/domy/d11/img-2.jpg"
+        },
+      ],
+      total: "$4,500",
+      description: "Design your perfect bedroom retreat with our complete bedroom package. All furniture is designed for comfort, organization, and peaceful sleep. Made from sustainable materials for a healthy living environment. This package creates a serene sanctuary where you can rest and recharge.",
+      features: [
+        "Sustainable and non-toxic materials",
+        "Ample storage solutions",
+        "Modern, calming design",
+        "5-year warranty",
+        "Free delivery and setup",
+        "Organic bedding included",
+        "USB charging convenience",
+        "Professional space planning consultation",
+      ],
+      warranty: "5 years comprehensive warranty covering all furniture pieces and hardware",
+      delivery: "4-6 weeks from order. Free white-glove delivery and setup service.",
+      installation: "Professional assembly included. Our team will set up all furniture, install hardware, and arrange items for optimal bedroom layout.",
+      careInstructions: "Wood furniture requires minimal maintenance. Organic bedding is machine washable. All care instructions provided with delivery.",
+      returnPolicy: "30-day satisfaction guarantee. Full refund if not completely satisfied. Free pickup service.",
+      paymentOptions: ["Full payment (5% discount)", "12-month interest-free financing", "24-month financing", "Pay in 4 installments"],
+      savings: "Save $350 when purchasing as a package (includes free bedding set worth $300)",
+    },
+  };
+
+  const handlePackageSelect = (packageId: string) => {
+    setSelectedPackage(packageId);
+    setPackageModalOpen(true);
+  };
+
+  const closePackageModal = () => {
+    setPackageModalOpen(false);
+    setSelectedPackage(null);
+  };
 
   {/* Section: Explore Our House Types */}
   <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white overflow-hidden">
@@ -2464,6 +2939,7 @@ export default function Home() {
       badge: "Available",
       badgeClass: "absolute top-4 right-4 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full",
       title: "Monteverde Retreat",
+      slug: "monteverde-retreat",
       location: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#06b6d4' strokeWidth='2'/></svg> Monteverde, Costa Rica</>,
       climate: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#fbbf24' strokeWidth='2'/></svg> Tropical Climate</>,
       description: "Immerse yourself in biodiversity. Our eco-domes are inspired by the rich flora, offering an unparalleled sustainable living experience in the heart of Costa Rica's cloud forest.",
@@ -2480,6 +2956,7 @@ export default function Home() {
       badge: "Available",
       badgeClass: "absolute top-4 right-4 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full",
       title: "Adriatic Haven",
+      slug: "adriatic-haven",
       location: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#0ea5e9' strokeWidth='2'/></svg> Dubrovnik, Croatia</>,
       climate: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#fbbf24' strokeWidth='2'/></svg> Mediterranean Climate</>,
       description: "Perched on the stunning Adriatic coastline, these domes are designed for sea breezes and historic cultural sites. Experience the perfect blend of luxury and Mediterranean charm.",
@@ -2496,6 +2973,7 @@ export default function Home() {
       badge: "Available",
       badgeClass: "absolute top-4 right-4 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full",
       title: "Algarve Coastal Village",
+      slug: "algarve-coastal-village",
       location: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#22c55e' strokeWidth='2'/></svg> Lagos, Portugal</>,
       climate: <><svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#fbbf24' strokeWidth='2'/></svg> Mediterranean Climate</>,
       description: "Beachfront eco-village with sustainable living and direct access to golden sand beaches and the crystal blue waters of Portugal's famous Algarve region.",
@@ -2555,7 +3033,251 @@ export default function Home() {
 
   // If modal is open, show only the dome details page
   if (modalOpen && selectedDome) {
-    return <DomeDetailsPage open={modalOpen} onClose={() => setModalOpen(false)} dome={selectedDome} setIs3DModalOpen={setIs3DModalOpen} />;
+    return (
+      <>
+        <DomeDetailsPage open={modalOpen} onClose={() => setModalOpen(false)} dome={selectedDome} setIs3DModalOpen={setIs3DModalOpen} onPackageSelect={handlePackageSelect} />
+        {/* Package Details Modal - rendered even when dome modal is open */}
+        {packageModalOpen && selectedPackage && packageDetails[selectedPackage] && (
+          <div className="fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4 animate-fade-in" onClick={closePackageModal}>
+            <div 
+              className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="sticky top-0 bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-6 rounded-t-2xl">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-white/20 rounded-full p-3">
+                      {selectedPackage === "living-room" && (
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" className="text-white">
+                          <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                          <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                        </svg>
+                      )}
+                      {selectedPackage === "kitchen-dining" && (
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" className="text-white">
+                          <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                          <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                        </svg>
+                      )}
+                      {selectedPackage === "bedroom" && (
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" className="text-white">
+                          <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                          <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                        </svg>
+                      )}
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold">{packageDetails[selectedPackage].title}</h2>
+                      <p className="text-white/80 text-sm">{packageDetails[selectedPackage].subtitle}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={closePackageModal}
+                    className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors"
+                    aria-label="Close"
+                  >
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              {/* Modal Content */}
+              <div className="p-6">
+                {/* Main Hero Image */}
+                {packageDetails[selectedPackage].images && packageDetails[selectedPackage].images.length > 0 && (
+                  <div className="mb-6">
+                    <div className="relative w-full h-64 md:h-80 rounded-xl overflow-hidden border border-gray-200 shadow-lg mb-4">
+                      <Image
+                        src={packageDetails[selectedPackage].images[0]}
+                        alt={`${packageDetails[selectedPackage].title} main view`}
+                        fill
+                        className="object-cover"
+                        priority
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                      <div className="absolute bottom-4 left-4 text-white">
+                        <h3 className="text-2xl font-bold mb-1">{packageDetails[selectedPackage].title} Package</h3>
+                        <p className="text-white/90">{packageDetails[selectedPackage].subtitle}</p>
+                      </div>
+                    </div>
+                    
+                    {/* Additional Images Gallery */}
+                    {packageDetails[selectedPackage].images.length > 1 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3">More Views</h3>
+                        <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+                          {packageDetails[selectedPackage].images.slice(1).map((img, index) => (
+                            <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:border-teal-400 transition-colors cursor-pointer group">
+                              <Image
+                                src={img}
+                                alt={`${packageDetails[selectedPackage].title} view ${index + 2}`}
+                                fill
+                                className="object-cover group-hover:scale-105 transition-transform duration-200"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Package Description */}
+                <div className="mb-6">
+                  <p className="text-gray-700 leading-relaxed">{packageDetails[selectedPackage].description}</p>
+                </div>
+
+                {/* Items List */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">What's Included</h3>
+                  <div className="space-y-4">
+                    {packageDetails[selectedPackage].items.map((item, idx) => (
+                      <div key={idx} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div className="flex gap-4">
+                          {/* Item Image */}
+                          {item.image && (
+                            <div className="flex-shrink-0">
+                              <div className="relative w-32 h-32 rounded-lg overflow-hidden">
+                                <Image
+                                  src={item.image}
+                                  alt={item.name}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            </div>
+                          )}
+                          {/* Item Details */}
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between mb-2">
+                              <div>
+                                <h4 className="font-semibold text-gray-900 text-lg">{item.name}</h4>
+                                <p className="text-teal-600 font-bold text-xl mt-1">{item.price}</p>
+                              </div>
+                            </div>
+                            {item.description && (
+                              <p className="text-gray-600 text-sm mb-2">{item.description}</p>
+                            )}
+                            {item.specifications && item.specifications.length > 0 && (
+                              <div className="mb-2">
+                                <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Specifications:</p>
+                                <ul className="text-sm text-gray-700 space-y-1">
+                                  {item.specifications.map((spec, specIdx) => (
+                                    <li key={specIdx} className="flex items-start gap-2">
+                                      <span className="text-teal-500 mt-1">•</span>
+                                      <span>{spec}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            {item.dimensions && (
+                              <p className="text-xs text-gray-600 mb-1"><span className="font-semibold">Dimensions:</span> {item.dimensions}</p>
+                            )}
+                            {item.materials && (
+                              <p className="text-xs text-gray-600 mb-1"><span className="font-semibold">Materials:</span> {item.materials}</p>
+                            )}
+                            {item.colors && item.colors.length > 0 && (
+                              <div className="mt-2">
+                                <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Available Colors:</p>
+                                <div className="flex flex-wrap gap-2">
+                                  {item.colors.map((color, colorIdx) => (
+                                    <span key={colorIdx} className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">{color}</span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Package Total */}
+                <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-xl p-6 mb-6">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xl font-bold text-gray-900">Package Total:</span>
+                    <span className="text-3xl font-extrabold text-teal-600">{packageDetails[selectedPackage].total}</span>
+                  </div>
+                  {packageDetails[selectedPackage].savings && (
+                    <p className="text-sm text-emerald-600 mt-2 text-right">💰 {packageDetails[selectedPackage].savings}</p>
+                  )}
+                </div>
+
+                {/* Features */}
+                {packageDetails[selectedPackage].features && packageDetails[selectedPackage].features.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Package Features</h3>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {packageDetails[selectedPackage].features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-gray-700">
+                          <span className="text-teal-500 mt-1">✓</span>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Additional Information */}
+                <div className="space-y-4">
+                  {packageDetails[selectedPackage].warranty && (
+                    <div className="border-l-4 border-teal-500 pl-4">
+                      <h4 className="font-semibold text-gray-900 mb-1">Warranty</h4>
+                      <p className="text-sm text-gray-600">{packageDetails[selectedPackage].warranty}</p>
+                    </div>
+                  )}
+                  {packageDetails[selectedPackage].delivery && (
+                    <div className="border-l-4 border-emerald-500 pl-4">
+                      <h4 className="font-semibold text-gray-900 mb-1">Delivery</h4>
+                      <p className="text-sm text-gray-600">{packageDetails[selectedPackage].delivery}</p>
+                    </div>
+                  )}
+                  {packageDetails[selectedPackage].installation && (
+                    <div className="border-l-4 border-teal-500 pl-4">
+                      <h4 className="font-semibold text-gray-900 mb-1">Installation</h4>
+                      <p className="text-sm text-gray-600">{packageDetails[selectedPackage].installation}</p>
+                    </div>
+                  )}
+                  {packageDetails[selectedPackage].careInstructions && (
+                    <div className="border-l-4 border-emerald-500 pl-4">
+                      <h4 className="font-semibold text-gray-900 mb-1">Care Instructions</h4>
+                      <p className="text-sm text-gray-600">{packageDetails[selectedPackage].careInstructions}</p>
+                    </div>
+                  )}
+                  {packageDetails[selectedPackage].returnPolicy && (
+                    <div className="border-l-4 border-teal-500 pl-4">
+                      <h4 className="font-semibold text-gray-900 mb-1">Return Policy</h4>
+                      <p className="text-sm text-gray-600">{packageDetails[selectedPackage].returnPolicy}</p>
+                    </div>
+                  )}
+                  {packageDetails[selectedPackage].paymentOptions && packageDetails[selectedPackage].paymentOptions!.length > 0 && (
+                    <div className="border-l-4 border-emerald-500 pl-4">
+                      <h4 className="font-semibold text-gray-900 mb-1">Payment Options</h4>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {packageDetails[selectedPackage].paymentOptions!.map((option, idx) => (
+                          <span key={idx} className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">{option}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* CTA Button */}
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200">
+                    Select This Package
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
   }
 
   return (
@@ -2678,7 +3400,7 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-6xl">
           {/* Card 1 */}
-          <div className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg transition-all duration-200">
+          <Link href="/passive-income" className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg hover:border-emerald-300 transition-all duration-200 cursor-pointer">
             <span className="bg-teal-100 text-teal-600 rounded-full p-4 mb-2">
               <svg width='32' height='32' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth='2'>
                 <path strokeLinecap='round' strokeLinejoin='round' d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' />
@@ -2686,9 +3408,9 @@ export default function Home() {
             </span>
             <h3 className="font-bold text-lg text-gray-900">Passive Income</h3>
             <p className="text-gray-600 text-sm">Earn up to $50k/yr renting your dome when you&apos;re away, fully managed hassle-free.</p>
-          </div>
+          </Link>
           {/* Card 2 */}
-          <div className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg transition-all duration-200">
+          <Link href="/self-sustaining" className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg hover:border-emerald-300 transition-all duration-200 cursor-pointer">
             <span className="bg-teal-100 text-teal-600 rounded-full p-4 mb-2">
               <svg width='32' height='32' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth='2'>
                 <path strokeLinecap='round' strokeLinejoin='round' d='M13 10V3L4 14h7v7l9-11h-7z' />
@@ -2696,9 +3418,9 @@ export default function Home() {
             </span>
             <h3 className="font-bold text-lg text-gray-900">Self-Sustaining</h3>
             <p className="text-gray-600 text-sm">Live off-grid with solar energy systems that power your entire home sustainably.</p>
-          </div>
+          </Link>
           {/* Card 3 */}
-          <div className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg transition-all duration-200">
+          <Link href="/stunning-locations" className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg hover:border-emerald-300 transition-all duration-200 cursor-pointer">
             <span className="bg-teal-100 text-teal-600 rounded-full p-4 mb-2">
               <svg width='32' height='32' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth='2'>
                 <path strokeLinecap='round' strokeLinejoin='round' d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' />
@@ -2707,9 +3429,9 @@ export default function Home() {
             </span>
             <h3 className="font-bold text-lg text-gray-900">Stunning Locations</h3>
             <p className="text-gray-600 text-sm">Be nestled in the most scenic and desirable spots, far from the hustle.</p>
-          </div>
+          </Link>
           {/* Card 4 */}
-          <div className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg transition-all duration-200">
+          <Link href="/personal-sanctuary" className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center gap-3 border border-gray-100 hover:shadow-lg hover:border-emerald-300 transition-all duration-200 cursor-pointer">
             <span className="bg-teal-100 text-teal-600 rounded-full p-4 mb-2">
               <svg width='32' height='32' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth='2'>
                 <path strokeLinecap='round' strokeLinejoin='round' d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' />
@@ -2717,6 +3439,162 @@ export default function Home() {
             </span>
             <h3 className="font-bold text-lg text-gray-900">Personal Sanctuary</h3>
             <p className="text-gray-600 text-sm">Indulge in your private escape where solitude and peace reign supreme.</p>
+          </Link>
+        </div>
+      </section>
+
+      {/* Section: Build Your Perfect Eco Home */}
+      <section id="eco-home" className="relative z-15 flex flex-col items-center justify-center py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl w-full px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto flex flex-col items-center mb-14">
+            <div className="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 text-teal-600 font-semibold text-sm">
+              Sustainability Features
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 text-center leading-tight">
+              Build Your Perfect <span className="text-teal-600">Eco Home</span>
+            </h2>
+            <p className="text-gray-600 text-center max-w-3xl mb-8 text-lg">
+              Our revolutionary dome homes combine cutting-edge sustainability technology with unparalleled comfort and customization options.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {/* Card 1: Carbon Negative Construction */}
+            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col">
+              <div className="mb-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="text-emerald-600">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Carbon Negative Construction</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Our domes actively remove CO2 from the atmosphere during construction
+                </p>
+              </div>
+              <div className="mt-auto pt-4">
+                <Link href="/carbon-negative" className="text-teal-600 font-semibold text-sm hover:text-teal-700 flex items-center gap-2 transition-colors">
+                  More Details
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 2: Energy Independence */}
+            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col">
+              <div className="mb-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="text-emerald-600">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Energy Independence</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Integrated solar systems and energy storage for complete self-sufficiency
+                </p>
+              </div>
+              <div className="mt-auto pt-4">
+                <Link href="/self-sustaining" className="text-teal-600 font-semibold text-sm hover:text-teal-700 flex items-center gap-2 transition-colors">
+                  More Details
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 3: Water Self-Sufficiency */}
+            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col">
+              <div className="mb-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="text-emerald-600">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Water Self-Sufficiency</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Advanced rainwater harvesting and greywater recycling systems
+                </p>
+              </div>
+              <div className="mt-auto pt-4">
+                <Link href="/water-self-sufficiency" className="text-teal-600 font-semibold text-sm hover:text-teal-700 flex items-center gap-2 transition-colors">
+                  More Details
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 4: Circular Design */}
+            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col">
+              <div className="mb-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="text-emerald-600">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Circular Design</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  100% recyclable materials with cradle-to-cradle lifecycle planning
+                </p>
+              </div>
+              <div className="mt-auto pt-4">
+                <Link href="/circular-design" className="text-teal-600 font-semibold text-sm hover:text-teal-700 flex items-center gap-2 transition-colors">
+                  More Details
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 5: Natural Climate Control */}
+            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col">
+              <div className="mb-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="text-emerald-600">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Natural Climate Control</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Passive design leverages dome geometry for optimal comfort
+                </p>
+              </div>
+              <div className="mt-auto pt-4">
+                <Link href="/natural-climate-control" className="text-teal-600 font-semibold text-sm hover:text-teal-700 flex items-center gap-2 transition-colors">
+                  More Details
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 6: Biophilic Integration */}
+            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col">
+              <div className="mb-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="text-emerald-600">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Biophilic Integration</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Seamless indoor-outdoor living with integrated growing systems
+                </p>
+              </div>
+              <div className="mt-auto pt-4">
+                <Link href="/biophilic-integration" className="text-teal-600 font-semibold text-sm hover:text-teal-700 flex items-center gap-2 transition-colors">
+                  More Details
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -3002,73 +3880,6 @@ export default function Home() {
         <button className="bg-teal-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Request Custom Design</button>
       </section>
 
-      {/* Section: Investment in Your Future (Pricing) */}
-      <section className="relative z-10 flex flex-col items-center justify-center  py-16 bg-white">
-        <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center">TRANSPARENT PRICING</div>
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Investment in Your Future</h2>
-        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Our eco-domes are an investment in sustainable living that pays dividends through energy savings, increased property value, and reduced environmental impact.</p>
-        <div className="flex gap-4 mb-8">
-          <button className="bg-teal-100 text-green-800 font-semibold px-4 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Base Price</button>
-          <button className="bg-white text-green-800 font-semibold px-4 py-2 rounded shadow border border-teal-200 hover:bg-teal-50 transition-all duration-200">With Energy Savings</button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mb-8">
-          {/* Starter Dome */}
-          <div className="bg-white rounded-xl shadow p-8 flex flex-col border border-gray-100">
-            <div className="font-bold text-xl text-gray-900 mb-1">Starter Dome</div>
-            <div className="text-base text-gray-500 mb-4">Perfect for individuals or couples looking for a sustainable living home.</div>
-            <div className="text-3xl font-extrabold text-teal-600 mb-1">$89k</div>
-            <div className="text-xs text-gray-400 mb-4">Base price: $89,000</div>
-            <ul className="mb-6 text-base text-gray-700 space-y-2">
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> 600-900 sq ft living space</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Basic solar panel system</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Rainwater collection system</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Eco-friendly materials</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Standard insulation package</li>
-            </ul>
-            <button className="bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto">Request Quote</button>
-          </div>
-          {/* Family Dome (Most Popular) */}
-          <div className="bg-white rounded-xl shadow p-8 flex flex-col border-2 border-green-700 relative">
-            <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-teal-600 text-white text-xs font-semibold px-4 py-1 rounded-full">Most Popular</div>
-            <div className="font-bold text-xl text-gray-900 mb-1 mt-4">Family Dome</div>
-            <div className="text-base text-gray-500 mb-4">Ideal for small families with space for comfortable sustainable living.</div>
-            <div className="text-3xl font-extrabold text-teal-600 mb-1">$149k</div>
-            <div className="text-xs text-gray-400 mb-4">Base price: $149,000</div>
-            <ul className="mb-6 text-base text-gray-700 space-y-2">
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> 800-1200 sq ft living space</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Advanced solar array</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Complete water management system</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Premium eco-friendly materials</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Enhanced insulation package</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Smart home integration</li>
-            </ul>
-            <button className="bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto">Request Quote</button>
-          </div>
-          {/* Luxury Dome */}
-          <div className="bg-white rounded-xl shadow p-8 flex flex-col border border-gray-100">
-            <div className="font-bold text-xl text-gray-900 mb-1">Luxury Dome</div>
-            <div className="text-base text-gray-500 mb-4">Our premium offering with maximum space and cutting-edge sustainability features.</div>
-            <div className="text-3xl font-extrabold text-teal-600 mb-1">$249k</div>
-            <div className="text-xs text-gray-400 mb-4">Base price: $249,000</div>
-            <ul className="mb-6 text-base text-gray-700 space-y-2">
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> 1500-2000+ sq ft living space</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Premium full battery system</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Advanced water reclamation</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Maximum insulation package</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Full smart home ecosystem</li>
-              <li className="flex items-center gap-2"><span className="text-teal-500">✔</span> Customizable add-on packages included</li>
-            </ul>
-            <button className="bg-teal-600 text-white font-semibold px-4 py-2 rounded shadow hover:bg-teal-700 transition-all duration-200 mt-auto">Request Quote</button>
-          </div>
-        </div>
-        <div className="text-gray-500 text-sm text-center mb-4 max-w-2xl mx-auto">
-          All prices are starting points. Final pricing depends on specific customizations, location, and additional features. Contact us for a personalized quote tailored to your needs and location.
-        </div>
-        <button className="bg-teal-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Get Custom Quote</button>
-      </section>
-
-
- 
       {/* Section: Domed in Nature, Rooted in Comfort - Redesigned */}
       <section className="relative z-10 py-20 bg-gradient-to-br from-gray-50 via-white to-emerald-50 overflow-hidden">
         {/* Decorative Elements */}
@@ -3226,9 +4037,115 @@ export default function Home() {
           </div>
         </div>
       </section>
- 
 
-              
+      {/* Section: Our Process */}
+      <section id="process" className="relative z-10 flex flex-col items-center justify-center py-20 bg-white">
+        <div className="max-w-7xl w-full px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto flex flex-col items-center mb-14">
+            <div className="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 text-teal-600 font-semibold text-sm">
+              Our Process
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 text-center leading-tight">
+              From Dream to Reality in <span className="text-teal-600">12 Weeks</span>
+            </h2>
+            <p className="text-gray-600 text-center max-w-3xl mb-12 text-lg">
+              We've streamlined the process to make your transition to sustainable living as smooth as possible.
+            </p>
+          </div>
+
+          {/* Process Steps Slider */}
+          <div className="relative w-full max-w-6xl mx-auto">
+            {/* Navigation Arrows */}
+            <button
+              className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-teal-50 text-teal-600 rounded-full shadow-lg p-3 transition disabled:opacity-40 disabled:cursor-not-allowed -left-12"
+              onClick={() => setProcessSliderIndex((prev) => Math.max(prev - processVisibleCards, 0))}
+              disabled={processSliderIndex === 0}
+              aria-label="Previous step"
+            >
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+            <button
+              className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-teal-50 text-teal-600 rounded-full shadow-lg p-3 transition disabled:opacity-40 disabled:cursor-not-allowed -right-12"
+              onClick={() => setProcessSliderIndex((prev) => Math.min(prev + processVisibleCards, processSteps.length - processVisibleCards))}
+              disabled={processSliderIndex >= processSteps.length - processVisibleCards}
+              aria-label="Next step"
+            >
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+
+            {/* Slider Container */}
+            <div className="overflow-hidden">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${(processSliderIndex * (100 / processVisibleCards))}%)` }}
+              >
+                {processSteps.map((step, index) => (
+                  <div 
+                    key={index}
+                    className="flex-shrink-0 px-4"
+                    style={{ width: `${100 / processVisibleCards}%` }}
+                  >
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 h-full">
+                      {/* Step Header */}
+                      <div className={`bg-gradient-to-br ${step.gradient} p-8 text-white text-center`}>
+                        <div className="text-5xl font-bold mb-2">{step.number}</div>
+                        <div className="text-sm font-semibold mb-2 opacity-90">{step.week}</div>
+                        <div className="text-xl font-bold">{step.title}</div>
+                      </div>
+                      
+                      {/* Step Content */}
+                      <div className="p-6">
+                        <p className="text-gray-600 mb-6 leading-relaxed">
+                          {step.description}
+                        </p>
+                        <ul className="space-y-3">
+                          {step.items.map((item, itemIndex) => (
+                            <li key={itemIndex} className="flex items-start gap-3 text-gray-600">
+                              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="text-emerald-600 flex-shrink-0 mt-0.5">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Dots Indicator */}
+            <div className="flex justify-center gap-2 mt-8">
+              {Array.from({ length: Math.ceil(processSteps.length / processVisibleCards) }).map((_, i) => (
+                <button
+                  key={i}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    Math.floor(processSliderIndex / processVisibleCards) === i 
+                      ? 'bg-teal-500 scale-125' 
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  onClick={() => setProcessSliderIndex(i * processVisibleCards)}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="mt-16 text-center">
+            <p className="text-xl text-gray-700 mb-6 font-medium">
+              Ready to start your journey to sustainable living?
+            </p>
+            <Link 
+              href="/contact" 
+              className="inline-block bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-8 py-4 rounded-lg hover:shadow-lg hover:shadow-emerald-500/30 transition-all shadow-md"
+            >
+              Start Your Project Today
+            </Link>
+          </div>
+        </div>
+      </section>
 
         {/* Section: Testimonials */}
       <section className="relative z-10 flex flex-col items-center justify-center py-20 bg-gray-50">
@@ -3394,7 +4311,13 @@ export default function Home() {
                       <div className="flex items-center gap-2 mb-1" key={i}><span className={f.iconClass}>✓</span> {f.text}</div>
                     ))}
                   </div>
-                  <button className={card.buttonClass}>{card.button}</button>
+                  {card.button === "Explore Location" && card.slug ? (
+                    <Link href={`/available-locations/${card.slug}/`} className={card.buttonClass}>
+                      {card.button}
+                    </Link>
+                  ) : (
+                    <button className={card.buttonClass} disabled>{card.button}</button>
+                  )}
                 </div>
               ))}
             </div>
@@ -3743,6 +4666,308 @@ export default function Home() {
         </div>
       </footer>
 
+      {/* Package Details Modal */}
+      {packageModalOpen && selectedPackage && packageDetails[selectedPackage] && (
+        <div className="fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4 animate-fade-in" onClick={closePackageModal}>
+          <div 
+            className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-6 rounded-t-2xl">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="bg-white/20 rounded-full p-3">
+                    {selectedPackage === "living-room" && (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" className="text-white">
+                        <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    )}
+                    {selectedPackage === "kitchen-dining" && (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" className="text-white">
+                        <path d="M3 7h18v10H3z" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M3 7l2-4h14l2 4" stroke="currentColor" strokeWidth="2"/>
+                        <circle cx="9" cy="12" r="1" fill="currentColor"/>
+                        <circle cx="15" cy="12" r="1" fill="currentColor"/>
+                      </svg>
+                    )}
+                    {selectedPackage === "bedroom" && (
+                      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" className="text-white">
+                        <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M7 11h10" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    )}
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold">{packageDetails[selectedPackage].title}</h2>
+                    <p className="text-emerald-50">{packageDetails[selectedPackage].subtitle}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={closePackageModal}
+                  className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors"
+                  aria-label="Close"
+                >
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-white">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6">
+              {/* Main Hero Image */}
+              {packageDetails[selectedPackage].images && packageDetails[selectedPackage].images.length > 0 && (
+                <div className="mb-6">
+                  <div className="relative w-full h-64 md:h-80 rounded-xl overflow-hidden border border-gray-200 shadow-lg mb-4">
+                    <Image
+                      src={packageDetails[selectedPackage].images[0]}
+                      alt={`${packageDetails[selectedPackage].title} main view`}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                    <div className="absolute bottom-4 left-4 text-white">
+                      <h3 className="text-2xl font-bold mb-1">{packageDetails[selectedPackage].title} Package</h3>
+                      <p className="text-white/90">{packageDetails[selectedPackage].subtitle}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Additional Images Gallery */}
+                  {packageDetails[selectedPackage].images.length > 1 && (
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">More Views</h3>
+                      <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+                        {packageDetails[selectedPackage].images.slice(1).map((img, index) => (
+                          <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:border-teal-400 transition-colors cursor-pointer group">
+                            <Image
+                              src={img}
+                              alt={`${packageDetails[selectedPackage].title} view ${index + 2}`}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-200"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Description */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">About This Package</h3>
+                <p className="text-gray-700 leading-relaxed">{packageDetails[selectedPackage].description}</p>
+              </div>
+
+              {/* Package Items */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Package Contents</h3>
+                <div className="space-y-4">
+                  {packageDetails[selectedPackage].items.map((item, index) => (
+                    <div key={index} className="bg-gray-50 rounded-lg p-5 border border-gray-200 hover:border-teal-300 transition-colors">
+                      <div className="flex flex-col md:flex-row gap-4 mb-3">
+                        {/* Item Image */}
+                        {item.image && (
+                          <div className="relative w-full md:w-32 h-32 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        )}
+                        {/* Item Info */}
+                        <div className="flex-1">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-gray-900 text-lg">{item.name}</h4>
+                              {item.description && (
+                                <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                              )}
+                            </div>
+                            <span className="text-teal-600 font-bold text-xl ml-4">{item.price}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Item Details Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-200">
+                        {item.dimensions && (
+                          <div>
+                            <h5 className="text-xs font-semibold text-gray-500 uppercase mb-1">Dimensions</h5>
+                            <p className="text-sm text-gray-700">{item.dimensions}</p>
+                          </div>
+                        )}
+                        {item.materials && (
+                          <div>
+                            <h5 className="text-xs font-semibold text-gray-500 uppercase mb-1">Materials</h5>
+                            <p className="text-sm text-gray-700">{item.materials}</p>
+                          </div>
+                        )}
+                        {item.colors && item.colors.length > 0 && (
+                          <div>
+                            <h5 className="text-xs font-semibold text-gray-500 uppercase mb-1">Available Colors</h5>
+                            <div className="flex flex-wrap gap-2 mt-1">
+                              {item.colors.map((color, colorIndex) => (
+                                <span key={colorIndex} className="text-xs bg-white px-2 py-1 rounded border border-gray-300 text-gray-700">
+                                  {color}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {item.specifications && item.specifications.length > 0 && (
+                          <div>
+                            <h5 className="text-xs font-semibold text-gray-500 uppercase mb-1">Specifications</h5>
+                            <ul className="text-sm text-gray-700 space-y-1">
+                              {item.specifications.map((spec, specIndex) => (
+                                <li key={specIndex} className="flex items-start gap-2">
+                                  <span className="text-teal-500 mt-1">•</span>
+                                  <span>{spec}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Total Price */}
+              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-6 mb-6 border border-emerald-200">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xl font-bold text-gray-900">Total Package Price</span>
+                  <span className="text-3xl font-extrabold text-teal-600">{packageDetails[selectedPackage].total}</span>
+                </div>
+                {packageDetails[selectedPackage].savings && (
+                  <div className="flex items-center gap-2 text-emerald-700">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="font-semibold">{packageDetails[selectedPackage].savings}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Features */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Package Features</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {packageDetails[selectedPackage].features.map((feature, index) => (
+                    <div key={index} className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Additional Information Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {packageDetails[selectedPackage].warranty && (
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <svg className="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                      <h4 className="font-semibold text-gray-900">Warranty</h4>
+                    </div>
+                    <p className="text-gray-700 text-sm">{packageDetails[selectedPackage].warranty}</p>
+                  </div>
+                )}
+                {packageDetails[selectedPackage].delivery && (
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <svg className="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <h4 className="font-semibold text-gray-900">Delivery Time</h4>
+                    </div>
+                    <p className="text-gray-700 text-sm">{packageDetails[selectedPackage].delivery}</p>
+                  </div>
+                )}
+                {packageDetails[selectedPackage].installation && (
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <svg className="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <h4 className="font-semibold text-gray-900">Installation</h4>
+                    </div>
+                    <p className="text-gray-700 text-sm">{packageDetails[selectedPackage].installation}</p>
+                  </div>
+                )}
+                {packageDetails[selectedPackage].careInstructions && (
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <svg className="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <h4 className="font-semibold text-gray-900">Care Instructions</h4>
+                    </div>
+                    <p className="text-gray-700 text-sm">{packageDetails[selectedPackage].careInstructions}</p>
+                  </div>
+                )}
+                {packageDetails[selectedPackage].returnPolicy && (
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <svg className="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 15v-1a4 4 0 00-4-4H8m4 4v1m4 4v1a4 4 0 01-4 4H6a4 4 0 01-4-4v-1m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                      </svg>
+                      <h4 className="font-semibold text-gray-900">Return Policy</h4>
+                    </div>
+                    <p className="text-gray-700 text-sm">{packageDetails[selectedPackage].returnPolicy}</p>
+                  </div>
+                )}
+                {packageDetails[selectedPackage].paymentOptions && packageDetails[selectedPackage].paymentOptions.length > 0 && (
+                  <div className="bg-white border border-gray-200 rounded-lg p-4 md:col-span-2">
+                    <div className="flex items-center gap-2 mb-3">
+                      <svg className="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                      </svg>
+                      <h4 className="font-semibold text-gray-900">Payment Options</h4>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {packageDetails[selectedPackage].paymentOptions?.map((option, index) => (
+                        <div key={index} className="flex items-center gap-2 text-sm text-gray-700">
+                          <svg className="w-4 h-4 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span>{option}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200">
+                  Add to Configuration
+                </button>
+                <button 
+                  onClick={closePackageModal}
+                  className="flex-1 bg-gray-100 text-gray-700 font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition-all duration-200"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     
     </div>
   );
