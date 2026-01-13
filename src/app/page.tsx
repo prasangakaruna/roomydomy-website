@@ -3114,7 +3114,7 @@ export default function Home() {
                                 src={img}
                                 alt={`${packageDetails[selectedPackage].title} view ${index + 2}`}
                                 fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-200"
+                                className="object-cover dd group-hover:scale-105 transition-transform duration-200"
                               />
                             </div>
                           ))}
