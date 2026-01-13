@@ -6,65 +6,73 @@ import Footer from '../components/Footer';
 
 export default function GalleryPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<'locations' | 'exterior' | 'interior'>('locations');
 
-  // All images from the /new/ folder
-  const galleryImages = [
-    // 11R Lotus Cafe Renders
-    "/new/11R Lotus Cafe Render1.jpg",
-    "/new/11R Lotus Cafe Render2.jpg",
-    "/new/11R Lotus Cafe Render3.jpg",
-    "/new/11R Lotus Cafe Render4.jpg",
-    "/new/11R Lotus Cafe Render5.jpg",
-    "/new/11R Lotus Cafe Render6.jpg",
-    "/new/11R Lotus Cafe Render7.jpg",
-    "/new/11R Lotus Cafe Render9.jpg",
-    "/new/11R Lotus Cafe Render10.jpg",
-    // 8R Lotus Renders
-    "/new/8R Lotus Render1.jpg",
-    "/new/8R Lotus Render2.jpg",
-    "/new/8R Lotus Render3.jpg",
-    "/new/8R Lotus Render4.jpg",
-    "/new/8R Lotus Render5.jpg",
-    "/new/8R Lotus Render6.jpg",
-    "/new/8R Lotus Render7.jpg",
-    "/new/8R Lotus Render8.jpg",
-    // 6R Renders
-    "/new/6R Render00.png",
-    "/new/6R Render15.jpg",
-    "/new/6R Render3.png",
-    // 7R Renders
-    "/new/7r11.png",
-    "/new/7r13.png",
-    "/new/7r15.png",
-    "/new/7r16.png",
-    // Costa Rica Project Renderings
-    "/new/Costa Rica Project Renderings 1.jpg",
-    "/new/Costa Rica Project Renderings 2.jpg",
-    "/new/Costa Rica Project Renderings 3.jpg",
-    "/new/Costa Rica Project Renderings 6.jpg",
-    "/new/Costa Rica Project Renderings 7.jpg",
-    "/new/Costa Rica Project Renderings 8.jpg",
-    "/new/Costa Rica Project Renderings 9.jpg",
-    "/new/Costa Rica Project Renderings 10.jpg",
-    "/new/Costa Rica Project Renderings 11.jpg",
-    "/new/Costa Rica Project Renderings 12.jpg",
-    "/new/Costa Rica Project Renderings 13.jpg",
-    "/new/Costa Rica Project Renderings 14.jpg",
-    "/new/Costa Rica Project Renderings 15.jpg",
-    "/new/Costa Rica Project Renderings 18.jpg",
-    "/new/Costa Rica Project Renderings 19.jpg",
-    "/new/Costa Rica Project Renderings 20.jpg",
-    "/new/Costa Rica Project Renderings 21.jpg",
-    "/new/Costa Rica Project Renderings 22.jpg",
-    "/new/Costa Rica Project Renderings 23.jpg",
-    "/new/Costa Rica Project Renderings 24.jpg",
-    "/new/Costa Rica Project Renderings 25.jpg",
-    "/new/Costa Rica Project Renderings 26.jpg",
-    "/new/Costa Rica Project Renderings 27.jpg",
-    "/new/Costa Rica Project Renderings 28.jpg",
-    "/new/Costa Rica Project Renderings 29.jpg",
-  ];
+  // Images organized by category
+  const gallerySections = {
+    locations: [
+      // Costa Rica Project Renderings - Locations
+      "/new/Costa Rica Project Renderings 1.jpg",
+      "/new/Costa Rica Project Renderings 2.jpg",
+      "/new/Costa Rica Project Renderings 3.jpg",
+      "/new/Costa Rica Project Renderings 6.jpg",
+      "/new/Costa Rica Project Renderings 7.jpg",
+      "/new/Costa Rica Project Renderings 8.jpg",
+      "/new/Costa Rica Project Renderings 9.jpg",
+      "/new/Costa Rica Project Renderings 10.jpg",
+      "/new/Costa Rica Project Renderings 11.jpg",
+      "/new/Costa Rica Project Renderings 12.jpg",
+      "/new/Costa Rica Project Renderings 13.jpg",
+      "/new/Costa Rica Project Renderings 14.jpg",
+      "/new/Costa Rica Project Renderings 15.jpg",
+      "/new/Costa Rica Project Renderings 18.jpg",
+      "/new/Costa Rica Project Renderings 19.jpg",
+      "/new/Costa Rica Project Renderings 20.jpg",
+      "/new/Costa Rica Project Renderings 21.jpg",
+      "/new/Costa Rica Project Renderings 22.jpg",
+      "/new/Costa Rica Project Renderings 23.jpg",
+      "/new/Costa Rica Project Renderings 24.jpg",
+      "/new/Costa Rica Project Renderings 25.jpg",
+      "/new/Costa Rica Project Renderings 26.jpg",
+      "/new/Costa Rica Project Renderings 27.jpg",
+      "/new/Costa Rica Project Renderings 28.jpg",
+      "/new/Costa Rica Project Renderings 29.jpg",
+    ],
+    exterior: [
+      // 11R Lotus Cafe Renders - Exterior
+      "/new/11R Lotus Cafe Render1.jpg",
+      "/new/11R Lotus Cafe Render2.jpg",
+      "/new/11R Lotus Cafe Render3.jpg",
+      "/new/11R Lotus Cafe Render4.jpg",
+      "/new/11R Lotus Cafe Render5.jpg",
+      "/new/11R Lotus Cafe Render6.jpg",
+      "/new/11R Lotus Cafe Render7.jpg",
+      "/new/11R Lotus Cafe Render9.jpg",
+      "/new/11R Lotus Cafe Render10.jpg",
+      // 6R Renders - Exterior
+      "/new/6R Render00.png",
+      "/new/6R Render15.jpg",
+      "/new/6R Render3.png",
+      // 7R Renders - Exterior
+      "/new/7r11.png",
+      "/new/7r13.png",
+      "/new/7r15.png",
+      "/new/7r16.png",
+    ],
+    interior: [
+      // 8R Lotus Renders - Interior
+      "/new/8R Lotus Render1.jpg",
+      "/new/8R Lotus Render2.jpg",
+      "/new/8R Lotus Render3.jpg",
+      "/new/8R Lotus Render4.jpg",
+      "/new/8R Lotus Render5.jpg",
+      "/new/8R Lotus Render6.jpg",
+      "/new/8R Lotus Render7.jpg",
+      "/new/8R Lotus Render8.jpg",
+    ],
+  };
 
+  const currentImages = gallerySections[activeSection];
   const closeModal = () => setSelectedImage(null);
 
   return (
@@ -120,14 +128,78 @@ export default function GalleryPage() {
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">
               Our Project Gallery
             </h1>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
               Explore our stunning collection of dome home designs, renderings, and project showcases.
+            </p>
+
+            {/* Section Tabs */}
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
+              <button
+                onClick={() => setActiveSection('locations')}
+                className={`px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 ${
+                  activeSection === 'locations'
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Our Locations ({gallerySections.locations.length})
+                </span>
+              </button>
+              <button
+                onClick={() => setActiveSection('exterior')}
+                className={`px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 ${
+                  activeSection === 'exterior'
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  Exterior ({gallerySections.exterior.length})
+                </span>
+              </button>
+              <button
+                onClick={() => setActiveSection('interior')}
+                className={`px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 ${
+                  activeSection === 'interior'
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  Interior ({gallerySections.interior.length})
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Section Title */}
+          <div className="mb-8 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              {activeSection === 'locations' && 'Our Locations'}
+              {activeSection === 'exterior' && 'Exterior Views'}
+              {activeSection === 'interior' && 'Interior Views'}
+            </h2>
+            <p className="text-gray-600">
+              {activeSection === 'locations' && 'Explore our stunning dome locations around the world'}
+              {activeSection === 'exterior' && 'Discover the beautiful exterior designs of our eco-domes'}
+              {activeSection === 'interior' && 'Experience the comfortable and stylish interior spaces'}
             </p>
           </div>
 
           {/* Image Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {galleryImages.map((image, index) => (
+            {currentImages.map((image, index) => (
               <div
                 key={index}
                 className="group relative aspect-square overflow-hidden rounded-xl bg-gray-100 cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
@@ -154,7 +226,7 @@ export default function GalleryPage() {
           {/* Image Count */}
           <div className="text-center mt-12 text-gray-600">
             <p className="text-lg">
-              Showing <span className="font-semibold text-emerald-600">{galleryImages.length}</span> images
+              Showing <span className="font-semibold text-emerald-600">{currentImages.length}</span> {activeSection === 'locations' ? 'location' : activeSection === 'exterior' ? 'exterior' : 'interior'} images
             </p>
           </div>
         </div>
