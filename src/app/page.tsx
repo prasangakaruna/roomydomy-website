@@ -3723,7 +3723,7 @@ export default function Home() {
       */}
 
       {/* Section: Exterior & Interior Views */}
-      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white">
+      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white hidden">
         <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center">DESIGN PREVIEW</div>
         <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Exterior & Interior Views</h2>
         <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Explore the stunning exterior design and comfortable interior spaces of our eco-friendly dome homes.</p>
