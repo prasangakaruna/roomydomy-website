@@ -2678,7 +2678,7 @@ export default function Home() {
     },
     "kitchen-dining": {
       id: "kitchen-dining",
-      title: "Bathroom",
+      title: "Kitchen & Dining",
       subtitle: "Functional & stylish dining",
       images: [
         "/new/8R Lotus Render5.jpg",
@@ -4996,38 +4996,6 @@ export default function Home() {
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Video Modal */}
-      {isVideoModalOpen && (
-        <div
-          className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={() => setIsVideoModalOpen(false)}
-        >
-          <button
-            onClick={() => setIsVideoModalOpen(false)}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 transition z-10 bg-black/50 rounded-full p-2"
-            aria-label="Close video"
-          >
-            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-          <div 
-            className="relative max-w-5xl w-full aspect-video bg-black rounded-lg overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <video
-              src="/new/video.mp4"
-              controls
-              autoPlay
-              className="w-full h-full"
-              onEnded={() => setIsVideoModalOpen(false)}
-            >
-              Your browser does not support the video tag.
-            </video>
           </div>
         </div>
       )}
