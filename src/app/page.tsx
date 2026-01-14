@@ -1896,6 +1896,7 @@ export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [selectedAmenity, setSelectedAmenity] = useState('');
   const [quoteFormData, setQuoteFormData] = useState({
     name: '',
     email: '',
@@ -1905,6 +1906,11 @@ export default function Home() {
     timeline: '',
     message: '',
   });
+
+  const handleOpenQuoteModal = (amenityType: string) => {
+    setSelectedAmenity(amenityType);
+    setIsQuoteModalOpen(true);
+  };
   
   // Background images for the slider - Nature photos for dome building
   const backgroundImages = [
@@ -4664,7 +4670,10 @@ export default function Home() {
                 <p className="text-emerald-50 text-sm">Bundle 3+ amenities and save up to $15,000. Plus, get FREE installation coordination!</p>
               </div>
             </div>
-            <button className="bg-white text-emerald-600 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-emerald-50 transition-all duration-200 whitespace-nowrap">
+            <button 
+              onClick={() => handleOpenQuoteModal('Bundle Package')}
+              className="bg-white text-emerald-600 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-emerald-50 transition-all duration-200 whitespace-nowrap"
+            >
               Get My Bundle Quote
             </button>
           </div>
@@ -4688,7 +4697,10 @@ export default function Home() {
             <div className="p-6">
               <h3 className="font-bold text-xl text-gray-900 mb-2">Swimming Pools</h3>
               <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $15,000</p>
-              <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm">
+              <button 
+                onClick={() => handleOpenQuoteModal('Swimming Pools')}
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm"
+              >
                 Get Quote for Swimming Pools
               </button>
             </div>
@@ -4710,7 +4722,10 @@ export default function Home() {
             <div className="p-6">
               <h3 className="font-bold text-xl text-gray-900 mb-2">Pergola Dining</h3>
               <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $5,500</p>
-              <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm">
+              <button 
+                onClick={() => handleOpenQuoteModal('Pergola Dining')}
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm"
+              >
                 Get Quote for Pergola Dining
               </button>
             </div>
@@ -4732,7 +4747,10 @@ export default function Home() {
             <div className="p-6">
               <h3 className="font-bold text-xl text-gray-900 mb-2">BBQ Areas</h3>
               <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $8,000</p>
-              <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm">
+              <button 
+                onClick={() => handleOpenQuoteModal('BBQ Areas')}
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm"
+              >
                 Get Quote for BBQ Areas
               </button>
             </div>
@@ -4754,7 +4772,10 @@ export default function Home() {
             <div className="p-6">
               <h3 className="font-bold text-xl text-gray-900 mb-2">Outdoor Showers</h3>
               <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $3,500</p>
-              <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm">
+              <button 
+                onClick={() => handleOpenQuoteModal('Outdoor Showers')}
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm"
+              >
                 Get Quote for Outdoor Showers
               </button>
             </div>
@@ -4776,7 +4797,10 @@ export default function Home() {
             <div className="p-6">
               <h3 className="font-bold text-xl text-gray-900 mb-2">Sunbathing Decks</h3>
               <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $8,000</p>
-              <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm">
+              <button 
+                onClick={() => handleOpenQuoteModal('Sunbathing Decks')}
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm"
+              >
                 Get Quote for Sunbathing Decks
               </button>
             </div>
@@ -4799,7 +4823,7 @@ export default function Home() {
               <h3 className="font-bold text-xl text-gray-900 mb-2">Interior Packages</h3>
               <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $15,000</p>
               <button 
-                onClick={() => setIsQuoteModalOpen(true)}
+                onClick={() => handleOpenQuoteModal('Interior Packages')}
                 className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm"
               >
                 Get Quote for Interior Packages
@@ -4814,7 +4838,10 @@ export default function Home() {
             <h3 className="text-2xl font-bold text-gray-900 mb-3">Ready to Design Your Perfect Outdoor Space?</h3>
             <p className="text-gray-700 mb-6 text-lg">Our amenity specialists will help you create the perfect combination for your lifestyle and budget. Get a custom quote that includes installation, permits, and warranty.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:from-emerald-600 hover:to-teal-600 hover:shadow-xl transition-all duration-200 text-base">
+              <button 
+                onClick={() => handleOpenQuoteModal('Custom Amenity Package')}
+                className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:from-emerald-600 hover:to-teal-600 hover:shadow-xl transition-all duration-200 text-base"
+              >
                 Get My Amenity Quote
               </button>
               <button className="bg-white text-emerald-600 font-semibold px-8 py-3 rounded-lg shadow-lg border-2 border-emerald-200 hover:bg-emerald-50 transition-all duration-200 text-base">
@@ -5394,7 +5421,10 @@ export default function Home() {
       {isQuoteModalOpen && (
         <div 
           className="fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4 animate-fade-in"
-          onClick={() => setIsQuoteModalOpen(false)}
+          onClick={() => {
+            setIsQuoteModalOpen(false);
+            setSelectedAmenity('');
+          }}
         >
           <div 
             className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
@@ -5404,11 +5434,14 @@ export default function Home() {
             <div className="sticky top-0 bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-6 rounded-t-2xl">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold">Get Quote for Interior Packages</h2>
+                  <h2 className="text-2xl font-bold">Get Quote for {selectedAmenity || 'Interior Packages'}</h2>
                   <p className="text-white/80 text-sm mt-1">Fill out the form below and we'll get back to you soon</p>
                 </div>
                 <button
-                  onClick={() => setIsQuoteModalOpen(false)}
+                  onClick={() => {
+                    setIsQuoteModalOpen(false);
+                    setSelectedAmenity('');
+                  }}
                   className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors"
                   aria-label="Close"
                 >
@@ -5427,6 +5460,7 @@ export default function Home() {
                   // Handle form submission here
                   alert('Thank you! We will contact you soon.');
                   setIsQuoteModalOpen(false);
+                  setSelectedAmenity('');
                   setQuoteFormData({
                     name: '',
                     email: '',
@@ -5571,7 +5605,10 @@ export default function Home() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setIsQuoteModalOpen(false)}
+                    onClick={() => {
+                      setIsQuoteModalOpen(false);
+                      setSelectedAmenity('');
+                    }}
                     className="px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-all duration-200"
                   >
                     Cancel
