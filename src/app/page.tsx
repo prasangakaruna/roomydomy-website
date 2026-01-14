@@ -2677,7 +2677,7 @@ export default function Home() {
       savings: "Save $300 when purchasing as a package (vs. individual items)",
     },
     "kitchen-dining": {
-      id: "kitchen-dining",
+      id: "kitchen-dining ",
       title: "Kitchen & Dining",
       subtitle: "Functional & stylish dining",
       images: [
