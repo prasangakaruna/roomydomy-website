@@ -3,43 +3,43 @@ import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getCurrentUser, logout } from '../utils/auth';
+import { getCurrentPartner, logout } from '../utils/auth';
 
-interface AdminLayoutProps {
+interface PartnerLayoutProps {
   children: React.ReactNode;
 }
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+export default function PartnerLayout({ children }: PartnerLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'user' | 'system'>('user');
-  const user = getCurrentUser();
+  const partner = getCurrentPartner();
 
   const handleLogout = () => {
     logout();
-    router.push('/admin/login');
+    router.push('/partner/login');
   };
 
   const dashboardItems = [
-    { href: '/admin/dashboard', label: 'Overview', icon: '📊' },
-    { href: '/admin/dashboard/analytics', label: 'Business Analytics', icon: '📈' },
-    { href: '/admin/dashboard/customers', label: 'Customer Insights', icon: '👥' },
-    { href: '/admin/dashboard/marketing', label: 'Marketing Insights', icon: '📢' },
+    { href: '/partner/dashboard', label: 'Overview', icon: '📊' },
+    { href: '/partner/dashboard/analytics', label: 'Business Analytics', icon: '📈' },
+    { href: '/partner/dashboard/customers', label: 'Customer Insights', icon: '👥' },
+    { href: '/partner/dashboard/marketing', label: 'Marketing Insights', icon: '📢' },
   ];
 
   const salesMarketingItems = [
-    { href: '/admin/dashboard/crm', label: 'CRM', icon: '💼' },
-    { href: '/admin/dashboard/finance', label: 'Accounting', icon: '💰' },
-    { href: '/admin/dashboard/reporting', label: 'Reporting', icon: '📄' },
-    { href: '/admin/dashboard/marketing', label: 'Marketing', icon: '📣' },
+    { href: '/partner/dashboard/crm', label: 'CRM', icon: '💼' },
+    { href: '/partner/dashboard/finance', label: 'Accounting', icon: '💰' },
+    { href: '/partner/dashboard/reporting', label: 'Reporting', icon: '📄' },
+    { href: '/partner/dashboard/marketing', label: 'Marketing', icon: '📣' },
   ];
 
   const operationsItems = [
-    { href: '/admin/dashboard/operations', label: 'Operations', icon: '⚙️' },
-    { href: '/admin/dashboard/orders', label: 'Orders', icon: '📦' },
-    { href: '/admin/dashboard/shipments', label: 'Shipments', icon: '🚚' },
-    { href: '/admin/dashboard/scheduling', label: 'Scheduling', icon: '📅' },
+    { href: '/partner/dashboard/operations', label: 'Operations', icon: '⚙️' },
+    { href: '/partner/dashboard/orders', label: 'Orders', icon: '📦' },
+    { href: '/partner/dashboard/shipments', label: 'Shipments', icon: '🚚' },
+    { href: '/partner/dashboard/scheduling', label: 'Scheduling', icon: '📅' },
   ];
 
   return (
@@ -54,7 +54,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             height={40} 
             className="object-contain"
           />
-          <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
+          <h1 className="text-xl font-bold text-gray-900">Partner Panel</h1>
         </div>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -84,7 +84,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   height={48} 
                   className="object-contain"
                 />
-                <h1 className="text-xl font-bold text-gray-900">RomyDomy Admin</h1>
+                <h1 className="text-xl font-bold text-gray-900">RomyDomy Partner</h1>
               </div>
             </div>
 
@@ -192,10 +192,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 </button>
               </div>
 
-              {/* User Info */}
+              {/* Partner Info */}
               <div className="px-2">
-                <p className="text-xs text-gray-500 mb-1">Logged in as Admin</p>
-                <p className="text-sm font-medium text-gray-900">{user?.email || 'admin@romydomy.com'}</p>
+                <p className="text-xs text-gray-500 mb-1">Logged in as Partner</p>
+                <p className="text-sm font-medium text-gray-900">{partner?.email || 'partner@romydomy.com'}</p>
               </div>
 
               {/* Logout Button */}

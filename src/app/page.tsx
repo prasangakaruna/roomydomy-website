@@ -1895,6 +1895,16 @@ function DomeDetailsPage({ open, onClose, dome, setIs3DModalOpen, onPackageSelec
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [quoteFormData, setQuoteFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    domeSize: '',
+    budget: '',
+    timeline: '',
+    message: '',
+  });
   
   // Background images for the slider - Nature photos for dome building
   const backgroundImages = [
@@ -3311,15 +3321,23 @@ export default function Home() {
               <li><a href="#realtors" className="hover:text-emerald-600 transition">Partners</a></li>
               <li><Link href="/gallery" className="hover:text-emerald-600 transition">Gallery</Link></li>
               <li><Link href="/contact" className="hover:text-emerald-600 transition">Contact</Link></li>
-              <li><Link href="/admin" className="hover:text-emerald-600 transition">Admin</Link></li>
             </ul>
-            {/* Hamburger for mobile (UI only) */}
-            <div className="lg:hidden flex items-center">
+            {/* Mobile menu with login links */}
+            <div className="lg:hidden flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <Link href="/admin/login" className="text-xs text-gray-600 hover:text-emerald-600 transition font-medium">Admin</Link>
+                <span className="text-gray-300">|</span>
+                <Link href="/partner/login" className="text-xs text-gray-600 hover:text-emerald-600 transition font-medium">Partner</Link>
+              </div>
               <button className="text-gray-800 hover:text-emerald-600 focus:outline-none p-2 rounded transition" aria-label="Open menu">
                 <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><rect y="4" width="24" height="2" rx="1" fill="currentColor"/><rect y="11" width="24" height="2" rx="1" fill="currentColor"/><rect y="18" width="24" height="2" rx="1" fill="currentColor"/></svg>
               </button>
             </div>
-            <div className="hidden lg:flex gap-3 ml-6">
+            <div className="hidden lg:flex items-center gap-3 ml-6">
+              <div className="flex items-center gap-2 border-r border-gray-300 pr-3">
+                <Link href="/admin/login" className="text-sm text-gray-600 hover:text-emerald-600 transition font-medium">Admin Login</Link>
+                <Link href="/partner/login" className="text-sm text-gray-600 hover:text-emerald-600 transition font-medium">Partner Login</Link>
+              </div>
               <button 
                 onClick={() => setIsVideoModalOpen(true)}
                 className="px-5 py-2.5 rounded-full border-2 border-gray-300 text-gray-700 hover:border-emerald-500 hover:text-emerald-600 transition font-medium text-sm"
@@ -4623,6 +4641,190 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Section: Premium Amenities */}
+      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-gray-50 overflow-hidden">
+        {/* Decorative background pattern */}
+        <div className="absolute inset-0 pointer-events-none select-none opacity-10 z-0">
+          <svg width="100%" height="100%" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <ellipse cx="300" cy="100" rx="320" ry="80" fill="#bbf7d0" />
+            <ellipse cx="300" cy="120" rx="220" ry="60" fill="#f0fdf4" />
+          </svg>
+        </div>
+        <div className="mb-2 text-teal-600 font-semibold tracking-widest text-sm text-center relative z-10">AMENITIES</div>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-2 relative z-10">Premium Amenities</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg relative z-10">Choose from multiple size and style options for each amenity type. From compact solutions to luxury installations, we have options that fit every dome and lifestyle.</p>
+        
+        {/* Package Deals Banner */}
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl p-6 mb-12 w-full max-w-5xl relative z-10 shadow-lg">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3 text-white">
+              <span className="text-4xl">🏊‍♂️</span>
+              <div>
+                <h3 className="text-xl font-bold mb-1">Package Deals Available</h3>
+                <p className="text-emerald-50 text-sm">Bundle 3+ amenities and save up to $15,000. Plus, get FREE installation coordination!</p>
+              </div>
+            </div>
+            <button className="bg-white text-emerald-600 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-emerald-50 transition-all duration-200 whitespace-nowrap">
+              Get My Bundle Quote
+            </button>
+          </div>
+        </div>
+
+        {/* Amenities Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl px-4 sm:px-6 lg:px-8 mb-12 relative z-10">
+          {/* Amenity Card 1: Swimming Pools */}
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-teal-400 transition-all duration-300 group">
+            <div className="relative h-48 overflow-hidden">
+              <Image 
+                src="/new/11R Lotus Cafe Render1.jpg" 
+                alt="Swimming Pools" 
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-teal-600">
+                3 Options
+              </div>
+            </div>
+            <div className="p-6">
+              <h3 className="font-bold text-xl text-gray-900 mb-2">Swimming Pools</h3>
+              <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $15,000</p>
+              <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm">
+                Get Quote for Swimming Pools
+              </button>
+            </div>
+          </div>
+
+          {/* Amenity Card 2: Pergola Dining */}
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-teal-400 transition-all duration-300 group">
+            <div className="relative h-48 overflow-hidden">
+              <Image 
+                src="/new/11R Lotus Cafe Render2.jpg" 
+                alt="Pergola Dining" 
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-teal-600">
+                3 Options
+              </div>
+            </div>
+            <div className="p-6">
+              <h3 className="font-bold text-xl text-gray-900 mb-2">Pergola Dining</h3>
+              <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $5,500</p>
+              <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm">
+                Get Quote for Pergola Dining
+              </button>
+            </div>
+          </div>
+
+          {/* Amenity Card 3: BBQ Areas */}
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-teal-400 transition-all duration-300 group">
+            <div className="relative h-48 overflow-hidden">
+              <Image 
+                src="/new/11R Lotus Cafe Render3.jpg" 
+                alt="BBQ Areas" 
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-teal-600">
+                3 Options
+              </div>
+            </div>
+            <div className="p-6">
+              <h3 className="font-bold text-xl text-gray-900 mb-2">BBQ Areas</h3>
+              <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $8,000</p>
+              <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm">
+                Get Quote for BBQ Areas
+              </button>
+            </div>
+          </div>
+
+          {/* Amenity Card 4: Outdoor Showers */}
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-teal-400 transition-all duration-300 group">
+            <div className="relative h-48 overflow-hidden">
+              <Image 
+                src="/new/11R Lotus Cafe Render4.jpg" 
+                alt="Outdoor Showers" 
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-teal-600">
+                3 Options
+              </div>
+            </div>
+            <div className="p-6">
+              <h3 className="font-bold text-xl text-gray-900 mb-2">Outdoor Showers</h3>
+              <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $3,500</p>
+              <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm">
+                Get Quote for Outdoor Showers
+              </button>
+            </div>
+          </div>
+
+          {/* Amenity Card 5: Sunbathing Decks */}
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-teal-400 transition-all duration-300 group">
+            <div className="relative h-48 overflow-hidden">
+              <Image 
+                src="/new/11R Lotus Cafe Render5.jpg" 
+                alt="Sunbathing Decks" 
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-teal-600">
+                3 Options
+              </div>
+            </div>
+            <div className="p-6">
+              <h3 className="font-bold text-xl text-gray-900 mb-2">Sunbathing Decks</h3>
+              <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $8,000</p>
+              <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm">
+                Get Quote for Sunbathing Decks
+              </button>
+            </div>
+          </div>
+
+          {/* Amenity Card 6: Interior Packages */}
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-teal-400 transition-all duration-300 group">
+            <div className="relative h-48 overflow-hidden">
+              <Image 
+                src="/new/11R Lotus Cafe Render6.jpg" 
+                alt="Interior Packages" 
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-teal-600">
+                3 Options
+              </div>
+            </div>
+            <div className="p-6">
+              <h3 className="font-bold text-xl text-gray-900 mb-2">Interior Packages</h3>
+              <p className="text-sm text-gray-600 mb-4">3 size options • Starting from $15,000</p>
+              <button 
+                onClick={() => setIsQuoteModalOpen(true)}
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 text-sm"
+              >
+                Get Quote for Interior Packages
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Call to Action Section */}
+        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-8 w-full max-w-4xl border border-emerald-200 relative z-10 mb-6">
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Ready to Design Your Perfect Outdoor Space?</h3>
+            <p className="text-gray-700 mb-6 text-lg">Our amenity specialists will help you create the perfect combination for your lifestyle and budget. Get a custom quote that includes installation, permits, and warranty.</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:from-emerald-600 hover:to-teal-600 hover:shadow-xl transition-all duration-200 text-base">
+                Get My Amenity Quote
+              </button>
+              <button className="bg-white text-emerald-600 font-semibold px-8 py-3 rounded-lg shadow-lg border-2 border-emerald-200 hover:bg-emerald-50 transition-all duration-200 text-base">
+                See Completed Projects
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Section: Interested in a RomyDomy? (Contact) */}
       <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-teal-50 overflow-hidden">
         {/* Decorative background pattern */}
@@ -5183,6 +5385,199 @@ export default function Home() {
                   Close
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quote Form Modal */}
+      {isQuoteModalOpen && (
+        <div 
+          className="fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4 animate-fade-in"
+          onClick={() => setIsQuoteModalOpen(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-6 rounded-t-2xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold">Get Quote for Interior Packages</h2>
+                  <p className="text-white/80 text-sm mt-1">Fill out the form below and we'll get back to you soon</p>
+                </div>
+                <button
+                  onClick={() => setIsQuoteModalOpen(false)}
+                  className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors"
+                  aria-label="Close"
+                >
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6">
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  // Handle form submission here
+                  alert('Thank you! We will contact you soon.');
+                  setIsQuoteModalOpen(false);
+                  setQuoteFormData({
+                    name: '',
+                    email: '',
+                    phone: '',
+                    domeSize: '',
+                    budget: '',
+                    timeline: '',
+                    message: '',
+                  });
+                }}
+                className="space-y-6"
+              >
+                {/* Name */}
+                <div>
+                  <label htmlFor="quote-name" className="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    id="quote-name"
+                    type="text"
+                    required
+                    value={quoteFormData.name}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, name: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"
+                    placeholder="John Doe"
+                  />
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label htmlFor="quote-email" className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    id="quote-email"
+                    type="email"
+                    required
+                    value={quoteFormData.email}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, email: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"
+                    placeholder="john@example.com"
+                  />
+                </div>
+
+                {/* Phone */}
+                <div>
+                  <label htmlFor="quote-phone" className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    id="quote-phone"
+                    type="tel"
+                    required
+                    value={quoteFormData.phone}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, phone: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"
+                    placeholder="+1 (555) 123-4567"
+                  />
+                </div>
+
+                {/* Dome Size */}
+                <div>
+                  <label htmlFor="quote-dome-size" className="block text-sm font-medium text-gray-700 mb-2">
+                    Dome Size
+                  </label>
+                  <select
+                    id="quote-dome-size"
+                    value={quoteFormData.domeSize}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, domeSize: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"
+                  >
+                    <option value="">Select dome size</option>
+                    <option value="400">400 sq ft - Compact Studio</option>
+                    <option value="700">700 sq ft - Current Model</option>
+                    <option value="1000">1000 sq ft - Two-Level Haven</option>
+                    <option value="1500">1500 sq ft - Family Dome</option>
+                    <option value="2000">2000 sq ft - Grand Dome</option>
+                  </select>
+                </div>
+
+                {/* Budget */}
+                <div>
+                  <label htmlFor="quote-budget" className="block text-sm font-medium text-gray-700 mb-2">
+                    Budget Range
+                  </label>
+                  <select
+                    id="quote-budget"
+                    value={quoteFormData.budget}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, budget: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"
+                  >
+                    <option value="">Select budget range</option>
+                    <option value="15k-25k">$15,000 - $25,000</option>
+                    <option value="25k-40k">$25,000 - $40,000</option>
+                    <option value="40k-60k">$40,000 - $60,000</option>
+                    <option value="60k+">$60,000+</option>
+                  </select>
+                </div>
+
+                {/* Timeline */}
+                <div>
+                  <label htmlFor="quote-timeline" className="block text-sm font-medium text-gray-700 mb-2">
+                    Project Timeline
+                  </label>
+                  <select
+                    id="quote-timeline"
+                    value={quoteFormData.timeline}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, timeline: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"
+                  >
+                    <option value="">Select timeline</option>
+                    <option value="asap">As soon as possible</option>
+                    <option value="1-3months">1-3 months</option>
+                    <option value="3-6months">3-6 months</option>
+                    <option value="6-12months">6-12 months</option>
+                    <option value="planning">Just planning</option>
+                  </select>
+                </div>
+
+                {/* Message */}
+                <div>
+                  <label htmlFor="quote-message" className="block text-sm font-medium text-gray-700 mb-2">
+                    Additional Details
+                  </label>
+                  <textarea
+                    id="quote-message"
+                    rows={4}
+                    value={quoteFormData.message}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, message: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition resize-none"
+                    placeholder="Tell us about your interior design preferences, specific requirements, or any questions..."
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <div className="flex gap-4 pt-4">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:from-emerald-600 hover:to-teal-600 hover:shadow-xl transition-all duration-200"
+                  >
+                    Submit Quote Request
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsQuoteModalOpen(false)}
+                    className="px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-all duration-200"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
