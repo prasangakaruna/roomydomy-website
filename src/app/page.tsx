@@ -2678,7 +2678,7 @@ export default function Home() {
     },
     "kitchen-dining": {
       id: "kitchen-dining",
-      title: "Kitchen & Dining",
+      title: "Bathroom",
       subtitle: "Functional & stylish dining",
       images: [
         "/new/8R Lotus Render5.jpg",
