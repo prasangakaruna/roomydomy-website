@@ -23,31 +23,102 @@ export default function LocationDetailsPageClient({ locationSlug }: LocationDeta
       return;
     }
 
-    // Generate image paths based on location folder pattern
+    // Generate image paths from /new/ folder
     const generateImagePaths = (): string[] => {
       const paths: string[] = [];
       
-      // For Turkish locations (bolu, fethiye, marmaris, etc.)
-      if (['bolu', 'fethiye', 'marmaris', 'canakkale', 'kocaeli'].includes(locationSlug)) {
-        for (let i = 1; i <= 22; i++) {
-          paths.push(`/${location.folder}/roomydomy-${locationSlug}-${i}.jpg`);
-        }
-      }
-      // For atlas location
-      else if (locationSlug === 'atlas') {
-        for (let i = 1; i <= 3; i++) {
-          paths.push(`/${location.folder}/Atlas-${i}.jpg`);
-        }
-      }
-      // For main/domy locations
-      else if (location.folder.startsWith("main/domy")) {
-        paths.push(`/${location.folder}/img.jpg`);
-        for (let i = 1; i <= 5; i++) {
-          paths.push(`/${location.folder}/img-${i}.jpg`);
-        }
+      // Map locations to images from /new/ folder
+      const locationImageMap: Record<string, string[]> = {
+        'monteverde-retreat': [
+          '/new/Costa Rica Project Renderings 1.jpg',
+          '/new/Costa Rica Project Renderings 2.jpg',
+          '/new/Costa Rica Project Renderings 3.jpg',
+          '/new/Costa Rica Project Renderings 6.jpg',
+          '/new/Costa Rica Project Renderings 7.jpg',
+          '/new/Costa Rica Project Renderings 8.jpg',
+          '/new/Costa Rica Project Renderings 9.jpg',
+          '/new/Costa Rica Project Renderings 10.jpg',
+          '/new/Costa Rica Project Renderings 11.jpg',
+          '/new/Costa Rica Project Renderings 12.jpg',
+          '/new/Costa Rica Project Renderings 13.jpg',
+          '/new/Costa Rica Project Renderings 14.jpg',
+          '/new/Costa Rica Project Renderings 15.jpg',
+        ],
+        'adriatic-haven': [
+          '/new/11R Lotus Cafe Render1.jpg',
+          '/new/11R Lotus Cafe Render2.jpg',
+          '/new/11R Lotus Cafe Render3.jpg',
+          '/new/11R Lotus Cafe Render4.jpg',
+          '/new/11R Lotus Cafe Render5.jpg',
+          '/new/11R Lotus Cafe Render6.jpg',
+          '/new/11R Lotus Cafe Render7.jpg',
+          '/new/11R Lotus Cafe Render9.jpg',
+          '/new/11R Lotus Cafe Render10.jpg',
+        ],
+        'algarve-coastal-village': [
+          '/new/11R Lotus Cafe Render1.jpg',
+          '/new/11R Lotus Cafe Render2.jpg',
+          '/new/11R Lotus Cafe Render3.jpg',
+          '/new/11R Lotus Cafe Render4.jpg',
+          '/new/11R Lotus Cafe Render5.jpg',
+          '/new/11R Lotus Cafe Render6.jpg',
+        ],
+        'atlas': [
+          '/new/11R Lotus Cafe Render7.jpg',
+          '/new/11R Lotus Cafe Render9.jpg',
+          '/new/11R Lotus Cafe Render10.jpg',
+        ],
+        'bolu': [
+          '/new/8R Lotus Render1.jpg',
+          '/new/8R Lotus Render2.jpg',
+          '/new/8R Lotus Render3.jpg',
+          '/new/8R Lotus Render4.jpg',
+          '/new/8R Lotus Render5.jpg',
+        ],
+        'fethiye': [
+          '/new/8R Lotus Render6.jpg',
+          '/new/8R Lotus Render7.jpg',
+          '/new/8R Lotus Render8.jpg',
+          '/new/6R Render00.png',
+          '/new/6R Render15.jpg',
+        ],
+        'marmaris': [
+          '/new/6R Render3.png',
+          '/new/7r11.png',
+          '/new/7r13.png',
+          '/new/7r15.png',
+          '/new/7r16.png',
+        ],
+        'canakkale': [
+          '/new/Costa Rica Project Renderings 18.jpg',
+          '/new/Costa Rica Project Renderings 19.jpg',
+          '/new/Costa Rica Project Renderings 20.jpg',
+          '/new/Costa Rica Project Renderings 21.jpg',
+        ],
+        'kocaeli': [
+          '/new/Costa Rica Project Renderings 22.jpg',
+          '/new/Costa Rica Project Renderings 23.jpg',
+          '/new/Costa Rica Project Renderings 24.jpg',
+          '/new/Costa Rica Project Renderings 25.jpg',
+        ],
+      };
+      
+      // Return mapped images or default set
+      if (locationImageMap[locationSlug]) {
+        return locationImageMap[locationSlug];
       }
       
-      return paths;
+      // Default fallback - use a mix of images from /new/ folder
+      return [
+        '/new/11R Lotus Cafe Render1.jpg',
+        '/new/11R Lotus Cafe Render2.jpg',
+        '/new/11R Lotus Cafe Render3.jpg',
+        '/new/11R Lotus Cafe Render4.jpg',
+        '/new/8R Lotus Render1.jpg',
+        '/new/8R Lotus Render2.jpg',
+        '/new/Costa Rica Project Renderings 1.jpg',
+        '/new/Costa Rica Project Renderings 2.jpg',
+      ];
     };
 
     const imagePaths = generateImagePaths();
