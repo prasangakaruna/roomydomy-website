@@ -1984,7 +1984,7 @@ export default function Home() {
       week: "Week 1",
       title: "Initial Consultation",
       gradient: "from-emerald-500 to-teal-500",
-      img: "/how-it-works/step-1.jpg",
+      img: "/new/11R Lotus Cafe Render1.jpg",
       description: "Free consultation to discuss your vision, budget, and site. We'll provide preliminary recommendations and pricing.",
       items: [
         "Virtual or in-person meeting",
@@ -1998,7 +1998,7 @@ export default function Home() {
       week: "Week 2-3",
       title: "Design & Planning",
       gradient: "from-teal-500 to-cyan-500",
-      img: "/how-it-works/step-2.jpg",
+      img: "/new/11R Lotus Cafe Render2.jpg",
       description: "Our team creates detailed plans, handles permits, and finalizes customizations with you.",
       items: [
         "Custom design renderings",
@@ -2012,7 +2012,7 @@ export default function Home() {
       week: "Week 4-9",
       title: "Manufacturing",
       gradient: "from-cyan-500 to-blue-500",
-      img: "/how-it-works/step-3.jpg",
+      img: "/new/11R Lotus Cafe Render3.jpg",
       description: "Your dome home is precision-manufactured in our facility with quality checks at every stage.",
       items: [
         "Component fabrication",
